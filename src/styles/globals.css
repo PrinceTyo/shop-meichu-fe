@@ -131,4 +131,6 @@ html {
   background-color: #000000;
 }
 
-
+.text-outline {
+  -webkit-text-stroke: 1px black;
+}

@@ -1,12 +1,13 @@
+import AdvantageSection from "@/components/sections/advantage-section";
 import BundleSection from "@/components/sections/bundle-section";
 import StyleSection from "@/components/sections/style-section";
-
 
 export default function Home() {
   return (
     <>
+      <AdvantageSection />
       <StyleSection />
-      <BundleSection/>
+      <BundleSection />
     </>
   );
 }
