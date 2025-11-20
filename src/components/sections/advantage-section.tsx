@@ -57,7 +57,6 @@ export default function AdvantageSection() {
         start: "top 90%",
         end: () => `+=${totalScroll * 1}`,
         scrub: 1,
-        markers: true,
       },
     });
   });

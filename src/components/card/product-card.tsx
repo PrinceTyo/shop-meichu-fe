@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Check } from "lucide-react";
 
 export function ProductCard({
@@ -13,12 +12,16 @@ export function ProductCard({
   image: string;
 }) {
   return (
-    <div className="relative rounded-3xl overflow-hidden hover:scale-[1.02] transition-all duration-300 cursor-pointer">
+    <div className="product-card-item relative rounded-3xl overflow-hidden transition-all duration-300 cursor-pointer transform-gpu will-change-transform hover:scale-105">
       <div className="relative w-full h-96">
-        <Image src={image} alt={name} fill className="object-cover" />
+        <img
+          src={image}
+          alt={name}
+          className="object-cover transition-transform duration-700 ease-out"
+        />
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/70 to-transparent flex items-end justify-between">
+      <div className="absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/80 to-transparent flex items-end justify-between">
         <div>
           <h3 className="font-semibold text-rubik text-white text-sm">
             {name}
@@ -28,7 +31,7 @@ export function ProductCard({
           </p>
         </div>
 
-        <div className="w-8 h-8 rounded-full bg-emerald-100 backdrop-blur flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full bg-emerald-100 backdrop-blur flex items-center justify-center transition-transform duration-300">
           <Check className="w-5 h-5 text-gray-600" />
         </div>
       </div>

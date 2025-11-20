@@ -1,10 +1,17 @@
-"use client"
+"use client";
 
 import { ProductCard } from "@/components/card/product-card";
 import { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollSmoother);
 
 export default function BundleSection() {
   const bundleRef = useRef(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
 
   const products = [
     {
@@ -59,16 +66,50 @@ export default function BundleSection() {
     },
   ];
 
+  useGSAP(
+    () => {
+      const cards = gsap.utils.toArray(".product-card-item");
+
+      cards.forEach((card: any, index: number) => {
+        const column = index % 5;
+        const isEven = column % 2 === 0;
+        const direction = isEven ? -100 : -30;
+
+        ScrollTrigger.create({
+          trigger: cardsRef.current,
+          start: "top center",
+          end: "center top",
+          scrub: 0.2,
+          markers: true,
+          toggleActions: "play none none reverse",
+          onUpdate: (self) => {
+            // self.progress = 0 → top
+            // self.progress = 1 → bottom
+            const progress = self.progress;
+            gsap.to(card, {
+              y: direction * progress,
+              ease: "none",
+              overwrite: "auto",
+            });
+          },
+        });
+      });
+    },
+    { scope: bundleRef }
+  );
+
+
+
   return (
     <div
       ref={bundleRef}
-      className=" w-full min-h-screen bg-black text-white px-8 py-14"
+      className="w-full min-h-screen bg-black text-white px-8 py-14"
     >
       <div>
         <div className="w-full flex justify-center mt-20">
           <div className="max-w-6xl w-full flex justify-center items-center gap-6">
-            <div>
-              <h1 className="text-4xl md:text-6xl font-bold text-slate-200 leading-tight font-rubik flex justify-center items-center text-center">
+            <div className="">
+              <h1 className="text-4xl md:text-6xl font-medium text-slate-200 leading-tight font-rubik flex justify-center items-center text-center">
                 Bundle Up & Save More
               </h1>
               <p className="mt-8 text-base leading-relaxed opacity-80 font-inter flex justify-center items-center text-center max-w-3xl">
@@ -82,15 +123,16 @@ export default function BundleSection() {
           </div>
         </div>
 
-        <div className="w-full mx-auto px-2 mt-20">
+        <div ref={cardsRef} className="w-full mx-auto px-2 mt-20">
           <div className="max-w-8xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {products.map((item, index) => (
-              <ProductCard
-                key={index}
-                name={item.name}
-                price={item.price}
-                image={item.image}
-              />
+              <div key={index} className="">
+                <ProductCard
+                  name={item.name}
+                  price={item.price}
+                  image={item.image}
+                />
+              </div>
             ))}
           </div>
         </div>

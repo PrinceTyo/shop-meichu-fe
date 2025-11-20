@@ -5,7 +5,7 @@ import "../styles/globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
 const rubik = localFont({
-  src: "../../public/fonts/Inter-VariableFont_opsz,wght.ttf",
+  src: "../../public/fonts/Rubik-VariableFont_wght.ttf",
   variable: "--font-rubik",
   display: "swap",
 });
