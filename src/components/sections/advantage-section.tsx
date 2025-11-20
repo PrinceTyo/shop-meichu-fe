@@ -15,6 +15,7 @@ export default function AdvantageSection() {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
+    if (window.innerWidth <= 748) return;
     if (!sectionRef.current || !wrapperRef.current) return;
     gsap.set(".leftBox", { opacity: 1, scale: 1 });
 
