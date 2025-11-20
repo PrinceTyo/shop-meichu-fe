@@ -4,11 +4,11 @@ import { Geist, Geist_Mono, Rubik, Outfit } from "next/font/google";
 import "../styles/globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-const rubik = localFont({
-  src: "../../public/fonts/Inter-VariableFont_opsz,wght.ttf",
-  variable: "--font-rubik",
-  display: "swap",
-});
+// const rubik = localFont({
+//   src: "../../public/fonts/Inter-VariableFont_opsz,wght.ttf",
+//   variable: "--font-rubik",
+//   display: "swap",
+// });
 
 const inter = localFont({
   src: "../../public/fonts/Inter-VariableFont_opsz,wght.ttf",
@@ -22,9 +22,9 @@ const arial = localFont({
   display: "swap",
 });
 
-// const rubik = Rubik({
-//   variable: "--font-rubik"
-// });
+const rubik = Rubik({
+  variable: "--font-rubik",
+});
 
 const outfit = Outfit({
   variable: "--font-outfit",
