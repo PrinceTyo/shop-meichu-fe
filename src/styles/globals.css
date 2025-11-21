@@ -140,3 +140,12 @@ html {
 .text-outline {
   -webkit-text-stroke: 1px black;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

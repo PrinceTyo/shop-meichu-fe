@@ -1,129 +1,366 @@
-import { FaPlus } from "react-icons/fa6";
-import { Separator } from "../ui/separator";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+"use client";
+
+import { useRef } from "react";
+import TrendingProduct from "../card/trending-product";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function TrendingSection() {
+  const sectionTrending = useRef<HTMLDivElement | null>(null);
+
+  useGSAP(
+    () => {
+      if (!sectionTrending.current) return;
+
+      gsap.set(".trending", { opacity: 1, x: 0 });
+      gsap.set(".products", { opacity: 1, x: 0 });
+      gsap.set(".trendCard", { perspective: 1000 });
+
+      const cards = document.querySelectorAll(".trendingCard");
+      const totalCards = cards.length;
+      const spacing = -160;
+
+      cards.forEach((card, index) => {
+        const offset = (index - (totalCards - 1) / 2) * spacing;
+
+        gsap.set(card, {
+          opacity: 0,
+          rotateY: 85,
+          scale: 0.5,
+          x: offset,
+          transformOrigin: "center center",
+        });
+      });
+
+      gsap.to(".trending", {
+        x: -600,
+        opacity: 0,
+        scrollTrigger: {
+          trigger: sectionTrending.current,
+          start: "top 45%",
+          end: "bottom 75%",
+          scrub: 4,
+        },
+      });
+
+      gsap.to(".products", {
+        x: 600,
+        opacity: 0,
+        scrollTrigger: {
+          trigger: sectionTrending.current,
+          start: "top 45%",
+          end: "bottom 75%",
+          scrub: 4,
+        },
+      });
+
+      gsap.to(".trendingCard", {
+        rotateY: 0,
+        opacity: 1,
+        scale: 1,
+        x: 0,
+        scrollTrigger: {
+          trigger: sectionTrending.current,
+          start: "top 45%",
+          end: "bottom 75%",
+          scrub: 4,
+        },
+      });
+    },
+    { scope: sectionTrending }
+  );
+
+  const products = [
+    {
+      id: 1,
+      title: "Full Sleeve Round Neck T-shirt",
+      price: 4400,
+      images: {
+        front:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=69208775&is=691f35f5&hm=4cafe3a641fb47045f27d943860876b4d599d454756e3e5181e8b00cdb7142ab&=&format=webp&quality=lossless",
+        hover:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=69209a8e&is=691f490e&hm=5b7e08038ccb8c86f06c8a952903ad725b362aa4dc105ff7641652e21ca2bfbe&=&format=webp&quality=lossless",
+      },
+      sizes: ["S", "M", "L"],
+      colors: [
+        {
+          label: "Red",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244584213614663/ChatGPT_Image_Nov_21__2025__08_47_57_AM-removebg-preview.png?ex=6921171d&is=691fc59d&hm=0e74b57cdd1238842f84d2b25bea105591c8ffceb43a11e802b083589c9cf976&=&format=webp&quality=lossless",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329279623359/Gambar_WhatsApp_2025-08-06_pukul_12.26.59_9c8a4118-removebg-preview.png?ex=692116e1&is=691fc561&hm=168e48e12024dda36e2c9deeda624d066e51570b0841be14f1fe95e722221c8c&=&format=webp&quality=lossless&width=414&height=552",
+        },
+        {
+          label: "Green",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329950580796/ABS2GSlvBBqsXngDzvkzwprO0BpSukz0ydJ0LFvtgKNGx5o2IzfsdlrixM_t0suwV1aVdvEzmj4UhF3R318WKE7B4fXcizihDrM6ScrmmENYHfvAIYIWTrZRiXy8qMGUF-LLB3QMr-yV1kAChDQT-Q924rFBogk5VOWWuvKsGrKPZWWGgh-ns1024-rj-removebg-pr.png?ex=692116e1&is=691fc561&hm=f0fa5543a1882c69a82cc7362c9587e29042449da01a96b79ebe391aff62590d&=&format=webp&quality=lossless&width=368&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: "Full Sleeve Round Neck T-shirt",
+      price: 4400,
+      images: {
+        front:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=69208775&is=691f35f5&hm=4cafe3a641fb47045f27d943860876b4d599d454756e3e5181e8b00cdb7142ab&=&format=webp&quality=lossless",
+        hover:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=69209a8e&is=691f490e&hm=5b7e08038ccb8c86f06c8a952903ad725b362aa4dc105ff7641652e21ca2bfbe&=&format=webp&quality=lossless",
+      },
+      sizes: ["S", "M", "L"],
+      colors: [
+        {
+          label: "Red",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244584213614663/ChatGPT_Image_Nov_21__2025__08_47_57_AM-removebg-preview.png?ex=6921171d&is=691fc59d&hm=0e74b57cdd1238842f84d2b25bea105591c8ffceb43a11e802b083589c9cf976&=&format=webp&quality=lossless",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329279623359/Gambar_WhatsApp_2025-08-06_pukul_12.26.59_9c8a4118-removebg-preview.png?ex=692116e1&is=691fc561&hm=168e48e12024dda36e2c9deeda624d066e51570b0841be14f1fe95e722221c8c&=&format=webp&quality=lossless&width=414&height=552",
+        },
+        {
+          label: "Green",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329950580796/ABS2GSlvBBqsXngDzvkzwprO0BpSukz0ydJ0LFvtgKNGx5o2IzfsdlrixM_t0suwV1aVdvEzmj4UhF3R318WKE7B4fXcizihDrM6ScrmmENYHfvAIYIWTrZRiXy8qMGUF-LLB3QMr-yV1kAChDQT-Q924rFBogk5VOWWuvKsGrKPZWWGgh-ns1024-rj-removebg-pr.png?ex=692116e1&is=691fc561&hm=f0fa5543a1882c69a82cc7362c9587e29042449da01a96b79ebe391aff62590d&=&format=webp&quality=lossless&width=368&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: "Full Sleeve Round Neck T-shirt",
+      price: 4400,
+      images: {
+        front:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=69208775&is=691f35f5&hm=4cafe3a641fb47045f27d943860876b4d599d454756e3e5181e8b00cdb7142ab&=&format=webp&quality=lossless",
+        hover:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=69209a8e&is=691f490e&hm=5b7e08038ccb8c86f06c8a952903ad725b362aa4dc105ff7641652e21ca2bfbe&=&format=webp&quality=lossless",
+      },
+      sizes: ["S", "M", "L"],
+      colors: [
+        {
+          label: "Red",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244584213614663/ChatGPT_Image_Nov_21__2025__08_47_57_AM-removebg-preview.png?ex=6921171d&is=691fc59d&hm=0e74b57cdd1238842f84d2b25bea105591c8ffceb43a11e802b083589c9cf976&=&format=webp&quality=lossless",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329279623359/Gambar_WhatsApp_2025-08-06_pukul_12.26.59_9c8a4118-removebg-preview.png?ex=692116e1&is=691fc561&hm=168e48e12024dda36e2c9deeda624d066e51570b0841be14f1fe95e722221c8c&=&format=webp&quality=lossless&width=414&height=552",
+        },
+        {
+          label: "Green",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329950580796/ABS2GSlvBBqsXngDzvkzwprO0BpSukz0ydJ0LFvtgKNGx5o2IzfsdlrixM_t0suwV1aVdvEzmj4UhF3R318WKE7B4fXcizihDrM6ScrmmENYHfvAIYIWTrZRiXy8qMGUF-LLB3QMr-yV1kAChDQT-Q924rFBogk5VOWWuvKsGrKPZWWGgh-ns1024-rj-removebg-pr.png?ex=692116e1&is=691fc561&hm=f0fa5543a1882c69a82cc7362c9587e29042449da01a96b79ebe391aff62590d&=&format=webp&quality=lossless&width=368&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+      ],
+    },
+    {
+      id: 4,
+      title: "Full Sleeve Round Neck T-shirt",
+      price: 4400,
+      images: {
+        front:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=69208775&is=691f35f5&hm=4cafe3a641fb47045f27d943860876b4d599d454756e3e5181e8b00cdb7142ab&=&format=webp&quality=lossless",
+        hover:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=69209a8e&is=691f490e&hm=5b7e08038ccb8c86f06c8a952903ad725b362aa4dc105ff7641652e21ca2bfbe&=&format=webp&quality=lossless",
+      },
+      sizes: ["S", "M", "L"],
+      colors: [
+        {
+          label: "Red",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244584213614663/ChatGPT_Image_Nov_21__2025__08_47_57_AM-removebg-preview.png?ex=6921171d&is=691fc59d&hm=0e74b57cdd1238842f84d2b25bea105591c8ffceb43a11e802b083589c9cf976&=&format=webp&quality=lossless",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329279623359/Gambar_WhatsApp_2025-08-06_pukul_12.26.59_9c8a4118-removebg-preview.png?ex=692116e1&is=691fc561&hm=168e48e12024dda36e2c9deeda624d066e51570b0841be14f1fe95e722221c8c&=&format=webp&quality=lossless&width=414&height=552",
+        },
+        {
+          label: "Green",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329950580796/ABS2GSlvBBqsXngDzvkzwprO0BpSukz0ydJ0LFvtgKNGx5o2IzfsdlrixM_t0suwV1aVdvEzmj4UhF3R318WKE7B4fXcizihDrM6ScrmmENYHfvAIYIWTrZRiXy8qMGUF-LLB3QMr-yV1kAChDQT-Q924rFBogk5VOWWuvKsGrKPZWWGgh-ns1024-rj-removebg-pr.png?ex=692116e1&is=691fc561&hm=f0fa5543a1882c69a82cc7362c9587e29042449da01a96b79ebe391aff62590d&=&format=webp&quality=lossless&width=368&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+      ],
+    },
+    {
+      id: 5,
+      title: "Full Sleeve Round Neck T-shirt",
+      price: 4400,
+      images: {
+        front:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=69208775&is=691f35f5&hm=4cafe3a641fb47045f27d943860876b4d599d454756e3e5181e8b00cdb7142ab&=&format=webp&quality=lossless",
+        hover:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=69209a8e&is=691f490e&hm=5b7e08038ccb8c86f06c8a952903ad725b362aa4dc105ff7641652e21ca2bfbe&=&format=webp&quality=lossless",
+      },
+      sizes: ["S", "M", "L"],
+      colors: [
+        {
+          label: "Red",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244584213614663/ChatGPT_Image_Nov_21__2025__08_47_57_AM-removebg-preview.png?ex=6921171d&is=691fc59d&hm=0e74b57cdd1238842f84d2b25bea105591c8ffceb43a11e802b083589c9cf976&=&format=webp&quality=lossless",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329279623359/Gambar_WhatsApp_2025-08-06_pukul_12.26.59_9c8a4118-removebg-preview.png?ex=692116e1&is=691fc561&hm=168e48e12024dda36e2c9deeda624d066e51570b0841be14f1fe95e722221c8c&=&format=webp&quality=lossless&width=414&height=552",
+        },
+        {
+          label: "Green",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329950580796/ABS2GSlvBBqsXngDzvkzwprO0BpSukz0ydJ0LFvtgKNGx5o2IzfsdlrixM_t0suwV1aVdvEzmj4UhF3R318WKE7B4fXcizihDrM6ScrmmENYHfvAIYIWTrZRiXy8qMGUF-LLB3QMr-yV1kAChDQT-Q924rFBogk5VOWWuvKsGrKPZWWGgh-ns1024-rj-removebg-pr.png?ex=692116e1&is=691fc561&hm=f0fa5543a1882c69a82cc7362c9587e29042449da01a96b79ebe391aff62590d&=&format=webp&quality=lossless&width=368&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+      ],
+    },
+    {
+      id: 6,
+      title: "Full Sleeve Round Neck T-shirt",
+      price: 4400,
+      images: {
+        front:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=69208775&is=691f35f5&hm=4cafe3a641fb47045f27d943860876b4d599d454756e3e5181e8b00cdb7142ab&=&format=webp&quality=lossless",
+        hover:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=69209a8e&is=691f490e&hm=5b7e08038ccb8c86f06c8a952903ad725b362aa4dc105ff7641652e21ca2bfbe&=&format=webp&quality=lossless",
+      },
+      sizes: ["S", "M", "L"],
+      colors: [
+        {
+          label: "Red",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244584213614663/ChatGPT_Image_Nov_21__2025__08_47_57_AM-removebg-preview.png?ex=6921171d&is=691fc59d&hm=0e74b57cdd1238842f84d2b25bea105591c8ffceb43a11e802b083589c9cf976&=&format=webp&quality=lossless",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329279623359/Gambar_WhatsApp_2025-08-06_pukul_12.26.59_9c8a4118-removebg-preview.png?ex=692116e1&is=691fc561&hm=168e48e12024dda36e2c9deeda624d066e51570b0841be14f1fe95e722221c8c&=&format=webp&quality=lossless&width=414&height=552",
+        },
+        {
+          label: "Green",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329950580796/ABS2GSlvBBqsXngDzvkzwprO0BpSukz0ydJ0LFvtgKNGx5o2IzfsdlrixM_t0suwV1aVdvEzmj4UhF3R318WKE7B4fXcizihDrM6ScrmmENYHfvAIYIWTrZRiXy8qMGUF-LLB3QMr-yV1kAChDQT-Q924rFBogk5VOWWuvKsGrKPZWWGgh-ns1024-rj-removebg-pr.png?ex=692116e1&is=691fc561&hm=f0fa5543a1882c69a82cc7362c9587e29042449da01a96b79ebe391aff62590d&=&format=webp&quality=lossless&width=368&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+      ],
+    },
+    {
+      id: 7,
+      title: "Full Sleeve Round Neck T-shirt",
+      price: 4400,
+      images: {
+        front:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=69208775&is=691f35f5&hm=4cafe3a641fb47045f27d943860876b4d599d454756e3e5181e8b00cdb7142ab&=&format=webp&quality=lossless",
+        hover:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=69209a8e&is=691f490e&hm=5b7e08038ccb8c86f06c8a952903ad725b362aa4dc105ff7641652e21ca2bfbe&=&format=webp&quality=lossless",
+      },
+      sizes: ["S", "M", "L"],
+      colors: [
+        {
+          label: "Red",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244584213614663/ChatGPT_Image_Nov_21__2025__08_47_57_AM-removebg-preview.png?ex=6921171d&is=691fc59d&hm=0e74b57cdd1238842f84d2b25bea105591c8ffceb43a11e802b083589c9cf976&=&format=webp&quality=lossless",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329279623359/Gambar_WhatsApp_2025-08-06_pukul_12.26.59_9c8a4118-removebg-preview.png?ex=692116e1&is=691fc561&hm=168e48e12024dda36e2c9deeda624d066e51570b0841be14f1fe95e722221c8c&=&format=webp&quality=lossless&width=414&height=552",
+        },
+        {
+          label: "Green",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329950580796/ABS2GSlvBBqsXngDzvkzwprO0BpSukz0ydJ0LFvtgKNGx5o2IzfsdlrixM_t0suwV1aVdvEzmj4UhF3R318WKE7B4fXcizihDrM6ScrmmENYHfvAIYIWTrZRiXy8qMGUF-LLB3QMr-yV1kAChDQT-Q924rFBogk5VOWWuvKsGrKPZWWGgh-ns1024-rj-removebg-pr.png?ex=692116e1&is=691fc561&hm=f0fa5543a1882c69a82cc7362c9587e29042449da01a96b79ebe391aff62590d&=&format=webp&quality=lossless&width=368&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+      ],
+    },
+    {
+      id: 8,
+      title: "Full Sleeve Round Neck T-shirt",
+      price: 4400,
+      images: {
+        front:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=69208775&is=691f35f5&hm=4cafe3a641fb47045f27d943860876b4d599d454756e3e5181e8b00cdb7142ab&=&format=webp&quality=lossless",
+        hover:
+          "https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=69209a8e&is=691f490e&hm=5b7e08038ccb8c86f06c8a952903ad725b362aa4dc105ff7641652e21ca2bfbe&=&format=webp&quality=lossless",
+      },
+      sizes: ["S", "M", "L"],
+      colors: [
+        {
+          label: "Red",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244584213614663/ChatGPT_Image_Nov_21__2025__08_47_57_AM-removebg-preview.png?ex=6921171d&is=691fc59d&hm=0e74b57cdd1238842f84d2b25bea105591c8ffceb43a11e802b083589c9cf976&=&format=webp&quality=lossless",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329279623359/Gambar_WhatsApp_2025-08-06_pukul_12.26.59_9c8a4118-removebg-preview.png?ex=692116e1&is=691fc561&hm=168e48e12024dda36e2c9deeda624d066e51570b0841be14f1fe95e722221c8c&=&format=webp&quality=lossless&width=414&height=552",
+        },
+        {
+          label: "Green",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329950580796/ABS2GSlvBBqsXngDzvkzwprO0BpSukz0ydJ0LFvtgKNGx5o2IzfsdlrixM_t0suwV1aVdvEzmj4UhF3R318WKE7B4fXcizihDrM6ScrmmENYHfvAIYIWTrZRiXy8qMGUF-LLB3QMr-yV1kAChDQT-Q924rFBogk5VOWWuvKsGrKPZWWGgh-ns1024-rj-removebg-pr.png?ex=692116e1&is=691fc561&hm=f0fa5543a1882c69a82cc7362c9587e29042449da01a96b79ebe391aff62590d&=&format=webp&quality=lossless&width=368&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+        {
+          label: "Blue",
+          img: "https://media.discordapp.net/attachments/1407219298103201852/1441244329653043363/Gambar_WhatsApp_2024-08-29_pukul_15.41.05_88aa088f-removebg-preview.png?ex=692116e1&is=691fc561&hm=ac86de375c817f088494b13ff6a84a4a39975acf48ca39700ca12d659727dfc4&=&format=webp&quality=lossless&width=415&height=552",
+        },
+      ],
+    },
+  ];
+
   return (
-    <div className="bg-white flex items-center justify-start gap-6 p-6">
-      <div className="max-w-36 space-y-3.5">
-        <div className="bg-gray-400 w-fit border border-gray-500 rounded-3xl relative overflow-hidden group">
-          <img
-            src="https://media.discordapp.net/attachments/1407219298103201852/1440909139894206464/sekarang_1__1_-removebg-preview.png?ex=691fdeb5&is=691e8d35&hm=cdf12fb111b7f6068bfceaa4fc40297800128f89ce26b8ce4dea0fa4d5854c1b&=&format=webp&quality=lossless"
-            className="w-36 h-46 object-cover rounded-3xl
-              transition-all duration-700 ease-out
-              group-hover:opacity-0 group-hover:scale-105"
-            alt=""
-          />
-          <img
-            src="https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=691ff1ce&is=691ea04e&hm=843bdedf9b811b163b3b0546d8601025bfc1adc64b24f362bae20a2954746f75&=&format=webp&quality=lossless"
-            className="w-36 h-46 object-cover rounded-3xl
-              absolute inset-0 opacity-0
-              transition-all duration-700 ease-out
-              group-hover:opacity-100 group-hover:scale-105"
-            alt=""
-          />
-          <div
-            className="absolute inset-0 flex items-end justify-center
-            text-black text-[10px] font-medium font-inter
-            opacity-0 translate-y-full
-            transition-all duration-400 ease-out
-            group-hover:opacity-100 group-hover:translate-y-0"
-          >
-            <div className="w-30 group/quickview transition-all duration-300 ease-out group-hover/quickview:-translate-y-16">
-              <div className="flex items-center justify-between gap-2 mt- py-2 px-3 rounded-t-lg bg-gray-100 cursor-pointer">
-                <h1 className="-mb-2">QUICK VIEW</h1>
-                <FaPlus className="-mb-2" />
-              </div>
-
-              <div className="bg-gray-100 rounded-b-lg px-3 pb-2 max-h-0 transition-all duration-800 ease-out group-hover/quickview:max-h-20 group-hover/quickview:mb-2">
-                <div className="pt-2">
-                  <Separator className="mb-3" />
-                  <div className="flex gap-1.5 flex-wrap">
-                    {["S", "M", "L"].map((size) => (
-                      <button
-                        key={size}
-                        className="px-2 py-1 text-[10px] border border-gray-300 rounded hover:bg-black hover:text-white transition-colors"
-                      >
-                        {size}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="text-center px-1.5 space-y-1.5 font-inter group/info relative">
-          <div className="transition-all space-y-1.5 duration-300 ease-out group-hover/info:opacity-0">
-            <h1 className="text-xs text-wrap font-semibold">
-              Full Sleeve Round Neck T-shirt
-            </h1>
-            <p className="text-xs">$4,400.00 USD</p>
-          </div>
-
-          <div className="absolute inset-x-0 top-0 flex items-center justify-center gap-1.5 opacity-0 transition-all duration-300 ease-out group-hover/info:opacity-100">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className=" bg-gray-400 border border-gray-300 cursor-pointer">
-                  <img
-                    src="https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=691ff1ce&is=691ea04e&hm=843bdedf9b811b163b3b0546d8601025bfc1adc64b24f362bae20a2954746f75&=&format=webp&quality=lossless"
-                    className="w-8 h-8 object-cover"
-                    alt=""
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-white">Red</p>
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className=" bg-gray-400 border border-gray-300 cursor-pointer">
-                  <img
-                    src="https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=691ff1ce&is=691ea04e&hm=843bdedf9b811b163b3b0546d8601025bfc1adc64b24f362bae20a2954746f75&=&format=webp&quality=lossless"
-                    className="w-8 h-8 object-cover"
-                    alt=""
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-white">Red</p>
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className=" bg-gray-400 border border-gray-300 cursor-pointer">
-                  <img
-                    src="https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=691ff1ce&is=691ea04e&hm=843bdedf9b811b163b3b0546d8601025bfc1adc64b24f362bae20a2954746f75&=&format=webp&quality=lossless"
-                    className="w-8 h-8 object-cover"
-                    alt=""
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-white">Red</p>
-              </TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className=" bg-gray-400 border border-gray-300 cursor-pointer">
-                  <img
-                    src="https://media.discordapp.net/attachments/1407219298103201852/1440929646093799514/ARYA_COOKED__-removebg-preview.png?ex=691ff1ce&is=691ea04e&hm=843bdedf9b811b163b3b0546d8601025bfc1adc64b24f362bae20a2954746f75&=&format=webp&quality=lossless"
-                    className="w-8 h-8 object-cover"
-                    alt=""
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-white">Red</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </div>
+    <div
+      ref={sectionTrending}
+      className="trending-wrapper bg-white mt-200 relative flex items-center justify-center min-h-86"
+    >
+      <div className="absolute text-[7rem] flex items-center justify-center">
+        <h1 className="trending">TRENDING</h1>
+        <h1 className="products">PRODUCTS</h1>
+      </div>
+      <div className="trendCard absolute bg-transparent flex items-center justify-center gap-5 p-6 mb-6">
+        {products.map((p) => (
+          <TrendingProduct key={p.id} product={p} className="trendingCard" />
+        ))}
       </div>
     </div>
   );
