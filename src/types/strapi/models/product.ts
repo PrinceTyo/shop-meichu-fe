@@ -10,6 +10,6 @@ export interface Product extends StrapiTimestamp {
   description: string;
   price: number;
   stock: number;
-  image: StrapiImage;
+  image?: StrapiImage;
   category?: Category;
 }

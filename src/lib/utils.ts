@@ -25,13 +25,6 @@ export async function fileToBase64(file: File): Promise<string> {
   });
 }
 
-/**
- * Converts a base64 string to a File object
- * @param {string} base64 - The base64 string (with or without data URL prefix)
- * @param {string} filename - The desired filename
- * @param {string} mimeType - Optional MIME type (auto-detected from data URL if not provided)
- * @returns {File} The File object
- */
 export function base64ToFile(
   base64: string,
   filename: string,
@@ -65,4 +58,26 @@ export function formatCurrency(price: number) {
     style: "currency",
     currency: "IDR",
   }).format(price);
+}
+
+export async function fetchImageAsFile(
+  url: string,
+  filename?: string
+): Promise<File> {
+  const response = await fetch(url);
+  if (!response.ok)
+    throw new Error(
+      `Failed to fetch image: ${response.status} ${response.statusText}`
+    );
+
+  const blob = await response.blob();
+  const finalFilename = filename || url.split("/").pop() || "image";
+
+  const file = new File([blob], finalFilename, { type: blob.type });
+
+  return file;
+}
+
+export function bytesToMB(bytes: number) {
+  return bytes / (1024 * 1024);
 }

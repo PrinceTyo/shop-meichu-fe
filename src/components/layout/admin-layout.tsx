@@ -16,7 +16,7 @@ export default function AdminLayout({
   return (
     <LayoutProvider>
       <SidebarProvider>
-        <div className="relative flex h-screen w-full dark font-outfit bg-background-admin text-white">
+        <div className="relative flex min-h-screen w-full dark font-outfit bg-background-admin text-white">
           <AdminSidebar user={user} />
           <SidebarInset className="bg-background-admin! flex flex-col p-8">
             {children}

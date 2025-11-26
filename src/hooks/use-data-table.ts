@@ -27,7 +27,6 @@ import {
   useQueryState,
   useQueryStates,
 } from "nuqs";
-import { useRouter } from "next/navigation";
 import * as React from "react";
 
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
@@ -89,8 +88,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
   const sortKey = queryKeys?.sort ?? SORT_KEY;
   const filtersKey = queryKeys?.filters ?? FILTERS_KEY;
   const joinOperatorKey = queryKeys?.joinOperator ?? JOIN_OPERATOR_KEY;
-
-  const router = useRouter();
 
   const queryStateOptions = React.useMemo<
     Omit<UseQueryStateOptions<string>, "parse">
@@ -269,11 +266,6 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
     },
     [debouncedSetFilterValues, filterableColumns, enableAdvancedFilter]
   );
-
-  // Trigger server-side refresh when URL parameters change
-  React.useEffect(() => {
-    router.refresh();
-  }, [page, perPage, sorting, filterValues, router]);
 
   const table = useReactTable({
     ...tableProps,

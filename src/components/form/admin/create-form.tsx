@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Pencil, X } from "lucide-react";
-import { base64ToFile, fileToBase64 } from "@/lib/utils";
+import { base64ToFile, bytesToMB, fileToBase64 } from "@/lib/utils";
 import { ControllerRenderProps, FieldPath } from "react-hook-form";
 import UpsertForm from "@/components/form/admin/base/upsert-form";
 
@@ -43,6 +43,7 @@ import type { Category } from "@/types/strapi/models/category";
 import type { Product } from "@/types/strapi/models/product";
 import type { ChangeEvent } from "react";
 import { redirect } from "next/navigation";
+import { maxFileSize } from "@/config/form";
 
 function ImageField<
   TFieldValues extends FieldValues = FieldValues,
@@ -249,16 +250,16 @@ export function CreateProductForm({ categories }: { categories: Category[] }) {
       formSchema={z.object({
         name: z.string().min(1, "The name field is required."),
         description: z.string().min(1, "The description field is required."),
-        price: z.coerce.number().min(1, "The price field is required."),
-        stock: z.coerce.number().min(1, "The stock field is required."),
+        price: z.coerce.number().min(0, "The price field is required."),
+        stock: z.coerce.number().min(0, "The stock field is required."),
         category: z.coerce.number("The category field is required."),
         image: z
           .instanceof(File, { message: "Please select an image file." })
           .refine((file) => file.size > 0, {
             message: "Image file is required.",
           })
-          .refine((file) => file.size <= 5 * 1024 * 1024, {
-            message: "Image file size must be less than 5MB.",
+          .refine((file) => file.size <= maxFileSize, {
+            message: `Image file size must be less than ${bytesToMB(maxFileSize)} MB.`,
           })
           .refine(
             (file) => {

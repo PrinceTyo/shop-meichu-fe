@@ -2,12 +2,11 @@
 
 import * as z from "zod";
 
-import { useState } from "react";
 import { toast } from "sonner";
-import { createItem, createProductImage } from "@/actions/admin";
-import { Controller, FieldValues } from "react-hook-form";
-import { Input } from "@/components/ui/input";
+import { createProductImage, updateItem } from "@/actions/admin";
 import { displayValidationError } from "@/lib/validation-handler";
+import { redirect } from "next/navigation";
+import { Input } from "@/components/ui/input";
 import {
   Field,
   FieldError,
@@ -15,158 +14,32 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import {
-  ImageCrop,
-  ImageCropApply,
-  ImageCropContent,
-} from "@/components/ui/shadcn-io/image-crop";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Pencil, X } from "lucide-react";
-import { base64ToFile, fileToBase64 } from "@/lib/utils";
-import { ControllerRenderProps, FieldPath } from "react-hook-form";
+import { ImageField } from "@/components/form/image";
+import { Controller } from "react-hook-form";
 import UpsertForm from "@/components/form/admin/base/upsert-form";
 
 import type { Category } from "@/types/strapi/models/category";
 import type { Product } from "@/types/strapi/models/product";
-import type { ChangeEvent } from "react";
-import { redirect } from "next/navigation";
+import { useState } from "react";
+import { maxFileSize } from "@/config/form";
 
-function ImageField<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
->({ field }: { field: ControllerRenderProps<TFieldValues, TName> }) {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [currentImage, setCurrentImage] = useState<string | null>(null);
-
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const base64Data = await fileToBase64(file);
-    setSelectedFile(file);
-    setCurrentImage(base64Data);
-    field.onChange(file);
-  };
-
-  const handleCropChange = async (data: string) => {
-    const file = base64ToFile(data, "image.jpg");
-    setDialogOpen(false);
-    setCurrentImage(data);
-    field.onChange(file);
-  };
-
-  const handleRemove = () => {
-    setCurrentImage(null);
-    setDialogOpen(false);
-    field.onChange(undefined);
-  };
-
-  const handleResetCrop = async () => {
-    if (!selectedFile) return handleRemove();
-
-    const base64Data = await fileToBase64(selectedFile);
-    setDialogOpen(false);
-    setCurrentImage(base64Data);
-    field.onChange(selectedFile);
-  };
-
-  return selectedFile && currentImage ? (
-    <>
-      <ImageCrop
-        aspect={1}
-        file={selectedFile}
-        maxImageSize={1024 * 1024}
-        onCrop={handleCropChange}
-      >
-        <section className="rounded-md px-4 border bg-accent shadow-xs relative h-96 overflow-hidden">
-          <div className="absolute flex justify-end gap-1 left-0 top-0 p-3 bg-linear-to-b from-black to-transparent w-full">
-            <Button
-              variant="outline"
-              onClick={() => setDialogOpen(true)}
-              type="button"
-            >
-              <Pencil />
-            </Button>
-            <Button variant="outline" onClick={handleRemove} type="button">
-              <X />
-            </Button>
-          </div>
-
-          <img
-            alt="Edited Image"
-            src={currentImage}
-            className=" mx-auto h-full w-auto object-contain"
-          />
-        </section>
-
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Edit image</DialogTitle>
-            </DialogHeader>
-            <ImageCropContent className="max-w-md" />
-            <DialogFooter>
-              <ImageCropApply asChild>
-                <Button size="sm" variant="outline">
-                  Apply Crop
-                </Button>
-              </ImageCropApply>
-              <Button
-                onClick={handleResetCrop}
-                size="sm"
-                type="button"
-                variant="outline"
-              >
-                Reset Crop
-              </Button>
-              <Button
-                onClick={handleRemove}
-                size="sm"
-                type="button"
-                variant="destructive"
-              >
-                Delete Image
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </ImageCrop>
-    </>
-  ) : (
-    <Input
-      accept="image/*"
-      onChange={handleFileChange}
-      maxLength={1}
-      type="file"
-    />
-  );
-}
-
-export function CreateCategoryForm() {
+export function UpdateCategoryForm({ category }: { category: Category }) {
   return (
     <UpsertForm
-      id="create-category"
-      type="create"
+      id="update-category"
+      type="update"
       model={{ singular: "Category", plural: "Categories" }}
       formSchema={z.object({
         name: z.string().min(1, "The name field is required."),
       })}
       defaultValues={{
-        name: "",
+        name: category.name,
       }}
       formFields={(formId, form) => {
         return (
@@ -197,7 +70,11 @@ export function CreateCategoryForm() {
         );
       }}
       onSubmit={async (form, data) => {
-        const result = await createItem<Category>("categories", data);
+        const result = await updateItem<Category>(
+          "categories",
+          category.documentId,
+          data
+        );
 
         switch (result.type) {
           case "success":
@@ -212,7 +89,6 @@ export function CreateCategoryForm() {
               } as React.CSSProperties,
             });
             redirect("/admin/categories");
-            break;
           case "validation":
             toast.error("Validation error", {
               style: {
@@ -240,11 +116,18 @@ export function CreateCategoryForm() {
   );
 }
 
-export function CreateProductForm({ categories }: { categories: Category[] }) {
+export function UpdateProductForm({
+  categories,
+  product,
+}: {
+  categories: Category[];
+  product: Product;
+}) {
+  const [isImageChanged, setIsImageChanged] = useState(false);
   return (
     <UpsertForm
-      id="create-product"
-      type="create"
+      id="update-product"
+      type="update"
       model={{ singular: "Product", plural: "Products" }}
       formSchema={z.object({
         name: z.string().min(1, "The name field is required."),
@@ -257,7 +140,7 @@ export function CreateProductForm({ categories }: { categories: Category[] }) {
           .refine((file) => file.size > 0, {
             message: "Image file is required.",
           })
-          .refine((file) => file.size <= 5 * 1024 * 1024, {
+          .refine((file) => file.size <= maxFileSize, {
             message: "Image file size must be less than 5MB.",
           })
           .refine(
@@ -276,11 +159,13 @@ export function CreateProductForm({ categories }: { categories: Category[] }) {
           ),
       })}
       defaultValues={{
-        name: "",
-        description: "",
-        price: 0,
-        stock: 0,
-        category: undefined,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        stock: product.stock,
+        category: product.category?.id
+          ? String(product.category?.id)
+          : undefined,
         image: undefined,
       }}
       formFields={(formId, form) => {
@@ -415,7 +300,15 @@ export function CreateProductForm({ categories }: { categories: Category[] }) {
                   <FieldLabel htmlFor={`form-${formId}-input-image`}>
                     Image
                   </FieldLabel>
-                  <ImageField field={field} />
+                  <ImageField
+                    defaultValue={
+                      product.image?.url
+                        ? `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${product.image.url}`
+                        : undefined
+                    }
+                    field={field}
+                    setIsImageChanged={setIsImageChanged}
+                  />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -428,8 +321,12 @@ export function CreateProductForm({ categories }: { categories: Category[] }) {
       onSubmit={async (form, data) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { image: _, ...selectedData } = data;
-        const result = await createItem<Product>("products", selectedData);
-        if (result.type === "success") {
+        const result = await updateItem<Product>(
+          "products",
+          product.documentId,
+          selectedData as any
+        );
+        if (result.type === "success" && isImageChanged) {
           await createProductImage({
             productId: result.data.data.id,
             file: data.image as unknown as File,

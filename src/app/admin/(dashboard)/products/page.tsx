@@ -9,6 +9,7 @@ export default async function Page() {
       populate={{
         image: true,
       }}
+      enableDelete={true}
     />
   );
 }

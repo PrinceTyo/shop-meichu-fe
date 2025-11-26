@@ -2,6 +2,7 @@
 
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { refresh } from "next/cache";
 import qs from "qs";
 
 import type { LoginResponse } from "@/types/admin/login";
@@ -53,7 +54,7 @@ export async function logout() {
   redirect("/admin/login");
 }
 
-async function fetchAdmin(
+export async function fetchAdmin(
   input: string | URL | Request,
   init?: RequestInit
 ): Promise<Response> {
@@ -131,6 +132,32 @@ export async function createItem<TModel>(
   return { type: "success", data: await response.json() };
 }
 
+export async function updateItem<TModel>(
+  identifier: string,
+  documentId: string,
+  data: Partial<TModel>
+): Promise<ResultContract<StrapiResponse<TModel>>> {
+  const response = await fetchAdmin(
+    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${identifier}/${documentId}`,
+    {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data }),
+    }
+  );
+
+  if (!response.ok) {
+    if (response.status === 400) {
+      const { error } = await response.json();
+      return { type: "validation", validation: error };
+    }
+
+    return { type: "error", message: "An error occurred" };
+  }
+
+  return { type: "success", data: await response.json() };
+}
+
 export async function createProductImage(data: {
   productId: number;
   file: File;
@@ -158,5 +185,29 @@ export async function createProductImage(data: {
     return { type: "error", message: "An error occurred" };
   }
 
+  return { type: "success", data: null };
+}
+
+export async function deleteItem(
+  identifier: string,
+  documentId: string
+): Promise<ResultContract<null>> {
+  const response = await fetchAdmin(
+    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/${identifier}/${documentId}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    if (response.status === 400) {
+      const { error } = await response.json();
+      return { type: "validation", validation: error };
+    }
+
+    return { type: "error", message: "An error occurred" };
+  }
+
+  refresh();
   return { type: "success", data: null };
 }
