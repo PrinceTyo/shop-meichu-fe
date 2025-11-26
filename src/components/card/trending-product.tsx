@@ -82,18 +82,18 @@ export default function TrendingProduct({
 
   const sizeClass = {
     sm: {
-      wrapper: "lg:max-w-37",
-      dekstop: "lg:w-37 lg:h-45",
-      mobile: "w-60 h-80",
-      quickView: "lg:w-32",
+      wrapper: "lg:max-w-35 xl:max-w-35",
+      dekstop: "lg:w-35 xl:w-35 lg:h-45",
+      mobile: "w-75 h-90",
+      quickView: "md:w-55 lg:w-32",
       sizeP: "px-2",
       colorImg: "w-8 h-8",
     },
     md: {
-      wrapper: "lg:max-w-57",
-      dekstop: "lg:w-57 lg:h-72",
+      wrapper: "md:max-w-48 lg:max-w-38 xl:max-w-48",
+      dekstop: "md:w-48 md:h-65 lg:w-38 lg:h-50 xl:w-48 xl:h-70",
       mobile: "w-75 h-96",
-      quickView: "lg:w-52",
+      quickView: "md:w-43 lg:w-50 xl:w-45",
       sizeP: "px-4",
       colorImg: "w-10 h-10",
     },
@@ -102,19 +102,19 @@ export default function TrendingProduct({
   return (
     <>
       <div
-        className={`w-75 ${sizeClass.wrapper} space-y-3 shrink-0 ${
+        className={`w-75 md:w-60 ${sizeClass.wrapper} space-y-3 shrink-0 ${
           className || ""
         }`}
       >
-        <div className="bg-gray-400 w-fit border border-gray-500 rounded-xl lg:rounded-3xl relative overflow-hidden group">
+        <div className="bg-gray-400 w-fit border border-gray-500 rounded-xl md:rounded-2xl lg:rounded-3xl relative overflow-hidden group">
           <img
             src={selectedImage || product.images.front}
-            className={`${sizeClass.mobile} ${sizeClass.dekstop} object-cover rounded-xl lg:rounded-3xl transition-all duration-700 ease-out group-hover:opacity-0 group-hover:scale-105`}
+            className={`${sizeClass.mobile}  ${sizeClass.dekstop} object-cover rounded-xl md:rounded-3xl transition-all duration-700 ease-out group-hover:opacity-0 group-hover:scale-105`}
             alt=""
           />
           <img
             src={product.images.hover}
-            className={`${sizeClass.mobile} ${sizeClass.dekstop} object-cover rounded-xl lg:rounded-3xl absolute inset-0 opacity-0 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-105`}
+            className={`${sizeClass.mobile}  ${sizeClass.dekstop} object-cover rounded-xl md:rounded-3xl absolute inset-0 opacity-0 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-105`}
             alt=""
           />
 
