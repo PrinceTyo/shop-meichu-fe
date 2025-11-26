@@ -45,8 +45,8 @@ function AccordionTrigger({
         {children}
 
         <FaPlus
-          size={40}
-          className="plus-icon transition-transform duration-300 p-2.5 border border-white rounded-full"
+          className="transition-transform duration-300 p-1.5 lg:p-2.5 border border-white rounded-full 
+             w-7 h-7 md:w-7 lg:w-10 md:h-7 lg:h-10"
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

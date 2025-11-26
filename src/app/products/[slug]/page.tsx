@@ -10,6 +10,7 @@ import DescriptionSection from "@/components/sections/description-section";
 import SpecificationsSection from "@/components/sections/specifications-section";
 import { products } from "@/lib/data/product";
 import { productDesc } from "@/lib/data/descProduct";
+import TrendingProduct from "@/components/card/trending-product";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,15 +64,23 @@ export default function ProductDetailPage() {
 
       ScrollTrigger.create({
         trigger: el,
-        start: "top center",
-        end: "bottom center",
+        start: i === 0 ? "top top" : "top 60%",
+        end: "bottom 40%",
         onEnter: () => {
           setActive(i);
-          updateIndicator();
         },
         onEnterBack: () => {
           setActive(i);
-          updateIndicator();
+        },
+        onLeave: () => {
+          if (i < sectionRefs.current.length - 1) {
+            setActive(i + 1);
+          }
+        },
+        onLeaveBack: () => {
+          if (i > 0) {
+            setActive(i - 1);
+          }
         },
       });
     });
@@ -121,9 +130,20 @@ export default function ProductDetailPage() {
         </section>
       ))}
 
+      <div className="bg-white px-6 py-20">
+        <h1 className="font-rubik text-5xl font-semibold mb-12">
+          More to Explore
+        </h1>
+        <div className="flex items-center justify-start gap-3 overflow-x-scroll scrollbar-hide overflow-y-hidden">
+          {relatedProducts.map((item) => (
+            <TrendingProduct key={item.id} product={item} />
+          ))}
+        </div>
+      </div>
+
       <nav
         ref={navRef}
-        className="fixed bottom-8 left-8 bg-white rounded-full shadow-lg px-1.5 py-1.5 z-50"
+        className="fixed bottom-8 left-1/2 md:left-6 lg:left-8 -translate-x-1/2 md:translate-x-6 lg:translate-x-8 backdrop-blur-md bg-white/60 rounded-full shadow-lg px-1 py-1 z-50"
       >
         <div className="relative flex gap-1">
           <div
@@ -138,7 +158,7 @@ export default function ProductDetailPage() {
                 buttonsRef.current[i] = el;
               }}
               onClick={() => scrollTo(i)}
-              className={`relative z-10 px-6 py-3 text-sm font-semibold rounded-full transition-colors ${
+              className={`relative z-10 px-5 lg:px-6 py-2.5 text-xs font-semibold rounded-full transition-colors ${
                 active === i ? "text-white" : "text-gray-800"
               }`}
             >

@@ -16,7 +16,7 @@ import {
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 
 interface TrendingProductProps {
-  className: string;
+  className?: string;
   product: {
     id: number;
     title: string;
@@ -87,6 +87,7 @@ export default function TrendingProduct({
       mobile: "w-60 h-80",
       quickView: "lg:w-32",
       sizeP: "px-2",
+      colorImg: "w-8 h-8",
     },
     md: {
       wrapper: "lg:max-w-57",
@@ -94,6 +95,7 @@ export default function TrendingProduct({
       mobile: "w-75 h-96",
       quickView: "lg:w-52",
       sizeP: "px-4",
+      colorImg: "w-10 h-10",
     },
   }[size || "md"];
 
@@ -168,7 +170,7 @@ export default function TrendingProduct({
                     >
                       <img
                         src={color.bgImg}
-                        className="w-8 h-8 object-cover rounded-sm"
+                        className={`${sizeClass.colorImg} object-cover rounded-sm`}
                         alt=""
                       />
                     </div>
