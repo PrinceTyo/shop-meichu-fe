@@ -10,7 +10,7 @@ import { useRef, useState } from "react";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText);
 
-interface Category {
+interface CategoryProps {
   id: string;
   image: string;
   title: string;
@@ -26,7 +26,7 @@ export default function StyleSection() {
   const styleRef = useRef(null);
   const [activeCategory, setActiveCategory] = useState("2");
 
-  const categories: Category[] = [
+  const categories: CategoryProps[] = [
     {
       id: "1",
       image: "/assets/image/3.svg",
@@ -89,7 +89,7 @@ export default function StyleSection() {
 
       gsap.set(".multi-image-container", { opacity: 0, scale: 0.8 });
 
-      let splitTitle = new SplitText(".split-title", {
+      let splitTitle = new SplitText(".split-title-style", {
         type: "words",
         wordsClass: "word",
       });
@@ -99,7 +99,7 @@ export default function StyleSection() {
       });
 
       gsap.fromTo(
-        ".title-main",
+        ".title-style",
         { opacity: 1, y: 100 },
         {
           opacity: 0,
@@ -107,7 +107,7 @@ export default function StyleSection() {
           duration: 1,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: ".title-main",
+            trigger: ".title-style",
             start: "bottom 35%",
             end: "bottom 25%",
             toggleActions: "play reverse play reverse",
@@ -117,14 +117,14 @@ export default function StyleSection() {
       );
 
       gsap.fromTo(
-        ".title-description",
+        ".title-description-style",
         { opacity: 0 },
         {
           opacity: 1,
           duration: 1,
           ease: "power2.in",
           scrollTrigger: {
-            trigger: ".title-main",
+            trigger: ".title-style",
             start: "center",
             end: "bottom",
             toggleActions: "play none none reverse",
@@ -141,7 +141,7 @@ export default function StyleSection() {
         ease: "power3.out",
         stagger: 0.12,
         scrollTrigger: {
-          trigger: ".split-title",
+          trigger: ".split-title-style",
           start: "45%",
           end: "bottom",
           scrub: 1.2,
@@ -150,14 +150,14 @@ export default function StyleSection() {
       });
 
       gsap.fromTo(
-        ".category",
+        ".category-style",
         { y: 300 },
         {
           y: 0,
           duration: 1,
           ease: "power2.inOut",
           scrollTrigger: {
-            trigger: ".category",
+            trigger: ".category-style",
             start: "top 25%",
             end: "top 25%",
             toggleActions: "play none none reverse",
@@ -180,15 +180,20 @@ export default function StyleSection() {
       mainTimeline
         .fromTo(
           ".single-image-container",
-          { x: -550, scale: 0.5, opacity: 0.5 },
+          { x: -550, scale: 0.5, opacity: 0.5, y: 0 },
           {
-            x: 0,
-            scale: 1,
-            duration: 3,
-            opacity: 1,
-            ease: "power3.inOut",
+            y: -50,
+            duration: 1,
           }
         )
+        .to(".single-image-container", { y: 0, duration: 1 })
+        .to(".single-image-container", {
+          x: 0,
+          scale: 1,
+          duration: 3,
+          opacity: 1,
+          ease: "power3.inOut",
+        })
         .fromTo(
           ".button-wrapper",
           {
@@ -275,7 +280,7 @@ export default function StyleSection() {
           <div className="relative z-10">
             <div className="w-full flex justify-center">
               <div className="absolute max-w-6xl w-full flex justify-center items-center gap-6">
-                <div className="title-main">
+                <div className="title-style">
                   <h1 className="text-4xl md:text-5xl font-bold text-slate-200 leading-tight font-rubik flex justify-center items-center text-center">
                     STYLE CRAFTED TO PERFECTION
                   </h1>
@@ -289,7 +294,7 @@ export default function StyleSection() {
               </div>
             </div>
 
-            <div className="relative category z-40 w-full flex justify-center mb-16">
+            <div className="category-style relative  z-40 w-full flex justify-center mb-16">
               <div className="max-w-6xl w-full flex justify-center items-center gap-6">
                 {categories.map((category) => {
                   const isActive = activeCategory === category.id;
@@ -330,17 +335,17 @@ export default function StyleSection() {
             </div>
 
             <div className="relative w-full flex justify-center z-0">
-              <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-4 justify-center items-center px-12">
-                <div className="title-description">
-                  <h1 className="split-title text-4xl md:text-3xl lg:text-5xl font-bold text-white leading-tight font-rubik max-w-[480px]">
+              <div className="max-w-6xl w-full grid grid-cols-2 gap-4 justify-center items-center px-12">
+                <div className="title-description-style grid grid-cols-1 gap-6">
+                  <h1 className="split-title-style text-4xl md:text-3xl lg:text-5xl font-bold text-white leading-tight font-rubik max-w-[480px]">
                     {activeCategoryData.mainTitle}
                   </h1>
 
-                  <p className="mt-8 text-xs lg:text-sm leading-relaxed opacity-80 font-inter max-w-2xl">
+                  <p className="text-xs lg:text-sm leading-relaxed opacity-80 font-inter">
                     {activeCategoryData.description1}
                   </p>
 
-                  <p className="mt-8 text-xs lg:text-sm leading-relaxed opacity-80 font-inter">
+                  <p className="text-xs lg:text-sm leading-relaxed opacity-80 font-inter">
                     {activeCategoryData.description2}
                   </p>
                 </div>
@@ -409,7 +414,7 @@ export default function StyleSection() {
         <div className="w-full">
           <div className="w-full flex justify-center mb-8">
             <div className="max-w-6xl w-full">
-              <div className="title-main">
+              <div>
                 <h1 className="text-3xl font-medium text-gray-900 leading-tight font-rubik text-center">
                   STYLE CRAFTED TO PERFECTION
                 </h1>

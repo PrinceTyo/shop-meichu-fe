@@ -28,6 +28,10 @@ export default function ScrollSmootherWrapper({
   const smoothScrollerRef = useRef<ScrollSmoother | null>(null);
 
   useGSAP(() => {
+    const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+
+    if (isMobile) return;
+
     smoothScrollerRef.current = ScrollSmoother.create({
       wrapper: smoothWrapperRef.current!,
       content: smoothContentRef.current!,
@@ -44,6 +48,7 @@ export default function ScrollSmootherWrapper({
     };
 
     window.addEventListener("resize", handleResize);
+
     return () => {
       if (smoothScrollerRef.current) {
         smoothScrollerRef.current.kill();

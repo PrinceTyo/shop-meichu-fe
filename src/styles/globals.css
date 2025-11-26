@@ -43,7 +43,11 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  /* --color- */
+  --color-lemon: #f5e98c;
+  --color-lavender: #b1b8f2;
+  --color-electric: #d08ed4;
+  --color-citrus: #addd35;
+  --color-rose: #d68ca7;
 }
 
 :root {
@@ -136,3 +140,4 @@ html {
 .text-outline {
   -webkit-text-stroke: 1px black;
 }
+

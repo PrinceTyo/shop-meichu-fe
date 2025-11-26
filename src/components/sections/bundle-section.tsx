@@ -5,9 +5,8 @@ import { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollSmoother);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 interface Product {
   name: string;
@@ -160,12 +159,12 @@ export default function BundleSection() {
             const distance =
               cols === 5
                 ? isEven
-                  ? -120
-                  : -60
+                  ? -160
+                  : -90
                 : cols === 3
                 ? isEven
-                  ? -70
-                  : -35
+                  ? -140
+                  : -65
                 : 0;
 
             gsap.to(card, {

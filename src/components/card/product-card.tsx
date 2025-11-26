@@ -71,10 +71,18 @@ export function ProductCard({
     }
   };
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+    }).format(price);
+  };
+
   return (
     <div
       ref={selectRef}
-      className="product-card-item rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-500 ease-out cursor-pointer transform-gpu will-change-transform lg:hover:scale-105 flex flex-col h-full"
+      className="product-card-item rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-500 ease-out cursor-pointer transform-gpu will-change-transform lg:hover:scale-105 flex flex-col h-full bg-gray-900/50 backdrop-blur-sm border border-gray-800/50"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         if (!isSelectOpen) {
@@ -90,7 +98,7 @@ export function ProductCard({
         />
 
         {/* Desktop */}
-        <div className="hidden lg:block absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/80 to-transparent">
+        <div className="hidden lg:block absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/90 via-black/50 to-transparent">
           <div
             className={`flex items-end justify-between transition-all duration-500 ease-in-out ${
               isHovered || isSelectOpen
@@ -98,17 +106,17 @@ export function ProductCard({
                 : "opacity-100 translate-y-0"
             }`}
           >
-            <div>
-              <h3 className="font-semibold text-rubik text-white text-sm">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold font-rubik text-white text-sm line-clamp-2">
                 {name}
               </h3>
-              <p className="text-sm text-slate-300">
-                ${price.toLocaleString("en-US")} USD
+              <p className="text-sm text-slate-300 mt-1">
+                {formatPrice(price)}
               </p>
             </div>
 
-            <div className="w-8 h-8 rounded-full opacity-65 bg-emerald-100 backdrop-blur flex items-center justify-center transition-transform duration-300">
-              <Check className="w-5 h-5 text-gray-600" />
+            <div className="w-8 h-8 rounded-full opacity-80 bg-emerald-100 backdrop-blur flex items-center justify-center transition-transform duration-300 ml-2 shrink-0">
+              <Check className="w-4 h-4 text-gray-700" />
             </div>
           </div>
 
@@ -124,16 +132,16 @@ export function ProductCard({
               onOpenChange={handleSelectOpenChange}
               value={selectedVariant}
             >
-              <SelectTrigger className="w-full rounded-full bg-white text-gray-900 font-semibold h-12 border-0 hover:bg-gray-100 transition-colors duration-300">
-                <SelectValue placeholder="Select Variant" />
+              <SelectTrigger className="w-full rounded-full bg-white text-gray-900 font-semibold h-12 border-0 hover:bg-gray-100 transition-colors duration-300 text-sm">
+                <SelectValue placeholder="Select Size" />
               </SelectTrigger>
               <SelectContent>
                 {variants.map((variant, index) => (
                   <SelectItem
                     key={index}
-                    value={`${variant.size} / ($${variant.price})`}
+                    value={`${variant.size} / ${formatPrice(variant.price)}`}
                   >
-                    {variant.size} / (${variant.price})
+                    {variant.size} / {formatPrice(variant.price)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -141,73 +149,75 @@ export function ProductCard({
           </div>
         </div>
 
-        {/* iPad  */}
-        <div className="hidden md:block lg:hidden absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/80 to-transparent">
-          <div className="flex items-end justify-between">
-            <div>
-              <h3 className="font-semibold text-rubik text-white text-sm">
+        {/* Tablet  */}
+        <div className="hidden md:block lg:hidden absolute bottom-0 left-0 w-full p-4 bg-linear-to-t from-black/90 via-black/50 to-transparent">
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold font-rubik text-white text-sm line-clamp-2">
                 {name}
               </h3>
-              <p className="text-sm text-slate-300">
-                ${price.toLocaleString("en-US")} USD
+              <p className="text-sm text-slate-300 mt-1">
+                {formatPrice(price)}
               </p>
             </div>
           </div>
 
-          <div className="flex items-end gap-4 transition-all duration-500 ease-in-out mt-3">
+          <div className="flex items-center gap-3">
             <Select
               onValueChange={handleVariantChange}
               onOpenChange={handleSelectOpenChange}
               value={selectedVariant}
             >
-              <SelectTrigger className="w-3/4 rounded-full bg-white text-gray-900 font-semibold h-12 border-0 hover:bg-gray-100 transition-colors duration-300">
-                <SelectValue placeholder="Select Variant" />
+              <SelectTrigger className="flex-1 rounded-full bg-white text-gray-900 font-semibold h-12 border-0 hover:bg-gray-100 transition-colors duration-300 text-sm">
+                <SelectValue placeholder="Select Size" />
               </SelectTrigger>
               <SelectContent>
                 {variants.map((variant, index) => (
                   <SelectItem
                     key={index}
-                    value={`${variant.size} / ($${variant.price})`}
+                    value={`${variant.size} / ${formatPrice(variant.price)}`}
                   >
-                    {variant.size} / (${variant.price})
+                    {variant.size} / {formatPrice(variant.price)}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <div className="w-1/4 h-12 rounded-full opacity-65 bg-emerald-100 backdrop-blur flex items-center justify-center transition-transform duration-300">
-              <Check className="w-5 h-5 text-gray-600" />
+            <div className="w-12 h-12 rounded-full opacity-80 bg-emerald-100 backdrop-blur flex items-center justify-center transition-transform duration-300 shrink-0">
+              <Check className="w-5 h-5 text-gray-700" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile  */}
+      {/* Mobile */}
       <div className="block md:hidden flex-1 flex-col">
-        <div className="p-3 flex-1">
-          <div className="flex items-start justify-between mb-2">
+        <div className="p-4 flex-1">
+          <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-rubik text-white text-xs line-clamp-2 leading-tight">
+              <h3 className="font-semibold font-rubik text-white text-sm line-clamp-2 leading-tight">
                 {name}
               </h3>
-              <p className="text-xs text-gray-300 mt-1">
-                ${price.toLocaleString("en-US")} USD
-              </p>
+              <p className="text-xs text-gray-300 mt-1">{formatPrice(price)}</p>
             </div>
           </div>
         </div>
 
-        <div className="px-3 pb-3 mt-auto">
-          <Select onValueChange={handleVariantChange} value={selectedVariant}>
-            <SelectTrigger className="w-full rounded-full bg-gray-100 text-gray-900 font-medium h-9 border-0 hover:bg-gray-200 transition-colors duration-300 text-xs">
+        <div className="px-4 pb-4 mt-auto">
+          <Select
+            onValueChange={handleVariantChange}
+            value={selectedVariant}
+            onOpenChange={handleSelectOpenChange}
+          >
+            <SelectTrigger className="w-full rounded-full bg-gray-100 text-gray-900 font-medium h-10 border-0 hover:bg-gray-200 transition-colors duration-300 text-xs">
               <SelectValue placeholder="Select Size" />
             </SelectTrigger>
             <SelectContent className="text-xs">
               {variants.map((variant, index) => (
                 <SelectItem
                   key={index}
-                  value={`${variant.size} / ($${variant.price})`}
+                  value={`${variant.size} / ${formatPrice(variant.price)}`}
                 >
-                  {variant.size} / (${variant.price})
+                  {variant.size} / {formatPrice(variant.price)}
                 </SelectItem>
               ))}
             </SelectContent>
