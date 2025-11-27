@@ -106,11 +106,23 @@ export default function Navbar() {
     { title: "ACCESSORIES", href: "/catalog/accessories" },
     { title: "BAGS & WALLETS", href: "/catalog/bags" },
     { title: "JEWELRY", href: "/catalog/jewelry" },
+    { title: "SPORTSWEAR", href: "/catalog/sportswear" },
+    { title: "OUTERWEAR", href: "/catalog/outerwear" },
   ];
 
   const navLinks = [
-    { text: "Home", items: homeItems, isDropdown: true },
-    { text: "Catalog", items: catalogItems, isDropdown: true },
+    {
+      text: "Home",
+      items: homeItems,
+      isDropdown: true,
+      categories: homeCategories,
+    },
+    {
+      text: "Catalog",
+      items: catalogItems,
+      isDropdown: true,
+      categories: catalogCategories,
+    },
     { text: "About", href: "/about" },
     { text: "Blogs", href: "/blogs" },
     { text: "Privacy", href: "/privacy" },
@@ -454,6 +466,7 @@ export default function Navbar() {
                   text={link.text}
                   href={link.href}
                   items={link.items}
+                  categories={link.categories}
                   isDropdown={link.isDropdown}
                 />
               ))}
@@ -487,7 +500,11 @@ export default function Navbar() {
       </nav>
 
       {/* Bottom Nav */}
-      <nav className="sm:hidden font-inter fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">
+      <nav
+        className={`sm:hidden font-inter fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 transition-transform duration-300 ease-in-out ${
+          isVisible ? "translate-y-full" : "translate-y-0"
+        }`}
+      >
         <div className="grid grid-cols-6 h-16">
           {bottomNavItems.map((item) => {
             const Icon = item.icon;
