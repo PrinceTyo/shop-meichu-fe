@@ -137,8 +137,12 @@ html {
   background-color: #000000;
 }
 
-.text-outline {
+.text-outline-black {
   -webkit-text-stroke: 1px black;
+}
+
+.text-outline-white {
+  -webkit-text-stroke: 1px white;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
