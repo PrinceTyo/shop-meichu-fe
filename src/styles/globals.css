@@ -150,3 +150,11 @@ body {
   font-family: var(--font-inter), sans-serif;
   font-family: var(--font-arial);
 }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

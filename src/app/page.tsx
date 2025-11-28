@@ -6,6 +6,7 @@ import GallerySection from "@/components/sections/gallery-section";
 import StyleSection from "@/components/sections/style-section";
 import HeroSection from "@/components/HeroSection";
 import AnimatedSection from "@/components/AnimatedSection";
+import TrendingSection from "@/components/sections/trending-section";
 
 export default function Home() {
   return (
