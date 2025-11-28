@@ -9,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 interface NavLinkProps {
   href?: string;
@@ -54,7 +53,6 @@ export default function NavLink({
   const handleMouseLeave = () => setIsHovered(false);
 
   if (isDropdown && items) {
-    // Check jika ini menu Catalog (tidak punya subcategories)
     const isCatalogMenu =
       categories && categories.length > 0 && !categories[0].subcategories;
 

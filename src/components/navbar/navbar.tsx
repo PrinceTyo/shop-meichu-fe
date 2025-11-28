@@ -26,6 +26,7 @@ import {
 import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import Link from "next/link";
 import NavLink from "./nav-link";
+import SearchLink from "./search-link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -181,9 +182,6 @@ export default function Navbar() {
                   >
                     <div className="flex flex-col h-full">
                       <SheetHeader>
-                        <VisuallyHidden>
-                          <SheetTitle>Main Menu</SheetTitle>
-                        </VisuallyHidden>
                         <div className="flex items-center justify-between">
                           <div
                             onClick={() => setIsOpen(false)}
@@ -195,9 +193,9 @@ export default function Navbar() {
                             >
                               <IoCloseCircleOutline className="h-8 w-8 md:h-10 md:w-10" />
                             </div>
-                            <h1 className="text-3xl md:text-4xl font-light tracking-wide">
+                            <SheetTitle className="text-3xl md:text-4xl font-light tracking-wide text-white font-rubik">
                               MEICHU
-                            </h1>
+                            </SheetTitle>
                             <div className="w-6"></div>
                           </div>
                           <div className="pr-4">
@@ -474,12 +472,9 @@ export default function Navbar() {
 
             {/* Icons */}
             <div className="flex items-center">
-              <Link
-                href="#"
-                className="text-white hover:bg-gray-900 p-2 rounded-full flex items-center justify-center"
-              >
-                <Search className="h-5 w-5" />
-              </Link>
+              <div className="">
+                <SearchLink />
+              </div>
 
               <Link
                 href="#"
