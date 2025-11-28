@@ -10,12 +10,11 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Pencil, X } from "lucide-react";
+import { CropIcon, Pencil, TrashIcon, X, XIcon } from "lucide-react";
 import {
   base64ToFile,
   bytesToMB,
@@ -130,34 +129,43 @@ export function ImageField<
         </section>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-[425px] font-outfit!">
             <DialogHeader>
-              <DialogTitle>Edit image</DialogTitle>
+              <DialogTitle className="text-white">Edit image</DialogTitle>
             </DialogHeader>
             <ImageCropContent className="w-fit mx-auto" />
-            <DialogFooter>
-              <ImageCropApply asChild>
-                <Button size="sm" variant="outline">
-                  Apply Crop
-                </Button>
-              </ImageCropApply>
+            <div
+              data-slot="dialog-footer"
+              className={
+                "flex flex-col-reverse gap-2 sm:flex-row justify-center"
+              }
+            >
               <Button
                 onClick={handleResetCrop}
+                variant="outline"
                 size="sm"
                 type="button"
-                variant="outline"
+                className="text-white"
               >
+                <XIcon />
                 Reset Crop
               </Button>
               <Button
                 onClick={handleRemove}
+                variant="destructiveOutline"
                 size="sm"
                 type="button"
-                variant="destructive"
               >
+                <TrashIcon />
                 Delete Image
               </Button>
-            </DialogFooter>
+              <ImageCropApply asChild>
+                <Button size="sm" type="button">
+                  <CropIcon />
+                  Apply Crop
+                </Button>
+              </ImageCropApply>
+            </div>
           </DialogContent>
         </Dialog>
       </ImageCrop>

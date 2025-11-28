@@ -62,7 +62,10 @@ export function UpsertCategoryForm(props: UpsertFormProps<Category>) {
       type={props.type}
       model={{ singular: "Category", plural: "Categories" }}
       formSchema={z.object({
-        name: z.string().min(1, "The name field is required."),
+        name: z
+          .string()
+          .regex(/^[a-zA-Z0-9 ]+$/, "Only alphanumeric and spaces allowed")
+          .min(1, "The name field is required."),
       })}
       defaultValues={defaultValues}
       formFields={(formId, form) => {
@@ -155,7 +158,10 @@ export function UpsertProductForm(
       type={props.type}
       model={{ singular: "Product", plural: "Products" }}
       formSchema={z.object({
-        name: z.string().min(1, "The name field is required."),
+        name: z
+          .string()
+          .regex(/^[a-zA-Z0-9 ]+$/, "Only alphanumeric and spaces allowed")
+          .min(1, "The name field is required."),
         description: z.string().min(1, "The description field is required."),
         price: z.coerce.number().min(0, "The price field is required."),
         stock: z.coerce.number().min(0, "The stock field is required."),
@@ -296,11 +302,12 @@ export function UpsertProductForm(
                     >
                       <SelectValue placeholder="Select a category" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="border-gray-400! bg-card">
                       {props.categories.map((category) => (
                         <SelectItem
                           key={category.id}
                           value={String(category.id)}
+                          className="text-white"
                         >
                           {category.name}
                         </SelectItem>
