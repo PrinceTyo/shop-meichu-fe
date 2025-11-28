@@ -4,18 +4,7 @@ import { Rubik, Outfit } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type { Metadata } from "next";
-
-const inter = localFont({
-  src: "../../public/fonts/Inter-VariableFont_opsz,wght.ttf",
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const arial = localFont({
-  src: "../../public/fonts/arial.ttf",
-  variable: "--font-arial",
-  display: "swap",
-});
+import Navbar from "@/components/navbar/navbar";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -42,8 +31,12 @@ export default function RootLayout({
         className={`${rubik.variable} ${inter.variable} ${arial.variable} ${outfit.variable} antialiased`}
         suppressHydrationWarning
       >
-        <NuqsAdapter>{children}</NuqsAdapter>
+        <NuqsAdapter>
+          <Navbar />
+        <main className="pt-16 pb-16 sm:pb-0">{children}</main>
+        </NuqsAdapter>
         <Toaster position="top-center" reverseOrder={false} />
+        
       </body>
     </html>
   );
