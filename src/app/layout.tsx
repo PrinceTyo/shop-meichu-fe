@@ -1,13 +1,16 @@
 import "../styles/globals.css";
-import localFont from "next/font/local";
-import { Rubik, Outfit } from "next/font/google";
+import { Inter, Rubik, Outfit } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type { Metadata } from "next";
 import Navbar from "@/components/navbar/navbar";
 
 const rubik = Rubik({
-  variable: "--font-rubik",
+  variable: "--font-rubik"
+});
+
+const inter = Inter({
+  variable: "--font-inter",
 });
 
 const outfit = Outfit({
@@ -28,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${rubik.variable} ${inter.variable} ${arial.variable} ${outfit.variable} antialiased`}
+        className={`${rubik.variable} ${inter.variable} ${outfit.variable} antialiased`}
         suppressHydrationWarning
       >
         <NuqsAdapter>
