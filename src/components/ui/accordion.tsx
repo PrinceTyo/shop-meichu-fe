@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDownIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { FaPlus } from "react-icons/fa6";
@@ -29,14 +28,17 @@ function AccordionItem({
 function AccordionTrigger({
   className,
   children,
+  iconBg = "bg-transparent",
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
+  iconBg?: string;
+}) {
   return (
     <AccordionPrimitive.Header className="flex w-full">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "flex flex-1 items-center justify-between py-4 text-left text-sm font-medium outline-none transition-all hover:underline",
+          "flex flex-1 items-center justify-between py-4 text-left text-sm font-medium outline-none transition-all",
           "[&[data-state=open]_.plus-icon]:rotate-45",
           className
         )}
@@ -45,8 +47,13 @@ function AccordionTrigger({
         {children}
 
         <FaPlus
-          className="transition-transform duration-300 p-1.5 lg:p-2.5 border border-white rounded-full 
-             w-7 h-7 md:w-7 lg:w-10 md:h-7 lg:h-10"
+          className={cn(
+            "plus-icon transition-transform duration-300 p-1.5 lg:p-2.5 border rounded-full w-7 h-7 md:w-7 lg:w-10 md:h-7 lg:h-10",
+            iconBg,
+            "border-white",
+            iconBg.includes("bg-black") && "text-white",
+            "group-hover:text-black"
+          )}
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

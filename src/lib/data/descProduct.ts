@@ -11,6 +11,10 @@ export const productDesc: ProductDescItem[] = [
     content: `
       Cause if one day you wake up and find that you're missing me
       And your heart starts to wonder where on this Earth I could be...
+      Cause if one day you wake up and find that you're missing me
+      And your heart starts to wonder where on this Earth I could be...
+      Cause if one day you wake up and find that you're missing me
+      And your heart starts to wonder where on this Earth I could be...
     `,
   },
   {
