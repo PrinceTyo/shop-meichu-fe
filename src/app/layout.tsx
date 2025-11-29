@@ -1,30 +1,17 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import { Geist, Geist_Mono, Rubik, Outfit } from "next/font/google";
 import "../styles/globals.css";
-import { Toaster } from "@/components/ui/sonner";
+import { Inter, Rubik, Outfit } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import type { Metadata } from "next";
+import Navbar from "@/components/navbar/navbar";
 
-const rubik = localFont({
-  src: "../../public/fonts/Inter-VariableFont_opsz,wght.ttf",
-  variable: "--font-rubik",
-  display: "swap",
+const rubik = Rubik({
+  variable: "--font-rubik"
 });
 
-const inter = localFont({
-  src: "../../public/fonts/Inter-VariableFont_opsz,wght.ttf",
+const inter = Inter({
   variable: "--font-inter",
-  display: "swap",
 });
-
-const arial = localFont({
-  src: "../../public/fonts/arial.ttf",
-  variable: "--font-arial",
-  display: "swap",
-});
-
-// const rubik = Rubik({
-//   variable: "--font-rubik"
-// });
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -44,10 +31,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${rubik.variable} ${inter.variable} ${arial.variable} ${outfit.variable} antialiased`}
+        className={`${rubik.variable} ${inter.variable} ${outfit.variable} antialiased`}
+        suppressHydrationWarning
       >
-        {children}
-        <Toaster />
+        <NuqsAdapter>
+          <Navbar />
+        <main className="pt-16 pb-16 sm:pb-0">{children}</main>
+        </NuqsAdapter>
+        <Toaster position="top-center" reverseOrder={false} />
+        
       </body>
     </html>
   );

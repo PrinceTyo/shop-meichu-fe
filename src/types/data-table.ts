@@ -1,14 +1,21 @@
-import type { ColumnSort, Row, RowData } from "@tanstack/react-table";
-import type { DataTableConfig } from "@/components/data-table/data-table";
+import type {
+  ColumnDef,
+  ColumnSort,
+  Row,
+  RowData,
+} from "@tanstack/react-table";
+import type { DataTableConfig } from "@/config/data-table";
 import type { FilterItemSchema } from "@/lib/parsers";
 
 declare module "@tanstack/react-table" {
   // biome-ignore lint/correctness/noUnusedVariables: TData is used in the TableMeta interface
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableMeta<TData extends RowData> {
     queryKeys?: QueryKeys;
   }
 
   // biome-ignore lint/correctness/noUnusedVariables: TData and TValue are used in the ColumnMeta interface
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData extends RowData, TValue> {
     label?: string;
     placeholder?: string;
@@ -51,3 +58,13 @@ export interface DataTableRowAction<TData> {
   row: Row<TData>;
   variant: "update" | "delete";
 }
+
+export type ColumnWithoutDelete<T> = () => ColumnDef<T>[];
+
+export type ColumnWithDelete<T> = (
+  deleteAction: (identifier: string, documentId: string) => Promise<void>
+) => ColumnDef<T>[];
+
+export type DataTableColumnDef<T> =
+  | ColumnWithoutDelete<T>
+  | ColumnWithDelete<T>;
