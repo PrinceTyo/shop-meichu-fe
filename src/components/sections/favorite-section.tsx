@@ -396,7 +396,7 @@ export default function FavoriteSection() {
 
                     <div className="border-main md:border border-gray-500 rounded-3xl">
                       <div className="grid gap-3 relative md:p-3 p-0 z-0">
-                        {favorites.map((favorite, index) => {
+                        {favorites.map((favorite) => {
                           if (favorite.id > 5) {
                             return null;
                           }
@@ -404,7 +404,7 @@ export default function FavoriteSection() {
                             <div
                               key={`main-${favorite.id}`}
                               ref={cardMainRef}
-                              className={`card-main flex items-center gap-5 rounded-3xl p-2`}
+                              className={"card-main flex items-center gap-5 rounded-3xl p-2"}
                               style={{
                                 backgroundColor: favorite.bgColor,
                               }}

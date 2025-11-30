@@ -89,7 +89,7 @@ export default function StyleSection() {
 
       gsap.set(".multi-image-container", { opacity: 0, scale: 0.8 });
 
-      let splitTitle = new SplitText(".split-title-style", {
+      const splitTitle = new SplitText(".split-title-style", {
         type: "words",
         wordsClass: "word",
       });

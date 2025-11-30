@@ -21,7 +21,7 @@ export default function WardrobeSection() {
     ScrollTrigger.create({
       trigger: sectionWardrobe.current,
       start: "top 50%",
-      markers: true,
+      // markers: true,
       toggleActions: "play reverse play reverse",
       animation: gsap.to(".wardrobeCard", {
         opacity: 1,

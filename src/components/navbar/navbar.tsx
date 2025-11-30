@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import {
   Search,
   User,
@@ -23,23 +24,26 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { VisuallyHidden } from "@/components/ui/visually-hidden";
 import Link from "next/link";
 import NavLink from "./nav-link";
 import SearchLink from "./search-link";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenHome, setIsOpenHome] = useState(false);
   const [isOpenHomeCategory, setIsOpenHomeCategory] = useState(false);
   const [isOpenCatalog, setIsOpenCatalog] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [selectedHomeCategory, setSelectedHomeCategory] = useState<{
     title: string;
     href: string;
     subcategories: { title: string; href: string }[];
   } | null>(null);
+
+  const isHomePage = pathname === "/";
 
   const homeItems = [
     { title: "Home 1", href: "/" },
@@ -141,6 +145,25 @@ export default function Navbar() {
   useEffect(() => {
     const controlNavbar = () => {
       if (typeof window !== "undefined") {
+        if (!isHomePage) {
+          setIsScrolled(true);
+          if (window.scrollY > lastScrollY && window.scrollY > 100) {
+            setIsVisible(false);
+          } else {
+            setIsVisible(true);
+          }
+          setLastScrollY(window.scrollY);
+          return;
+        }
+
+        const heroHeight = window.innerHeight;
+
+        if (window.scrollY > heroHeight - 50) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
+
         if (window.scrollY > lastScrollY && window.scrollY > 100) {
           setIsVisible(false);
         } else {
@@ -152,17 +175,30 @@ export default function Navbar() {
 
     if (typeof window !== "undefined") {
       window.addEventListener("scroll", controlNavbar);
+      controlNavbar();
       return () => {
         window.removeEventListener("scroll", controlNavbar);
       };
     }
-  }, [lastScrollY]);
+  }, [lastScrollY, isHomePage]);
+
+  useEffect(() => {
+    if (!isHomePage) {
+      setIsScrolled(true);
+    } else {
+      setIsScrolled(false);
+    }
+  }, [isHomePage]);
 
   return (
     <>
       <nav
-        className={`bg-black font-inter text-white border-b border-[#222121] fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
+        className={`font-inter text-white border-b fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
           isVisible ? "translate-y-0" : "-translate-y-full"
+        } ${
+          isScrolled
+            ? "bg-black border-[#222121]"
+            : "bg-transparent border-[#222121]/20"
         }`}
       >
         <div className="mx-auto px-4 sm:px-6 lg:px-6 lg:py-1">
@@ -471,21 +507,21 @@ export default function Navbar() {
             </div>
 
             {/* Icons */}
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
               <div className="">
                 <SearchLink />
               </div>
 
               <Link
                 href="#"
-                className="text-white hover:bg-gray-900 p-2 rounded-full hidden lg:flex items-center justify-center"
+                className="text-white hover:bg-gray-400 p-1 rounded-full hidden lg:flex items-center justify-center"
               >
                 <FaRegUserCircle className="h-5 w-5" />
               </Link>
 
               <Link
                 href="#"
-                className="text-white hover:bg-gray-900 p-2 rounded-full flex items-center justify-center"
+                className="text-white hover:bg-gray-400 p-1 rounded-full flex items-center justify-center"
               >
                 <FiShoppingBag className="h-5 w-5" />
               </Link>

@@ -35,7 +35,8 @@ interface GalleryItem {
 
 export default function GallerySection() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState("right");
+  const [nextIndex, setNextIndex] = useState(0);
+  const [isPosition, setIsPosition] = useState("right");
   const [isAnimating, setIsAnimating] = useState(false);
 
   const galleryData: GalleryItem[] = [
@@ -154,15 +155,18 @@ export default function GallerySection() {
   ];
 
   const currentData: GalleryItem = galleryData[currentIndex];
+  const nextData: GalleryItem = galleryData[nextIndex];
 
   const handleNext = (): void => {
     if (isAnimating) return;
 
+    const newIndex = (currentIndex + 1) % galleryData.length;
+    setNextIndex(newIndex);
+    setIsPosition("right");
     setIsAnimating(true);
-    setDirection("right");
-    setCurrentIndex((prev) => (prev + 1) % galleryData.length);
 
     setTimeout(() => {
+      setCurrentIndex(newIndex);
       setIsAnimating(false);
     }, 500);
   };
@@ -170,19 +174,20 @@ export default function GallerySection() {
   const handlePrev = (): void => {
     if (isAnimating) return;
 
+    const newIndex =
+      (currentIndex - 1 + galleryData.length) % galleryData.length;
+    setNextIndex(newIndex);
+    setIsPosition("left");
     setIsAnimating(true);
-    setDirection("left");
-    setCurrentIndex(
-      (prev) => (prev - 1 + galleryData.length) % galleryData.length
-    );
 
     setTimeout(() => {
+      setCurrentIndex(newIndex);
       setIsAnimating(false);
     }, 500);
   };
 
   const getSlideAnimation = () => {
-    if (direction === "right") {
+    if (isPosition === "right") {
       return "animate-in slide-in-from-right-full duration-500";
     } else {
       return "animate-in slide-in-from-left-full duration-500";
@@ -190,15 +195,204 @@ export default function GallerySection() {
   };
 
   const getExitAnimation = () => {
-    if (direction === "right") {
+    if (isPosition === "right") {
       return "animate-out slide-out-to-left-full duration-500";
     } else {
       return "animate-out slide-out-to-right-full duration-500";
     }
   };
 
+  const renderCardMobile = (
+    cardIndex: number,
+    currentCard: CardData,
+    nextCard: CardData,
+    heightClass?: string,
+    extraClass?: string
+  ) => {
+    if (currentCard.type === "text" && nextCard.type === "text") {
+      return (
+        <div
+          className={`rounded-3xl overflow-hidden relative h-full ${extraClass || ""}`}
+        >
+          {isAnimating && (
+            <div
+              className={`absolute inset-0 z-10 p-6 flex flex-col ${getExitAnimation()}`}
+              style={{
+                backgroundColor: currentCard.bg,
+                color: currentCard.textColor,
+              }}
+            >
+              <ScrollArea
+                className={`${heightClass || "h-52"} w-full overflow-y-auto`}
+              >
+                <div className="space-y-3">
+                  <h3 className="text-2xl font-medium font-rubik">
+                    {currentCard.title}
+                  </h3>
+                  <p className="text-sm mt-1 font-inter">
+                    {currentCard.description}
+                  </p>
+                  {currentCard.hasButton && (
+                    <Button className="mt-2 bg-black text-white px-6 py-4 rounded-full w-fit">
+                      SHOP NOW
+                    </Button>
+                  )}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
+
+          <div
+            className={`w-full h-full p-6 flex flex-col ${isAnimating ? getSlideAnimation() : ""}`}
+            style={{
+              backgroundColor: isAnimating ? nextCard.bg : currentCard.bg,
+              color: isAnimating ? nextCard.textColor : currentCard.textColor,
+            }}
+          >
+            <ScrollArea
+              className={`${heightClass || "h-52"} w-full overflow-y-auto`}
+            >
+              <div className="space-y-3">
+                <h3 className="text-2xl font-medium font-rubik">
+                  {isAnimating ? nextCard.title : currentCard.title}
+                </h3>
+                <p className="text-sm mt-1 font-inter">
+                  {isAnimating ? nextCard.description : currentCard.description}
+                </p>
+                {(isAnimating ? nextCard.hasButton : currentCard.hasButton) && (
+                  <Button className="mt-2 bg-black text-white px-6 py-4 rounded-full w-fit">
+                    SHOP NOW
+                  </Button>
+                )}
+              </div>
+            </ScrollArea>
+          </div>
+        </div>
+      );
+    } else if (currentCard.type === "image" && nextCard.type === "image") {
+      return (
+        <div
+          className={`rounded-3xl overflow-hidden relative h-full ${extraClass || ""}`}
+        >
+          {isAnimating && (
+            <div className={`absolute inset-0 z-10 ${getExitAnimation()}`}>
+              <img
+                src={currentCard.image}
+                className="object-cover w-full h-full min-h-full"
+                alt="Gallery"
+              />
+            </div>
+          )}
+
+          <div
+            className={`w-full h-full ${isAnimating ? getSlideAnimation() : ""}`}
+          >
+            <img
+              src={isAnimating ? nextCard.image : currentCard.image}
+              className="object-cover w-full h-full min-h-full"
+              alt="Gallery"
+            />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const renderCard = (
+    cardIndex: number,
+    currentCard: CardData,
+    nextCard: CardData,
+    heightClass?: string
+  ) => {
+    if (currentCard.type === "text" && nextCard.type === "text") {
+      return (
+        <div className="rounded-4xl overflow-hidden relative h-full">
+          {isAnimating && (
+            <div
+              className={`absolute inset-0 z-10 px-6 py-10 flex flex-col gap-4 ${getExitAnimation()}`}
+              style={{
+                backgroundColor: currentCard.bg,
+                color: currentCard.textColor,
+              }}
+            >
+              <ScrollArea
+                className={`${heightClass || "h-80"} w-full overflow-y-auto`}
+              >
+                <div className="pr-4 space-y-3">
+                  <h3 className="text-3xl font-medium font-rubik">
+                    {currentCard.title}
+                  </h3>
+                  <p className="text-sm font-normal font-inter whitespace-pre-line">
+                    {currentCard.description}
+                  </p>
+                  {currentCard.hasButton && (
+                    <Button className="bg-black text-white px-8 py-6 rounded-full w-fit shrink-0">
+                      SHOP NOW
+                    </Button>
+                  )}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
+
+          <div
+            className={`w-full h-full px-6 py-10 flex flex-col gap-4 ${isAnimating ? getSlideAnimation() : ""}`}
+            style={{
+              backgroundColor: isAnimating ? nextCard.bg : currentCard.bg,
+              color: isAnimating ? nextCard.textColor : currentCard.textColor,
+            }}
+          >
+            <ScrollArea
+              className={`${heightClass || "h-80"} w-full overflow-y-auto`}
+            >
+              <div className="pr-4 space-y-3">
+                <h3 className="text-3xl font-medium font-rubik">
+                  {isAnimating ? nextCard.title : currentCard.title}
+                </h3>
+                <p className="text-sm font-normal font-inter whitespace-pre-line">
+                  {isAnimating ? nextCard.description : currentCard.description}
+                </p>
+                {(isAnimating ? nextCard.hasButton : currentCard.hasButton) && (
+                  <Button className="bg-black text-white px-8 py-6 rounded-full w-fit shrink-0">
+                    SHOP NOW
+                  </Button>
+                )}
+              </div>
+            </ScrollArea>
+          </div>
+        </div>
+      );
+    } else if (currentCard.type === "image" && nextCard.type === "image") {
+      return (
+        <div className="rounded-4xl overflow-hidden relative h-full">
+          {isAnimating && (
+            <div className={`absolute inset-0 z-10 ${getExitAnimation()}`}>
+              <img
+                src={currentCard.image}
+                className="object-cover w-full h-full min-h-full"
+                alt="Gallery"
+              />
+            </div>
+          )}
+
+          <div
+            className={`w-full h-full ${isAnimating ? getSlideAnimation() : ""}`}
+          >
+            <img
+              src={isAnimating ? nextCard.image : currentCard.image}
+              className="object-cover w-full h-full min-h-full"
+              alt="Gallery"
+            />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
-    <div className="w-full min-h-screen bg-black text-white py-10 px-4 relative overflow-hidden">
+    <div className="w-full bg-black text-white py-10 px-4 relative overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="w-4/5 md:w-1/2 h-[300px] md:h-96 bg-lime-500/15 blur-3xl"></div>
       </div>
@@ -224,49 +418,235 @@ export default function GallerySection() {
         <div className="hidden md:grid grid-cols-4 gap-5 w-full">
           <div className="col-span-2 grid gap-5">
             <div className="rounded-4xl overflow-hidden relative">
-              <div
-                className={`${
-                  isAnimating ? getExitAnimation() : ""
-                } ${getSlideAnimation()}`}
-              >
+              {isAnimating && (
+                <div className={`absolute inset-0 z-10 ${getExitAnimation()}`}>
+                  <img
+                    src={currentData.hero.image}
+                    className="object-cover w-full h-[460px]"
+                    alt={currentData.hero.title}
+                  />
+                  <div className="absolute bottom-10 left-6">
+                    <h1 className="text-4xl font-semibold font-rubik">
+                      {currentData.hero.title}
+                    </h1>
+                    <p className="text-sm max-w-xs mt-2 font-normal font-inter">
+                      {currentData.hero.description}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <div className={isAnimating ? getSlideAnimation() : ""}>
                 <img
-                  src={currentData.hero.image}
+                  src={
+                    isAnimating ? nextData.hero.image : currentData.hero.image
+                  }
                   className="object-cover w-full h-[460px]"
-                  alt={currentData.hero.title}
+                  alt={
+                    isAnimating ? nextData.hero.title : currentData.hero.title
+                  }
                 />
                 <div className="absolute bottom-10 left-6">
                   <h1 className="text-4xl font-semibold font-rubik">
-                    {currentData.hero.title}
+                    {isAnimating ? nextData.hero.title : currentData.hero.title}
                   </h1>
                   <p className="text-sm max-w-xs mt-2 font-normal font-inter">
-                    {currentData.hero.description}
+                    {isAnimating
+                      ? nextData.hero.description
+                      : currentData.hero.description}
                   </p>
                 </div>
               </div>
             </div>
 
             <div className="flex gap-5">
-              {currentData.cards[3].type === "text" && (
-                <div className="rounded-4xl overflow-hidden w-1/2">
+              {currentData.cards[3].type === "text" &&
+                nextData.cards[3].type === "text" && (
+                  <div className="w-1/2">
+                    {renderCard(3, currentData.cards[3], nextData.cards[3])}
+                  </div>
+                )}
+
+              {currentData.cards[4].type === "image" &&
+                nextData.cards[4].type === "image" && (
+                  <div className="w-1/2">
+                    {renderCard(4, currentData.cards[4], nextData.cards[4])}
+                  </div>
+                )}
+            </div>
+          </div>
+
+          <div className="grid gap-5">
+            {currentData.cards[0].type === "text" &&
+              nextData.cards[0].type === "text" &&
+              renderCard(0, currentData.cards[0], nextData.cards[0], "h-44")}
+
+            {currentData.cards[2].type === "image" &&
+              nextData.cards[2].type === "image" &&
+              renderCard(2, currentData.cards[2], nextData.cards[2])}
+
+            {currentData.cards[6].type === "text" &&
+              nextData.cards[6].type === "text" &&
+              renderCard(6, currentData.cards[6], nextData.cards[6], "h-32")}
+          </div>
+
+          <div className="grid gap-5">
+            {currentData.cards[1].type === "image" &&
+              nextData.cards[1].type === "image" &&
+              renderCard(1, currentData.cards[1], nextData.cards[1])}
+
+            {currentData.cards[5].type === "text" &&
+              nextData.cards[5].type === "text" &&
+              renderCard(5, currentData.cards[5], nextData.cards[5], "h-64")}
+          </div>
+        </div>
+
+        {/* Mobile */}
+        <div className="grid grid-cols-1 gap-5 md:hidden">
+          <div>
+            <div className="rounded-3xl overflow-hidden relative">
+              {isAnimating && (
+                <div className={`absolute inset-0 z-10 ${getExitAnimation()}`}>
+                  <img
+                    src={currentData.hero.image}
+                    className="object-cover w-full h-[260px]"
+                    alt={currentData.hero.title}
+                  />
+                  <div className="absolute bottom-8 left-6">
+                    <h1 className="text-2xl font-semibold font-rubik">
+                      {currentData.hero.title}
+                    </h1>
+                    <p className="text-xs max-w-xs mt-2 font-inter">
+                      {currentData.hero.description}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <div className={isAnimating ? getSlideAnimation() : ""}>
+                <img
+                  src={
+                    isAnimating ? nextData.hero.image : currentData.hero.image
+                  }
+                  className="object-cover w-full h-[260px]"
+                  alt={
+                    isAnimating ? nextData.hero.title : currentData.hero.title
+                  }
+                />
+                <div className="absolute bottom-8 left-6">
+                  <h1 className="text-2xl font-semibold font-rubik">
+                    {isAnimating ? nextData.hero.title : currentData.hero.title}
+                  </h1>
+                  <p className="text-xs max-w-xs mt-2 font-inter">
+                    {isAnimating
+                      ? nextData.hero.description
+                      : currentData.hero.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {currentData.cards[0].type === "text" &&
+              nextData.cards[0].type === "text" &&
+              renderCardMobile(0, currentData.cards[0], nextData.cards[0])}
+
+            {currentData.cards[1].type === "image" &&
+              nextData.cards[1].type === "image" &&
+              renderCardMobile(1, currentData.cards[1], nextData.cards[1])}
+          </div>
+
+          <div>
+            {currentData.cards[2].type === "image" &&
+              nextData.cards[2].type === "image" && (
+                <div className="rounded-3xl overflow-hidden relative h-[220px]">
+                  {isAnimating && (
+                    <div
+                      className={`absolute inset-0 z-10 ${getExitAnimation()}`}
+                    >
+                      <img
+                        src={currentData.cards[2].image}
+                        className="object-cover w-full h-full min-h-full"
+                        alt="Gallery"
+                      />
+                    </div>
+                  )}
+
                   <div
-                    className={`w-full h-full px-6 py-10 flex flex-col gap-4 ${
-                      isAnimating ? getExitAnimation() : ""
-                    } ${getSlideAnimation()}`}
+                    className={`w-full h-full ${isAnimating ? getSlideAnimation() : ""}`}
+                  >
+                    <img
+                      src={
+                        isAnimating
+                          ? nextData.cards[2].image
+                          : currentData.cards[2].image
+                      }
+                      className="object-cover w-full h-full min-h-full"
+                      alt="Gallery"
+                    />
+                  </div>
+                </div>
+              )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {currentData.cards[3].type === "text" &&
+              nextData.cards[3].type === "text" && (
+                <div className="rounded-2xl overflow-hidden relative">
+                  {isAnimating && (
+                    <div
+                      className={`absolute inset-0 z-10 p-6 flex flex-col ${getExitAnimation()}`}
+                      style={{
+                        backgroundColor: currentData.cards[3].bg,
+                        color: currentData.cards[3].textColor,
+                      }}
+                    >
+                      <ScrollArea className="h-56 w-full overflow-y-auto">
+                        <div className="space-y-3">
+                          <h3 className="text-2xl font-medium font-rubik">
+                            {currentData.cards[3].title}
+                          </h3>
+                          <p className="text-sm mt-1 font-inter">
+                            {currentData.cards[3].description}
+                          </p>
+                          {currentData.cards[3].hasButton && (
+                            <Button className="mt-2 bg-black text-white px-6 py-4 rounded-full w-fit">
+                              SHOP NOW
+                            </Button>
+                          )}
+                        </div>
+                      </ScrollArea>
+                    </div>
+                  )}
+
+                  <div
+                    className={`w-full h-full p-6 flex flex-col ${isAnimating ? getSlideAnimation() : ""}`}
                     style={{
-                      backgroundColor: currentData.cards[3].bg,
-                      color: currentData.cards[3].textColor,
+                      backgroundColor: isAnimating
+                        ? nextData.cards[3].bg
+                        : currentData.cards[3].bg,
+                      color: isAnimating
+                        ? nextData.cards[3].textColor
+                        : currentData.cards[3].textColor,
                     }}
                   >
-                    <ScrollArea className="h-80 w-full overflow-y-auto">
-                      <div className="pr-4 space-y-3">
-                        <h3 className="text-3xl font-medium font-rubik">
-                          {currentData.cards[3].title}
+                    <ScrollArea className="h-56 w-full overflow-y-auto">
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-medium font-rubik">
+                          {isAnimating
+                            ? nextData.cards[3].title
+                            : currentData.cards[3].title}
                         </h3>
-                        <p className="text-sm font-normal font-inter whitespace-pre-line">
-                          {currentData.cards[3].description}
+                        <p className="text-sm mt-1 font-inter">
+                          {isAnimating
+                            ? nextData.cards[3].description
+                            : currentData.cards[3].description}
                         </p>
-                        {currentData.cards[3].hasButton && (
-                          <Button className="bg-black text-white px-8 py-6 rounded-full w-fit shrink-0">
+                        {(isAnimating
+                          ? nextData.cards[3].hasButton
+                          : currentData.cards[3].hasButton) && (
+                          <Button className="mt-2 bg-black text-white px-6 py-4 rounded-full w-fit">
                             SHOP NOW
                           </Button>
                         )}
@@ -276,320 +656,68 @@ export default function GallerySection() {
                 </div>
               )}
 
-              {currentData.cards[4].type === "image" && (
-                <div className="rounded-4xl overflow-hidden w-1/2">
+            {currentData.cards[4].type === "image" &&
+              nextData.cards[4].type === "image" &&
+              renderCardMobile(4, currentData.cards[4], nextData.cards[4])}
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {currentData.cards[5].type === "text" &&
+              nextData.cards[5].type === "text" &&
+              renderCardMobile(5, currentData.cards[5], nextData.cards[5])}
+
+            {currentData.cards[6].type === "text" &&
+              nextData.cards[6].type === "text" && (
+                <div className="rounded-3xl overflow-hidden relative">
+                  {isAnimating && (
+                    <div
+                      className={`absolute inset-0 z-10 px-6 py-8 flex flex-col ${getExitAnimation()}`}
+                      style={{
+                        backgroundColor: currentData.cards[6].bg,
+                        color: currentData.cards[6].textColor,
+                      }}
+                    >
+                      <ScrollArea className="h-52 w-full overflow-y-auto">
+                        <div className="space-y-3">
+                          <h3 className="text-2xl font-medium font-rubik">
+                            {currentData.cards[6].title}
+                          </h3>
+                          <p className="text-sm mt-1 font-inter">
+                            {currentData.cards[6].description}
+                          </p>
+                        </div>
+                      </ScrollArea>
+                    </div>
+                  )}
+
                   <div
-                    className={`w-full h-full ${
-                      isAnimating ? getExitAnimation() : ""
-                    } ${getSlideAnimation()}`}
+                    className={`w-full h-full px-6 py-8 flex flex-col ${isAnimating ? getSlideAnimation() : ""}`}
+                    style={{
+                      backgroundColor: isAnimating
+                        ? nextData.cards[6].bg
+                        : currentData.cards[6].bg,
+                      color: isAnimating
+                        ? nextData.cards[6].textColor
+                        : currentData.cards[6].textColor,
+                    }}
                   >
-                    <img
-                      src={currentData.cards[4].image}
-                      className="object-cover w-full h-full"
-                      alt="Gallery"
-                    />
+                    <ScrollArea className="h-52 w-full overflow-y-auto">
+                      <div className="space-y-3">
+                        <h3 className="text-2xl font-medium font-rubik">
+                          {isAnimating
+                            ? nextData.cards[6].title
+                            : currentData.cards[6].title}
+                        </h3>
+                        <p className="text-sm mt-1 font-inter">
+                          {isAnimating
+                            ? nextData.cards[6].description
+                            : currentData.cards[6].description}
+                        </p>
+                      </div>
+                    </ScrollArea>
                   </div>
                 </div>
               )}
-            </div>
-          </div>
-
-          <div className="grid gap-5">
-            {currentData.cards[0].type === "text" && (
-              <div className="rounded-4xl overflow-hidden">
-                <div
-                  className={`w-full h-full px-6 py-10 flex flex-col gap-4 ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                  style={{
-                    backgroundColor: currentData.cards[0].bg,
-                    color: currentData.cards[0].textColor,
-                  }}
-                >
-                  <ScrollArea className="h-44 w-full overflow-y-auto">
-                    <div className="space-y-3">
-                      <h3 className="text-3xl font-medium font-rubik">
-                        {currentData.cards[0].title}
-                      </h3>
-                      <p className="text-sm mt-2 font-normal font-inter">
-                        {currentData.cards[0].description}
-                      </p>
-                    </div>
-                  </ScrollArea>
-                </div>
-              </div>
-            )}
-
-            {currentData.cards[2].type === "image" && (
-              <div className="rounded-4xl overflow-hidden">
-                <div
-                  className={`w-full h-full ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                >
-                  <img
-                    src={currentData.cards[2].image}
-                    className="object-cover w-full h-full"
-                    alt="Gallery"
-                  />
-                </div>
-              </div>
-            )}
-
-            {currentData.cards[6].type === "text" && (
-              <div className="rounded-4xl overflow-hidden">
-                <div
-                  className={`w-full h-full px-6 py-10 flex-col gap-4 ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                  style={{
-                    backgroundColor: currentData.cards[6].bg,
-                    color: currentData.cards[6].textColor,
-                  }}
-                >
-                  <ScrollArea className="h-32 w-full overflow-y-auto">
-                    <div className="space-y-3">
-                      <h3 className="text-3xl font-medium font-rubik">
-                        {currentData.cards[6].title}
-                      </h3>
-                      <p className="text-sm mt-2 font-normal font-inter">
-                        {currentData.cards[6].description}
-                      </p>
-                    </div>
-                  </ScrollArea>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="grid gap-5">
-            {currentData.cards[1].type === "image" && (
-              <div className="rounded-4xl overflow-hidden">
-                <div
-                  className={`w-full h-full ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                >
-                  <img
-                    src={currentData.cards[1].image}
-                    className="object-cover w-full h-full"
-                    alt="Gallery"
-                  />
-                </div>
-              </div>
-            )}
-
-            {currentData.cards[5].type === "text" && (
-              <div className="rounded-4xl overflow-hidden">
-                <div
-                  className={`w-full h-full px-6 py-10 flex flex-col ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                  style={{
-                    backgroundColor: currentData.cards[5].bg,
-                    color: currentData.cards[5].textColor,
-                  }}
-                >
-                  <ScrollArea className="h-64 w-full overflow-y-auto">
-                    <div className="space-y-3">
-                      <h3 className="text-3xl font-medium font-rubik">
-                        {currentData.cards[5].title}
-                      </h3>
-                      <p className="text-sm mt-2 font-normal font-inter">
-                        {currentData.cards[5].description}
-                      </p>
-                    </div>
-                  </ScrollArea>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-5 md:hidden">
-          <div>
-            <div className="rounded-3xl overflow-hidden relative">
-              <div
-                className={`${
-                  isAnimating ? getExitAnimation() : ""
-                } ${getSlideAnimation()}`}
-              >
-                <img
-                  src={currentData.hero.image}
-                  className="object-cover w-full h-[260px]"
-                  alt={currentData.hero.title}
-                />
-                <div className="absolute bottom-8 left-6">
-                  <h1 className="text-2xl font-semibold font-rubik">
-                    {currentData.hero.title}
-                  </h1>
-                  <p className="text-xs max-w-xs mt-2 font-inter">
-                    {currentData.hero.description}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {currentData.cards[0].type === "text" && (
-              <div className="rounded-3xl overflow-hidden">
-                <div
-                  className={`w-full h-full p-6 flex flex-col ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                  style={{
-                    backgroundColor: currentData.cards[0].bg,
-                    color: currentData.cards[0].textColor,
-                  }}
-                >
-                  <ScrollArea className="h-52 w-full overflow-y-auto">
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-medium font-rubik">
-                        {currentData.cards[0].title}
-                      </h3>
-                      <p className="text-sm mt-1 font-inter">
-                        {currentData.cards[0].description}
-                      </p>
-                    </div>
-                  </ScrollArea>
-                </div>
-              </div>
-            )}
-
-            {currentData.cards[1].type === "image" && (
-              <div className="rounded-3xl overflow-hidden">
-                <div
-                  className={`w-full h-full ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                >
-                  <img
-                    src={currentData.cards[1].image}
-                    className="object-cover w-full h-full"
-                    alt="Gallery"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div>
-            {currentData.cards[2].type === "image" && (
-              <div className="rounded-3xl overflow-hidden h-[220px]">
-                <div
-                  className={`w-full h-full ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                >
-                  <img
-                    src={currentData.cards[2].image}
-                    className="object-cover w-full h-full"
-                    alt="Gallery"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {currentData.cards[3].type === "text" && (
-              <div className="rounded-2xl overflow-hidden">
-                <div
-                  className={`w-full h-full p-6 flex flex-col ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                  style={{
-                    backgroundColor: currentData.cards[3].bg,
-                    color: currentData.cards[3].textColor,
-                  }}
-                >
-                  <ScrollArea className="h-56 w-full overflow-y-auto">
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-medium font-rubik">
-                        {currentData.cards[3].title}
-                      </h3>
-                      <p className="text-sm mt-1 font-inter">
-                        {currentData.cards[3].description}
-                      </p>
-                      {currentData.cards[3].hasButton && (
-                        <Button className="mt-2 bg-black text-white px-6 py-4 rounded-full w-fit">
-                          SHOP NOW
-                        </Button>
-                      )}
-                    </div>
-                  </ScrollArea>
-                </div>
-              </div>
-            )}
-
-            {currentData.cards[4].type === "image" && (
-              <div className="rounded-3xl overflow-hidden">
-                <div
-                  className={`w-full h-full ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                >
-                  <img
-                    src={currentData.cards[4].image}
-                    className="object-cover w-full h-full"
-                    alt="Gallery"
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {currentData.cards[5].type === "text" && (
-              <div className="rounded-3xl overflow-hidden">
-                <div
-                  className={`w-full h-full p-6 flex flex-col ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                  style={{
-                    backgroundColor: currentData.cards[5].bg,
-                    color: currentData.cards[5].textColor,
-                  }}
-                >
-                  <ScrollArea className="h-52 w-full overflow-y-auto">
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-medium font-rubik">
-                        {currentData.cards[5].title}
-                      </h3>
-                      <p className="text-sm mt-1 font-inter">
-                        {currentData.cards[5].description}
-                      </p>
-                    </div>
-                  </ScrollArea>
-                </div>
-              </div>
-            )}
-
-            {currentData.cards[6].type === "text" && (
-              <div className="rounded-3xl overflow-hidden">
-                <div
-                  className={`w-full h-full px-6 py-8 flex flex-col ${
-                    isAnimating ? getExitAnimation() : ""
-                  } ${getSlideAnimation()}`}
-                  style={{
-                    backgroundColor: currentData.cards[6].bg,
-                    color: currentData.cards[6].textColor,
-                  }}
-                >
-                  <ScrollArea className="h-52 w-full overflow-y-auto">
-                    <div className="space-y-3">
-                      <h3 className="text-2xl font-medium font-rubik">
-                        {currentData.cards[6].title}
-                      </h3>
-                      <p className="text-sm mt-1 font-inter">
-                        {currentData.cards[6].description}
-                      </p>
-                    </div>
-                  </ScrollArea>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

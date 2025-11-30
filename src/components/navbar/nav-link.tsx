@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ArrowRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -17,6 +16,7 @@ interface NavLinkProps {
   categories?: any[];
   isDropdown?: boolean;
   className?: string;
+  isHome?: boolean; 
 }
 
 export default function NavLink({
@@ -26,6 +26,7 @@ export default function NavLink({
   categories,
   isDropdown = false,
   className = "",
+  isHome = false,
 }: NavLinkProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +53,35 @@ export default function NavLink({
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => setIsHovered(false);
 
+  if (isHome) {
+    return (
+      <Link
+        href={href || "#"}
+        className={`relative group px-4 ${className}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-base text-gray-300 group-hover:text-white transition-colors">
+            {text}
+          </span>
+          <ArrowRight
+            className={`h-4 w-4 text-white transition-all duration-300 ${
+              isHovered
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-2"
+            }`}
+          />
+        </div>
+        <div
+          className={`absolute bottom-0 left-4 right-4 h-0.5 bg-white transition-all duration-300 ${
+            isHovered ? "opacity-100 scale-x-100" : "opacity-0 scale-x-0"
+          }`}
+        />
+      </Link>
+    );
+  }
+
   if (isDropdown && items) {
     const isCatalogMenu =
       categories && categories.length > 0 && !categories[0].subcategories;
@@ -60,7 +90,7 @@ export default function NavLink({
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
           <div
-            className={`flex items-center space-x-1 hover:bg-transparent hover:text-gray-300 transition-colors outline-none px-4 cursor-pointer ${className}`}
+            className={`relative group flex items-center space-x-1 hover:bg-transparent hover:text-gray-300 transition-colors outline-none px-4 cursor-pointer ${className}`}
             onMouseEnter={() => {
               handleMouseEnter();
               setIsOpen(true);
@@ -79,13 +109,13 @@ export default function NavLink({
           onMouseLeave={() => setIsOpen(false)}
         >
           {isCatalogMenu ? (
-            <div className="py-6 px-10">
-              <div className="flex flex-col gap-3">
+            <div className="p-6">
+              <div className="flex flex-col gap-1">
                 {categories?.map((category: any) => (
                   <Link
                     key={category.title}
                     href={category.href}
-                    className="font-rubik text-base font-medium hover:text-gray-600 transition-colors"
+                    className="group font-rubik text-base font-medium text-black hover:text-white hover:bg-black transition-colors px-4 py-2 rounded-lg"
                   >
                     {category.title}
                   </Link>
@@ -109,21 +139,24 @@ export default function NavLink({
                             <Link
                               key={sub.title}
                               href={sub.href}
-                              className="font-inter text-sm font-normal hover:text-gray-600 transition-colors"
+                              className="group relative font-inter text-sm font-normal hover:text-gray-600 transition-colors flex items-center gap-2 py-1"
                             >
-                              {sub.title}
+                              <span>{sub.title}</span>
+                              <ArrowRight className="h-3 w-3 transition-all duration-300 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0" />
+                              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-600 transition-all duration-300 opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100" />
                             </Link>
                           ))}
                       </div>
                     ))
-                  : 
-                    items?.map((item) => (
+                  : items?.map((item) => (
                       <div key={item.title} className="flex flex-col gap-2">
                         <Link
                           href={item.href}
-                          className="font-inter text-base font-medium hover:text-gray-600 transition-colors"
+                          className="group relative font-inter text-base font-medium hover:text-gray-600 transition-colors flex items-center gap-2 py-1"
                         >
-                          {item.title}
+                          <span>{item.title}</span>
+                          <ArrowRight className="h-4 w-4 transition-all duration-300 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0" />
+                          <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-600 transition-all duration-300 opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100" />
                         </Link>
                       </div>
                     ))}
