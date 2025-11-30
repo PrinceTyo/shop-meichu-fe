@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navbar/navbar";
 
 const rubik = Rubik({
-  variable: "--font-rubik"
+  variable: "--font-rubik",
 });
 
 const inter = Inter({
@@ -36,10 +36,9 @@ export default function RootLayout({
       >
         <NuqsAdapter>
           <Navbar />
-        <main className="pt-16 pb-16 sm:pb-0">{children}</main>
+          <main className="pt-16 pb-16 sm:pb-0">{children}</main>
         </NuqsAdapter>
         <Toaster position="top-center" reverseOrder={false} />
-        
       </body>
     </html>
   );
