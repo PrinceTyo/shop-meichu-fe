@@ -9,20 +9,22 @@ import HeroSection from "@/components/sections/hero-section";
 import AnimatedSection from "@/components/AnimatedSection";
 import TrendingSection from "@/components/sections/trending-section";
 import WardrobeSection from "@/components/sections/wardrobe-section";
+import AboutSection from "@/components/sections/about-section";
 
 export default function Home() {
   return (
     <ScrollSmootherWrapper>
       <HeroSection />
-      <TrendingSection />
-      <AdvantageSection />
-      <AnimatedSection />
-      <StyleSection />
+      {/* <TrendingSection />
+      <AdvantageSection /> */}
+      {/* <AnimatedSection /> */}
+      <AboutSection />
+      {/*<StyleSection />
       <BundleSection />
       <WardrobeSection />
       <FavoriteSection />
       <BestSellerSection />
-      <GallerySection />
+      <GallerySection /> */}
     </ScrollSmootherWrapper>
   );
 }
