@@ -47,7 +47,7 @@ export default function AboutSection() {
     const rightCardElements = sectionSelector(".right-card");
 
     gsap.set(circleBackgroundRef.current!, {
-      scale: 9,
+      scale: 15,
     });
 
     gsap.to(svgTextRef.current!, {
@@ -61,8 +61,9 @@ export default function AboutSection() {
       scrollTrigger: {
         trigger: sectionRef.current!,
         start: "top top",
-        end: "bottom top",
+        end: "+=100%",
         pin: true,
+        markers: true,
         scrub: true,
       },
     });
@@ -98,8 +99,11 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-white font-rubik py-12 h-screen">
-      <h3 className="text-4xl font-medium text-center max-w-5xl w-full mx-auto mb-7 relative z-10">
+    <section
+      ref={sectionRef}
+      className="bg-white font-rubik py-12 h-screen overflow-hidden"
+    >
+      <h3 className="text-4xl font-medium text-center max-w-5xl w-full mx-auto mb-7 xl:mb-20 xl:text-5xl relative z-1000">
         MAYA BLENDS TIMELESS ELEGANCE WITH MODERN TRENDS , CRAFTING FASHION THAT
         EMPOWERS CONFIDENCE AND GRACE. WITH PREMIUM FABRICS AND UNIQUE DESIGNS,
         WE CREATE STYLES THAT REDEFINE BEAUTY, ENSURING YOU SHINE EFFORTLESSLY
@@ -117,7 +121,7 @@ export default function AboutSection() {
         <div className="size-44 flex items-center justify-center relative rounded-full">
           <svg
             ref={svgTextRef}
-            className="absolute w-full h-full z-20"
+            className="absolute w-full h-full z-1000"
             viewBox="0 0 300 300"
           >
             <defs>
@@ -158,7 +162,7 @@ export default function AboutSection() {
           </svg>
           <div
             ref={circleBackgroundRef}
-            className="absolute size-full bg-[#C8F51D] rounded-full scale-110 will-change-transform z-0"
+            className="absolute size-full bg-[#C8F51D] rounded-full scale-110 will-change-transform z-900"
           ></div>
         </div>
         {rightCards.map((card) => (
