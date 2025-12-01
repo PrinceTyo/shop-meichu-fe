@@ -256,8 +256,8 @@ export default function StyleSection() {
 
       ScrollTrigger.create({
         trigger: styleRef.current,
-        start: "top",
-        end: "bottom",
+        start: "top top",
+        end: "bottom top",
         toggleActions: "play none none none",
         scrub: true,
         pin: true,
