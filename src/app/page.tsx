@@ -6,10 +6,10 @@ import BundleSection from "@/components/sections/bundle-section";
 import FavoriteSection from "@/components/sections/favorite-section";
 import StyleSection from "@/components/sections/style-section";
 import HeroSection from "@/components/sections/hero-section";
-import AnimatedSection from "@/components/AnimatedSection";
 import TrendingSection from "@/components/sections/trending-section";
 import WardrobeSection from "@/components/sections/wardrobe-section";
 import GallerySection from "@/components/sections/gallery-section";
+import AboutSection from "@/components/sections/about-section";
 
 export default function Home() {
   return (
@@ -17,15 +17,14 @@ export default function Home() {
       <HeroSection />
       <TrendingSection />
       <AdvantageSection />
-      <AnimatedSection />
+      <AboutSection />
       <StyleSection />
       <BundleSection />
       <WardrobeSection />
       <FavoriteSection />
       <BestSellerSection />
       <GallerySection />
-      <Footer/>
+      <Footer />
     </ScrollSmootherWrapper>
   );
 }
-

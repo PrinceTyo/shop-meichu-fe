@@ -256,8 +256,8 @@ export default function StyleSection() {
 
       ScrollTrigger.create({
         trigger: styleRef.current,
-        start: "top",
-        end: "bottom",
+        start: "top top",
+        end: "bottom top",
         toggleActions: "play none none none",
         scrub: true,
         pin: true,
@@ -272,7 +272,7 @@ export default function StyleSection() {
   return (
     <>
       {/* Desktop & Ipad */}
-      <div className="hidden md:block" ref={styleRef}>
+      <div id="style-section" className="hidden md:block" ref={styleRef}>
         <div className="relative w-full min-h-screen bg-black text-white px-8 flex items-center justify-center">
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="lg:h-96 h-[900px] lg:w-1/2 w-9/11 rounded-full bg-lime-500/15 blur-3xl"></div>

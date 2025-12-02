@@ -15,7 +15,7 @@ interface FavoriteProps {
   image: string;
   name: string;
   price: number;
-  bgColor: string; 
+  bgColor: string;
 }
 
 export default function FavoriteSection() {
@@ -122,7 +122,6 @@ export default function FavoriteSection() {
           scrub: 2,
           toggleActions: "play none none reverse",
           invalidateOnRefresh: true,
-          // markers: true,
         },
       });
       mm.add("(min-width: 1300px)", () => {
