@@ -17,7 +17,7 @@ import Image from "@/components/global/image";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 import type { Product } from "@/types/strapi/models/product";
 import type { Category } from "@/types/strapi/models/category";
-import type { StrapiImage } from "@/types/strapi/image";
+import type { StrapiImage } from "@/types/strapi/media/image";
 
 function ActionMenu({
   model,

@@ -1,5 +1,5 @@
 import { StrapiTimestamp } from "@/types/strapi/timestamp";
-import { StrapiImage } from "@/types/strapi/image";
+import { StrapiImage } from "@/types/strapi/media/image";
 import { Category } from "./category";
 
 export interface Product extends StrapiTimestamp {
