@@ -12,10 +12,12 @@ import GallerySection from "@/components/sections/gallery-section";
 import AboutSection from "@/components/sections/about-section";
 import CustomerHelpSection from "@/components/sections/customer-help-section";
 import FashionHighlightsSection from "@/components/sections/fashion-highlights-section";
+import CustomerFeedback from "@/components/sections/customer-feedback";
 
 export default function Home() {
   return (
     <ScrollSmootherWrapper>
+      
       <HeroSection />
       <TrendingSection />
       <AdvantageSection />
@@ -25,6 +27,7 @@ export default function Home() {
       <WardrobeSection />
       <FavoriteSection />
       <BestSellerSection />
+      <CustomerFeedback/>
       <GallerySection />
       <FashionHighlightsSection />
       <CustomerHelpSection />

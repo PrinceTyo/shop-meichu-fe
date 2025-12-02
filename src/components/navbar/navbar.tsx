@@ -46,7 +46,7 @@ export default function Navbar() {
     <>
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 font-inter transition-all duration-300 text-white",
+          "fixed top-0 left-0 right-0 z-50 font-inter transition-all duration-300 text-white select-none",
           isVisible ? "translate-y-0" : "-translate-y-full",
           isHomePage
             ? isScrolled

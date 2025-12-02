@@ -1,5 +1,6 @@
 import { Minus, Plus } from "lucide-react";
 import { CartItem as CartItemType } from "@/types/cart";
+import Link from "next/link";
 
 interface CartItemProps {
   item: CartItemType;
@@ -13,7 +14,7 @@ export default function CartItem({
   onRemove,
 }: CartItemProps) {
   return (
-    <div className="flex gap-4 pb-4 border-b last:border-b-0">
+    <div className="flex gap-4 py-4 border-b last:border-b-0">
       <img
         src={item.image}
         className="w-24 h-24 rounded-xl object-cover shrink-0"
@@ -21,7 +22,7 @@ export default function CartItem({
       />
 
       <div className="flex flex-1 flex-col justify-between">
-        <div className="flex justify-between items-start">
+        <Link href={item.href} className="flex justify-between items-start">
           <div>
             <h3 className="font-semibold text-base">{item.name}</h3>
             <p className="text-gray-600 text-sm mt-1">{item.variant}</p>
@@ -30,7 +31,7 @@ export default function CartItem({
           <div className="font-semibold text-lg">
             ${(item.price * item.quantity).toLocaleString()}
           </div>
-        </div>
+        </Link>
 
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">

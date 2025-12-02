@@ -50,6 +50,7 @@ export interface ProductColor {
 export interface Product {
     id: number;
     title: string;
+    href: string;
     price: number;
     images: {
         front: string;

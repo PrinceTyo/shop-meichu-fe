@@ -1,4 +1,5 @@
 import CollectionsCard from "@/components/card/collections-card";
+import Footer from "@/components/footer/footer";
 import HeaderPage from "@/components/header/header-page";
 import ScrollSmootherWrapper from "@/components/ScrollSmootherWrapper";
 
@@ -55,6 +56,7 @@ export default function CollectionsAllPage() {
           ))}
         </div>
       </div>
+      <Footer/>
     </ScrollSmootherWrapper>
   );
 }

@@ -9,7 +9,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";
 import { INITIAL_CART_ITEMS, RECOMMENDED_PRODUCTS } from "@/lib/data/cart";
-import { CartItem as CartItemType, RecommendedProduct } from "@/types/cart";
+import { CartItem as CartItemType } from "@/types/cart";
 import CartItem from "./cart-item";
 import RecommendedProducts from "./recommended-products";
 import CartSummary from "./cart-summary";
@@ -41,18 +41,6 @@ export default function ShoppingBag() {
 
   const removeItem = (id: number) => {
     setCartItems((items) => items.filter((item) => item.id !== id));
-  };
-
-  const addRecommendedToCart = (product: RecommendedProduct) => {
-    const newItem: CartItemType = {
-      id: Date.now(),
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      variant: "Default",
-      quantity: 1,
-    };
-    setCartItems((items) => [...items, newItem]);
   };
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -134,7 +122,6 @@ export default function ShoppingBag() {
 
                   <RecommendedProducts
                     products={RECOMMENDED_PRODUCTS}
-                    onAddToCart={addRecommendedToCart}
                   />
                 </>
               )}

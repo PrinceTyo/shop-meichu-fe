@@ -166,6 +166,7 @@ export const sampleProducts: Product[] = [
     {
         id: 1,
         title: "Classic White Sneakers",
+        href: "/products/1",
         price: 129,
         images: {
             front: "./assets/gallery/girl4.jpg",
@@ -188,6 +189,7 @@ export const sampleProducts: Product[] = [
     {
         id: 2,
         title: "Running Shoes Pro",
+        href: "/products/2",
         price: 159,
         images: {
             front: "./assets/gallery/girl4.jpg",
@@ -210,6 +212,7 @@ export const sampleProducts: Product[] = [
     {
         id: 3,
         title: "Casual Loafers",
+        href: "/products/3",
         price: 89,
         images: {
             front: "./assets/gallery/girl4.jpg",
@@ -232,6 +235,7 @@ export const sampleProducts: Product[] = [
     {
         id: 4,
         title: "Basketball Shoes",
+        href: "/products/4",
         price: 149,
         images: {
             front: "./assets/gallery/girl4.jpg",
@@ -249,6 +253,7 @@ export const sampleProducts: Product[] = [
     {
         id: 5,
         title: "Hiking Boots",
+        href: "/products/5",
         price: 199,
         images: {
             front: "./assets/gallery/girl4.jpg",
@@ -266,6 +271,7 @@ export const sampleProducts: Product[] = [
     {
         id: 6,
         title: "Formal Shoes",
+        href: "/products/6",
         price: 179,
         images: {
             front: "./assets/gallery/girl4.jpg",

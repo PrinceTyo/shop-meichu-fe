@@ -1,6 +1,7 @@
 export interface CartItem {
     id: number;
     name: string;
+    href: string;
     price: number;
     image: string;
     variant: string;
@@ -10,6 +11,7 @@ export interface CartItem {
 export interface RecommendedProduct {
     id: number;
     name: string;
+    href: string;
     price: number;
     image: string;
 }
