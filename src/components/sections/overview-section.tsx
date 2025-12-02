@@ -76,33 +76,76 @@ export default function OverviewSection({
 
   const isZoomed = zoom > 1;
 
-  useGSAP(() => {
-    if (window.innerWidth < 768) return;
-    if (!sectionRef.current || !detailRef.current || !imageListRef.current)
-      return;
+  useGSAP(
+    () => {
+      if (window.innerWidth < 768) return;
 
-    const section = sectionRef.current!;
-    const detailContent = detailRef.current!;
-    const imageList = imageListRef.current!;
+      if (!sectionRef.current || !detailRef.current || !imageListRef.current)
+        return;
 
-    const detailScroll =
-      detailContent.scrollHeight - detailContent.clientHeight;
-    const imageScroll = imageList.scrollHeight - imageList.clientHeight;
-    const totalScroll = Math.max(detailScroll, imageScroll);
+      const section = sectionRef.current;
+      const detailContent = detailRef.current;
+      const imageList = imageListRef.current;
 
-    gsap.to([detailContent, imageList], {
-      scrollTop: (i: number) => (i === 0 ? detailScroll : imageScroll),
-      ease: "none",
-      scrollTrigger: {
+      detailContent.scrollTop = 0;
+      imageList.scrollTop = 0;
+
+      ScrollTrigger.refresh();
+
+      const imageScroll = imageList.scrollHeight - imageList.clientHeight;
+      const detailScroll =
+        detailContent.scrollHeight - detailContent.clientHeight;
+
+      const totalScrollDistance = imageScroll + detailScroll;
+
+      const imagePhaseEnd = imageScroll / totalScrollDistance;
+
+      const st = ScrollTrigger.create({
         trigger: section,
         start: "top top",
-        end: () => `+=${totalScroll * 1.5}`,
+        end: `+=${totalScrollDistance}`,
         pin: true,
-        scrub: 1,
+        scrub: 4,
         invalidateOnRefresh: true,
-      },
-    });
-  }, []);
+
+        onUpdate: (self) => {
+          const progress = self.progress;
+
+          if (progress <= imagePhaseEnd) {
+            const imageProgress = progress / imagePhaseEnd;
+
+            gsap.to(imageList, {
+              scrollTop: imageProgress * imageScroll,
+              duration: 0.5,
+              ease: "none",
+            });
+            detailContent.scrollTop = 0;
+          } else {
+            const detailProgress =
+              (progress - imagePhaseEnd) / (1 - imagePhaseEnd);
+
+            gsap.to(detailContent, {
+              scrollTop: detailProgress * detailScroll,
+              duration: 0.5,
+              ease: "none",
+            });
+
+            imageList.scrollTop = imageScroll;
+          }
+        },
+        onEnter: () => {
+          detailContent.style.overflow = "hidden";
+          imageList.style.overflow = "hidden";
+        },
+
+        onEnterBack: () => {
+          detailContent.style.overflow = "hidden";
+          imageList.style.overflow = "hidden";
+        },
+      });
+    },
+    { dependencies: [], scope: sectionRef }
+  );
 
   const handleColorClick = (img: string, index: number) => {
     setSelectedImage(img);
@@ -221,8 +264,8 @@ export default function OverviewSection({
                     activeColorIndex === index
                       ? "opacity-100"
                       : activeColorIndex === null && index === 0
-                      ? "opacity-100"
-                      : "opacity-0"
+                        ? "opacity-100"
+                        : "opacity-0"
                   } transition-opacity duration-500`}
                   alt=""
                   onClick={() => handleImageClick(color.bgImg, index)}
@@ -235,6 +278,10 @@ export default function OverviewSection({
             <div
               ref={imageListRef}
               className="h-fit md:h-screen lg:h-screen flex flex-row md:flex-col gap-1 overflow-x-auto md:overflow-y-scroll lg:overflow-y-scroll scrollbar-hide"
+              style={{
+                overscrollBehavior: "none", // ⭐ Prevent scroll chaining
+                touchAction: "pan-y", // ⭐ Only allow vertical scroll
+              }}
             >
               {product.colors.map((color: any, index: number) => (
                 <img
@@ -254,6 +301,10 @@ export default function OverviewSection({
               <div
                 ref={detailRef}
                 className="flex-1 overflow-y-auto scrollbar-hide py-8 px-4 md:px-10"
+                style={{
+                  overscrollBehavior: "none",
+                  touchAction: "pan-y",
+                }}
               >
                 <div>
                   <h1 className="font-bold text-lg font-rubik cursor-pointer hover:text-gray-400">
@@ -622,8 +673,8 @@ export default function OverviewSection({
                     slideDirection === "left"
                       ? "-translate-x-[calc(100%+50vw)]"
                       : slideDirection === "right"
-                      ? "translate-x-[calc(100%+50vw)]"
-                      : "translate-x-0"
+                        ? "translate-x-[calc(100%+50vw)]"
+                        : "translate-x-0"
                   }`}
                   alt="Full size preview"
                 />
