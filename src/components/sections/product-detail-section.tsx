@@ -146,7 +146,6 @@ export default function ProductDetailSection({
         </div>
       </div>
 
-      {/* Navbar tetap di dalam ProductDetailSection */}
       <nav
         ref={navRef}
         className="fixed bottom-8 left-1/2 md:left-6 lg:left-8 -translate-x-1/2 md:translate-x-6 lg:translate-x-8 backdrop-blur-md bg-white/60 rounded-full shadow-lg px-1 py-1 z-50"

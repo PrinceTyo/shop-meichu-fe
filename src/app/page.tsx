@@ -10,6 +10,8 @@ import TrendingSection from "@/components/sections/trending-section";
 import WardrobeSection from "@/components/sections/wardrobe-section";
 import GallerySection from "@/components/sections/gallery-section";
 import AboutSection from "@/components/sections/about-section";
+import CustomerHelpSection from "@/components/sections/customer-help-section";
+import FashionHighlightsSection from "@/components/sections/fashion-highlights-section";
 
 export default function Home() {
   return (
@@ -24,6 +26,8 @@ export default function Home() {
       <FavoriteSection />
       <BestSellerSection />
       <GallerySection />
+      <FashionHighlightsSection />
+      <CustomerHelpSection />
       <Footer />
     </ScrollSmootherWrapper>
   );
