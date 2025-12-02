@@ -3,8 +3,8 @@ import {
   SheetContent,
   SheetTrigger,
   SheetTitle,
+  SheetHeader,
 } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import { FiShoppingBag } from "react-icons/fi";
@@ -13,9 +13,10 @@ import { CartItem as CartItemType, RecommendedProduct } from "@/types/cart";
 import CartItem from "./cart-item";
 import RecommendedProducts from "./recommended-products";
 import CartSummary from "./cart-summary";
+import { IoClose } from "react-icons/io5";
 
 export default function ShoppingBag() {
-  const [isOpenBag, setIsOpenBag] = useState(false);
+  const [isOpenCart, setIsOpenCart] = useState(false);
   const isMobile = useIsMobile();
 
   const [cartItems, setCartItems] =
@@ -54,8 +55,12 @@ export default function ShoppingBag() {
     setCartItems((items) => [...items, newItem]);
   };
 
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
+
   return (
-    <Sheet open={isOpenBag} onOpenChange={setIsOpenBag}>
+    <Sheet open={isOpenCart} onOpenChange={setIsOpenCart}>
       <SheetTrigger asChild>
         <button className="text-white border-none hover:bg-gray-900 p-2 rounded-full flex items-center justify-center relative">
           <FiShoppingBag className="h-5 w-5" />
@@ -69,23 +74,42 @@ export default function ShoppingBag() {
 
       <SheetContent
         side={isMobile ? "top" : "right"}
-        defaultRight="
-          data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right inset-y-0 right-0 h-[95%] w-[35%]"
-        defaultTop="data-[state=open]:slide-in-from-top data-[state=closed]:slide-out-to-top inset-x-0 top-0 w-full h-auto"
-        className="md:rounded-3xl md:mr-8 md:my-6 bg-white border-none shadow-xl transition-all p-0 overflow-hidden"
+        className={`${
+          isMobile
+            ? "data-[state=open]:slide-in-from-top data-[state=closed]:slide-out-to-top inset-x-0 top-0 w-full h-full rounded-b-3xl"
+            : "data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right inset-y-0 right-0 h-[95%] md:w-[60%] lg:w-[35%] max-w-none! md:rounded-3xl md:mr-8 md:my-6"
+        }  bg-[#f2f2f2] border-none shadow-xl p-0 overflow-hidden flex flex-col`}
+        onInteractOutside={(e) => {
+          if (e.type === "wheel" || e.type === "touchmove") {
+            e.preventDefault();
+          }
+        }}
       >
         <div className="flex flex-col h-full">
-          <div className="sticky top-0 bg-[#f2f2f2] px-6 py-5 border-b z-20 shrink-0">
-            <SheetTitle className="text-2xl font-bold">
-              Shopping bag ({cartItems.length})
+          <SheetHeader className="sticky top-0 px-6 py-5 border-b z-20 shrink-0">
+            <SheetTitle className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold font-rubik">
+                Shopping bag ({cartItems.length})
+              </h1>
+              <div
+                className="group cursor-pointer p-1 transition-all duration-200 rounded-none hover:bg-[#f2f2f2] hover:rounded-full"
+                onClick={() => setIsOpenCart(false)}
+              >
+                <IoClose className="w-5 h-5 transition-all duration-200 group-hover:rotate-180" />
+              </div>
             </SheetTitle>
-          </div>
+          </SheetHeader>
 
-          <div className="flex-1 overflow-hidden bg-[#f2f2f2]">
-            <ScrollArea className="lg:h-full">
-              <div className="px-6 py-6 space-y-6">
-                {cartItems.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center py-12 text-center">
+          <div
+            className="flex-1 overflow-y-auto bg-[#f2f2f2]"
+            onScroll={handleScroll}
+            onWheel={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+          >
+            <div className="py-6">
+              {cartItems.length === 0 ? (
+                <div className="space-y-8 min-h-125 flex items-center justify-center">
+                  <div className="flex flex-col items-center justify-center text-center">
                     <FiShoppingBag className="h-16 w-16 text-gray-300 mb-4" />
                     <h3 className="text-xl font-semibold text-gray-600 mb-2">
                       Your bag is empty
@@ -94,25 +118,27 @@ export default function ShoppingBag() {
                       Add items to get started
                     </p>
                   </div>
-                ) : (
-                  cartItems.map((item) => (
-                    <CartItem
-                      key={item.id}
-                      item={item}
-                      onUpdateQuantity={updateQuantity}
-                      onRemove={removeItem}
-                    />
-                  ))
-                )}
+                </div>
+              ) : (
+                <>
+                  <div className="px-6">
+                    {cartItems.map((item) => (
+                      <CartItem
+                        key={item.id}
+                        item={item}
+                        onUpdateQuantity={updateQuantity}
+                        onRemove={removeItem}
+                      />
+                    ))}
+                  </div>
 
-                {cartItems.length > 0 && (
                   <RecommendedProducts
                     products={RECOMMENDED_PRODUCTS}
                     onAddToCart={addRecommendedToCart}
                   />
-                )}
-              </div>
-            </ScrollArea>
+                </>
+              )}
+            </div>
           </div>
 
           {cartItems.length > 0 && (

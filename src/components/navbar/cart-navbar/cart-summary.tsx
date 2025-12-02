@@ -26,7 +26,7 @@ export default function CartSummary({
   onSpecialInstructionsChange,
 }: CartSummaryProps) {
   return (
-    <div className="fixed lg:sticky bottom-0 inset-x-0 lg:inset-x-auto bg-white border-t px-6 py-5 z-20 shrink-0 space-y-4 rounded-t-4xl">
+    <div className="sticky bottom-0 inset-x-0 lg:inset-x-auto bg-white border-t px-6 py-5 z-20 shrink-0 space-y-4 rounded-t-4xl">
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="instructions" className="rounded-xl">
           <AccordionTrigger className="font-medium text-sm flex p-0 justify-between">
