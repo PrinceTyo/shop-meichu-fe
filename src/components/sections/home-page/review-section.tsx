@@ -66,7 +66,7 @@ const feedbacks = [
   },
 ];
 
-export default function CustomerFeedback() {
+export default function ReviewSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);

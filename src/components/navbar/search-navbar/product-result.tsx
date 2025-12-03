@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import TrendingProduct from "@/components/card/trending-product";
+import ProductCard from "@/components/card/product-card";
 import { Product } from "@/types/search";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Link from "next/link";
@@ -107,7 +107,7 @@ export default function ProductResults({
           {products.map((product) => (
             <div key={product.id} className="inline-block shrink-0">
               <Link href={product.href} className="cursor-pointer">
-                <TrendingProduct
+                <ProductCard
                   product={product}
                   size={isMobile ? "lg" : "sm"}
                   className="pointer-events-none"

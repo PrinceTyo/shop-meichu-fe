@@ -6,7 +6,7 @@ import ProductNavigationCard from "@/components/card/detail-product/product-navi
 import OverviewSection from "./overview-section";
 import DescriptionSection from "./description-section";
 import SpecificationsSection from "./specifications-section";
-import TrendingProduct from "@/components/card/trending-product";
+import ProductCard from "@/components/card/product-card";
 
 interface ProductSection {
   label: string;
@@ -71,7 +71,7 @@ export default function ProductDetailSection({
         </h1>
         <div className="flex items-center justify-start gap-3 overflow-x-scroll scrollbar-hide overflow-y-hidden">
           {relatedProducts.map((item) => (
-            <TrendingProduct key={item.id} product={item} />
+            <ProductCard key={item.id} product={item} />
           ))}
         </div>
       </div>

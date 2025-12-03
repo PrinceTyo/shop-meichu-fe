@@ -33,7 +33,7 @@ export default function FeaturedCategorySection() {
 
   const handleNext = () => {
     setIsAnimating(true);
-    setIsPosition("right"); 
+    setIsPosition("right");
     const newIndex = getProperIndex(currentIndex + 1, categories.length);
     setNextIndex(newIndex);
 

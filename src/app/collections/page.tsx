@@ -102,7 +102,6 @@ export default function CollectionsAllPage() {
         </div>
         <Footer />
       </div>
-      <Footer/>
     </ScrollSmootherWrapper>
   );
 }

@@ -3,6 +3,7 @@ import HeaderPage from "@/components/header/header-page";
 import ScrollSmootherWrapper from "@/components/ScrollSmootherWrapper";
 import AboutSection from "@/components/sections/about-us/about-section";
 import VideoSection from "@/components/sections/about-us/video-section";
+import ReviewSection from "@/components/sections/home-page/review-section";
 
 const headerData = {
   type: "about",
@@ -63,6 +64,7 @@ export default function AboutUsPage() {
         videoTitle={videoData.videoTitle}
         boxes={videoData.boxes}
       />
+      <ReviewSection />
       <Footer />
     </ScrollSmootherWrapper>
   );

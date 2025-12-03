@@ -1,9 +1,9 @@
 import FilterCard from "@/components/card/filter-card";
-import TrendingProduct from "@/components/card/trending-product";
+import ProductCard from "@/components/card/product-card";
 import Footer from "@/components/footer/footer";
 import HeaderPage from "@/components/header/header-page";
 import ScrollSmootherWrapper from "@/components/ScrollSmootherWrapper";
-import { products } from "@/lib/data/product";
+// import { products } from "@/lib/data/product";
 
 const headerData = {
   type: "collections",
@@ -25,9 +25,9 @@ export default function AllCollectionsPage() {
         <div className="mx-5 my-10 space-y-6 md:space-y-14 h-full">
           <FilterCard />
           <div className="flex items-center justify-center md:justify-start lg:justify-start flex-wrap gap-y-14 md:gap-y-14 lg:gap-y-14 gap-2 md:gap-5.5 lg:gap-4 mb-6 overflow-x-scroll lg:overflow-x-visible">
-            {products.map((p) => (
-              <TrendingProduct key={p.id} product={p} size="lg" />
-            ))}
+            {/* {products.map((p) => (
+              <ProductCard key={p.id} product={p} size="lg" />
+            ))} */}
           </div>
         </div>
 

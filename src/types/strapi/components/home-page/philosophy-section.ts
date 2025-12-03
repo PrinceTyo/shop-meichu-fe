@@ -1,8 +1,8 @@
 import type { Category } from "@/types/strapi/models/category";
 
-export interface FeaturedCategoryItem {
+export interface PhilosophySection {
   id: number;
-  category?: Category;
-  title: string;
   description: string;
+  ctxText: string;
+  categories?: Category[];
 }
