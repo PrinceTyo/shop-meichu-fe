@@ -21,14 +21,13 @@ export default function ShoppingBag() {
 
   const [cartItems, setCartItems] =
     useState<CartItemType[]>(INITIAL_CART_ITEMS);
-  const [giftWrap, setGiftWrap] = useState(false);
   const [specialInstructions, setSpecialInstructions] = useState("");
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-  const grandTotal = subtotal + (giftWrap ? 500 : 0);
+  const grandTotal = subtotal;
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
@@ -75,17 +74,17 @@ export default function ShoppingBag() {
       >
         <div className="flex flex-col h-full">
           <SheetHeader className="sticky top-0 px-6 py-5 border-b z-20 shrink-0">
-            <SheetTitle className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold font-rubik">
+            <div className="flex items-center justify-between">
+              <SheetTitle className="text-2xl font-bold font-rubik ">
                 Shopping bag ({cartItems.length})
-              </h1>
+              </SheetTitle>
               <div
                 className="group cursor-pointer p-1 transition-all duration-200 rounded-none hover:bg-[#f2f2f2] hover:rounded-full"
                 onClick={() => setIsOpenCart(false)}
               >
                 <IoClose className="w-5 h-5 transition-all duration-200 group-hover:rotate-180" />
               </div>
-            </SheetTitle>
+            </div>
           </SheetHeader>
 
           <div
@@ -120,9 +119,7 @@ export default function ShoppingBag() {
                     ))}
                   </div>
 
-                  <RecommendedProducts
-                    products={RECOMMENDED_PRODUCTS}
-                  />
+                  <RecommendedProducts products={RECOMMENDED_PRODUCTS} />
                 </>
               )}
             </div>
@@ -131,10 +128,8 @@ export default function ShoppingBag() {
           {cartItems.length > 0 && (
             <CartSummary
               subtotal={subtotal}
-              giftWrap={giftWrap}
               grandTotal={grandTotal}
               specialInstructions={specialInstructions}
-              onGiftWrapChange={setGiftWrap}
               onSpecialInstructionsChange={setSpecialInstructions}
             />
           )}

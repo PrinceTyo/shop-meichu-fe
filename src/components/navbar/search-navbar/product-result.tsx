@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import TrendingProduct from "@/components/card/trending-product";
-import { Product } from "@/types/navigation";
+import { Product } from "@/types/search";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Link from "next/link";
 

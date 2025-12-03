@@ -4,7 +4,6 @@ export interface CartItem {
     href: string;
     price: number;
     image: string;
-    variant: string;
     quantity: number;
 }
 

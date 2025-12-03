@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <ScrollSmootherWrapper>
       
-      <HeroSection />
+      {/* <HeroSection />
       <TrendingSection />
       <AdvantageSection />
       <AboutSection />
@@ -27,7 +27,7 @@ export default function Home() {
       <WardrobeSection />
       <FavoriteSection />
       <BestSellerSection />
-      <CustomerFeedback/>
+      <CustomerFeedback/> */}
       <GallerySection />
       <FashionHighlightsSection />
       <CustomerHelpSection />

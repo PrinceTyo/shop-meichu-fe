@@ -7,7 +7,6 @@ export const INITIAL_CART_ITEMS: CartItem[] = [
         price: 3700,
         href: "/products/1",
         image: "./assets/gallery/girl3.jpg",
-        variant: "Black / M",
         quantity: 1,
     },
     {
@@ -16,7 +15,6 @@ export const INITIAL_CART_ITEMS: CartItem[] = [
         price: 2500,
         href: "/products/2",
         image: "./assets/gallery/girl3.jpg",
-        variant: "Navy / L",
         quantity: 2,
     },
     {
@@ -25,7 +23,6 @@ export const INITIAL_CART_ITEMS: CartItem[] = [
         price: 5400,
         href: "/products/3",
         image: "./assets/gallery/girl3.jpg",
-        variant: "Gray / XL",
         quantity: 1,
     },
 ];

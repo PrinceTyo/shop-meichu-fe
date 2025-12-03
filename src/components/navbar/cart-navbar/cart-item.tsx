@@ -21,11 +21,10 @@ export default function CartItem({
         alt={item.name}
       />
 
-      <div className="flex flex-1 flex-col justify-between">
-        <Link href={item.href} className="flex justify-between items-start">
+      <div className="flex flex-1 flex-col justify-center gap-4">
+        <Link href={item.href} className="flex justify-between items-center">
           <div>
             <h3 className="font-semibold text-base">{item.name}</h3>
-            <p className="text-gray-600 text-sm mt-1">{item.variant}</p>
           </div>
 
           <div className="font-semibold text-lg">

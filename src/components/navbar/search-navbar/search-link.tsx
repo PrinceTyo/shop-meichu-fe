@@ -17,8 +17,8 @@ import {
   popularCollections,
   initialRecentSearches,
   sampleProducts,
-} from "@/lib/data/navbar";
-import { RecentSearch, Product } from "@/types/navigation";
+} from "@/lib/data/search";
+import { RecentSearch, Product } from "@/types/search";
 
 export default function SearchLink() {
   const [isOpenSearch, setIsOpenSearch] = useState(false);
