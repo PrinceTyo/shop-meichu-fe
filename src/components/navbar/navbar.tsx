@@ -1,22 +1,45 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import MobileMenu from "./mobile-menu";
-import DesktopNav from "./desktop-navbar";
 import NavActions from "./navbar-actions";
+import NavLink from "./nav-link";
 import BottomNav from "./bottom-navbar";
 import { cn } from "@/lib/utils";
 import {
-  navLinks,
   homeCategories,
   catalogCategories,
   bottomNavItems,
 } from "@/lib/data/navbar";
 
-export default function Navbar() {
+import type { Navbar } from "@/types/strapi/components/shared/navbar";
+import type { Category } from "@/types/strapi/models/category";
+import type { Navigation } from "@/types/navigation";
+
+export default function Navbar({
+  data,
+  categories,
+}: {
+  data: Navbar;
+  categories: Category[];
+}) {
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigations: Navigation[] = useMemo(() => {
+    const navs = data.navigations as Navigation[];
+    navs.splice(1, 0, {
+      title: "Catalog",
+      subNavigation: {
+        type: "single",
+        items: categories.map((category) => ({
+          title: category.name,
+          url: `/catalog/${category.slug}`,
+        })),
+      },
+    });
+    return navs;
+  }, [data.navigations]);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -24,7 +47,6 @@ export default function Navbar() {
       const current = window.scrollY;
 
       setIsScrolled(current > 1000);
-
       if (current > lastScrollY.current && current > 100) {
         setIsVisible(false);
       } else {
@@ -64,7 +86,11 @@ export default function Navbar() {
               </div>
             </div>
 
-            <DesktopNav navLinks={navLinks} />
+            <div className="hidden lg:flex items-center px-6 flex-1 gap-1">
+              {navigations.map((navigation) => (
+                <NavLink key={navigation.title} {...navigation} />
+              ))}
+            </div>
 
             <NavActions />
           </div>
