@@ -66,6 +66,7 @@ export default function Footer() {
 
           {data.navigationGroups?.map((group, index) => (
             <div
+              key={group.id}
               className={`hidden lg:block space-y-6 ${columnClasses[index]}`}
             >
               <h1 className="font-semibold text-xl">{group.title}</h1>

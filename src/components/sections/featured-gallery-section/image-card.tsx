@@ -4,8 +4,8 @@ interface CategoryImageCardProps {
   item: FeaturedCategoryItem;
   isAnimating: boolean;
   nextItem?: FeaturedCategoryItem;
-  getSlideAnimation: () => string;
-  getExitAnimation: () => string;
+  slideAnimationClassName?: string;
+  exitAnimationClassName?: string;
   className?: string;
 }
 
@@ -28,8 +28,8 @@ export default function CategoryImageCard({
   item,
   isAnimating,
   nextItem,
-  getSlideAnimation,
-  getExitAnimation,
+  slideAnimationClassName,
+  exitAnimationClassName,
   className = "",
 }: CategoryImageCardProps) {
   const currentImageUrl = getImageUrl(item?.category?.thumbnail?.url);
@@ -59,9 +59,9 @@ export default function CategoryImageCard({
       className={`rounded-3xl md:rounded-4xl overflow-hidden relative h-full ${className}`}
     >
       {isAnimating && nextItem && (
-        <div className={` ${getExitAnimation()}`}>
+        <div className={exitAnimationClassName}>
           <img
-            src={currentImageUrl}
+            src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${currentImageUrl}`}
             alt={
               item.category?.thumbnail?.alternativeText ||
               item.title ||
@@ -74,10 +74,10 @@ export default function CategoryImageCard({
       )}
 
       <div
-        className={`w-full h-full ${isAnimating && nextItem ? getSlideAnimation() : ""}`}
+        className={`w-full h-full ${isAnimating && nextItem ? slideAnimationClassName : ""}`}
       >
         <img
-          src={isAnimating && nextItem ? nextImageUrl : currentImageUrl}
+          src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${isAnimating && nextItem ? nextImageUrl : currentImageUrl}`}
           alt={
             isAnimating && nextItem
               ? nextItem.category?.thumbnail?.alternativeText ||

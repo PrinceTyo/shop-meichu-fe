@@ -5,8 +5,8 @@ interface CategoryCardProps {
   item: FeaturedCategoryItem;
   isAnimating: boolean;
   nextItem?: FeaturedCategoryItem;
-  getSlideAnimation: () => string;
-  getExitAnimation: () => string;
+  slideAnimationClassName: string;
+  exitAnimationClassName: string;
   className?: string;
 }
 
@@ -14,8 +14,8 @@ export default function CategoryCard({
   item,
   isAnimating,
   nextItem,
-  getSlideAnimation,
-  getExitAnimation,
+  slideAnimationClassName,
+  exitAnimationClassName,
   className = "",
 }: CategoryCardProps) {
   const currentItem = item;
@@ -44,7 +44,7 @@ export default function CategoryCard({
     >
       {isAnimating && nextItem && (
         <div
-          className={`absolute inset-0 z-10 p-6 md:px-6 md:py-10 flex flex-col ${getExitAnimation()}`}
+          className={`absolute inset-0 z-10 p-6 md:px-6 md:py-10 flex flex-col ${exitAnimationClassName}`}
         >
           <CardContent data={currentItem} />
         </div>
@@ -52,7 +52,7 @@ export default function CategoryCard({
 
       <div
         className={`w-full h-full p-6 md:px-6 md:py-10 flex flex-col ${
-          isAnimating && nextItem ? getSlideAnimation() : ""
+          isAnimating && nextItem ? slideAnimationClassName : ""
         }`}
       >
         <CardContent

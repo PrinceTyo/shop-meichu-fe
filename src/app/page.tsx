@@ -8,6 +8,7 @@ import CollectionSection from "@/components/sections/home-page/collection-sectio
 import BundleSection from "@/components/sections/home-page/bundle-section";
 import RecommendationSection from "@/components/sections/home-page/recommendation-section";
 import TrendingStyleSection from "@/components/sections/home-page/trending-style-section";
+import ReviewSection from "@/components/sections/home-page/review-section";
 import BestSellerSection from "@/components/sections/home-page/best-seller-section";
 import FeaturedCategorySection from "@/components/sections/home-page/featured-category-section";
 import LatestTrendSection from "@/components/sections/home-page/latest-trend-section";
@@ -50,7 +51,9 @@ export default async function Home() {
       {homePageData.data.bestSellerSection && (
         <BestSellerSection data={homePageData.data.bestSellerSection} />
       )}
-      {homePageData.data.reviewSection && null}
+      {homePageData.data.reviewSection && (
+        <ReviewSection data={homePageData.data.reviewSection} />
+      )}
       {homePageData.data.featuredCategorySection && (
         <FeaturedCategorySection
           data={homePageData.data.featuredCategorySection}
