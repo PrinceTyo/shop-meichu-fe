@@ -1,5 +1,4 @@
 import Footer from "@/components/footer/footer";
-import ScrollSmootherWrapper from "@/components/ScrollSmootherWrapper";
 import HeroSection from "@/components/sections/home-page/hero-section";
 import TrendingProductSection from "@/components/sections/home-page/trending-product-section";
 import BenefitSection from "@/components/sections/home-page/benefit-section";
@@ -28,7 +27,7 @@ export default async function Home() {
   const homePageData = await getHomePageData();
 
   return (
-    <ScrollSmootherWrapper>
+    <>
       <HeroSection
         data={homePageData.data.heroSection}
         subHeroData={homePageData.data.subHeroSection}
@@ -66,6 +65,6 @@ export default async function Home() {
         <FAQSection data={homePageData.data.faqSection} />
       )}
       <Footer />
-    </ScrollSmootherWrapper>
+    </>
   );
 }

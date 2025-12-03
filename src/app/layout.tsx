@@ -2,9 +2,8 @@ import "../styles/globals.css";
 import { Inter, Rubik, Outfit } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 import type { Metadata } from "next";
-import Navbar from "@/components/navbar/navbar";
-import MainWrapper from "@/context/main-wrapper";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -35,10 +34,7 @@ export default function RootLayout({
         className={`${rubik.variable} ${inter.variable} ${outfit.variable} antialiased`}
         suppressHydrationWarning
       >
-        <NuqsAdapter>
-          <Navbar />
-          <MainWrapper>{children}</MainWrapper>
-        </NuqsAdapter>
+        <NuqsAdapter>{children}</NuqsAdapter>
         <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
