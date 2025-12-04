@@ -54,6 +54,7 @@ export default async function CollectionsPage({
 }) {
   const { slug } = await params;
   const { data: products } = await getProductsByCategory(slug);
+  const { data: category } = await getCategoryBySlug(slug);
 
   return (
     <div className="bg-[#D9E4E8]">
@@ -75,7 +76,7 @@ export default async function CollectionsPage({
         </div>
       </div>
 
-      <Footer />
+      <Footer backgroundColor={category.backgroundColor} />
     </div>
   );
 }
