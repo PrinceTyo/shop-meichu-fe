@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import type { StrapiResponse } from "@/types/strapi/response";
 import type { Product } from "@/types/strapi/models/product";
 import type { Category } from "@/types/strapi/models/category";
+import IconElement from "@/components/element/icon-element";
 
 const headerData = {
   type: "collections",
@@ -55,19 +56,22 @@ export default async function CollectionsPage({
   const { data: products } = await getProductsByCategory(slug);
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-[#D9E4E8]">
       <HeaderPage
         type={headerData.type}
         img={headerData.img}
         title={headerData.title}
         desc={headerData.desc}
       />
-      <div className="mx-5 my-10 space-y-6 md:space-y-14 h-full">
-        <FilterCard />
-        <div className="flex items-center justify-center md:justify-start lg:justify-start flex-wrap gap-y-14 md:gap-y-14 lg:gap-y-14 gap-2 md:gap-5.5 lg:gap-4 mb-6 overflow-x-scroll lg:overflow-x-visible">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} size="lg" />
-          ))}
+      <div className="relative">
+        <IconElement variant={2} />
+        <div className="px-5 py-10 space-y-6 md:space-y-14 h-full">
+          <FilterCard />
+          <div className="flex items-center justify-center md:justify-start lg:justify-start flex-wrap gap-y-14 md:gap-y-14 lg:gap-y-14 gap-2 md:gap-5.5 lg:gap-4 pb-6 overflow-x-scroll lg:overflow-x-visible">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} size="lg" />
+            ))}
+          </div>
         </div>
       </div>
 

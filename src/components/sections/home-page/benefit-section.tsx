@@ -62,7 +62,7 @@ export default function BenefitSection({ data }: { data: BenefitSection }) {
       ease: "power4.in",
       scrollTrigger: {
         trigger: section,
-        start: "top 90%",
+        start: "70% 90%",
         end: () => `+=${totalScroll * 1}`,
         scrub: 1,
         // markers: true
@@ -84,7 +84,7 @@ export default function BenefitSection({ data }: { data: BenefitSection }) {
       </div>
 
       <div className="w-full flex flex-col sm:flex-row sm:items-center py-10">
-        <div className="leftBox min-w-90 lg:min-w-[28%] max-w-86 sm:max-w-96 space-y-5 mb-10 sm:mb-0 mx-5 lg:ml-16 md:mr-30 lg:mr-20">
+        <div className="leftBox min-w-90 lg:min-w-[28%] max-w-86 sm:max-w-96 space-y-5 mb-10 sm:mb-0 mx-5 lg:ml-16 md:mx-20 lg:mr-20">
           <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold font-albert-sans">
             <span className="text-transparent text-outline-black">
               {`${titleFirstWord}` + ""}

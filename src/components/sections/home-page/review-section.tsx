@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 
 import type { ReviewSection } from "@/types/strapi/components/home-page/review-section";
+import IconElement from "@/components/element/icon-element";
 
 export default function ReviewSection({ data }: { data: ReviewSection }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -72,8 +73,8 @@ export default function ReviewSection({ data }: { data: ReviewSection }) {
   }, [isDragging]);
 
   return (
-    <div className=" w-full pl-6 lg:pl-8 min-h-full bg-[#D9E4E8]">
-
+    <div className="relative w-full pl-6 lg:pl-8 min-h-full bg-[#D9E4E8] overflow-hidden">
+      <IconElement variant={3} />
       <div className="flex-col items-center justify-center py-20 md:py-40">
         <div className="flex flex-col gap-4 md:gap-6">
           <h2 className="text-xs md:text-lg font-medium tracking-wide font-albert-sans">
@@ -91,7 +92,7 @@ export default function ReviewSection({ data }: { data: ReviewSection }) {
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="flex gap-4 md:space-x-4 overflow-x-hidden scroll-smooth no-scrollbar py-4 cursor-grab select-none"
+          className="flex gap-4 md:space-x-4 overflow-x-scroll scrollbar-hide scroll-smooth py-4 cursor-grab select-none"
         >
           {data.reviews?.map((review) => (
             <Card
@@ -99,7 +100,7 @@ export default function ReviewSection({ data }: { data: ReviewSection }) {
               className="w-96 md:w-98 lg:w-115 shrink-0 rounded-3xl lg:px-4 lg:py-12 bg-white text-black transition-all duration-300 hover:-translate-y-2 hover:border-black hover:border-2"
             >
               <CardContent>
-                <div className="">
+                <div className="z-30">
                   <p className="text-sm lg:text-base font-albert-sans font-medium leading-relaxed mb-4">
                     {review.review}
                   </p>
@@ -126,7 +127,7 @@ export default function ReviewSection({ data }: { data: ReviewSection }) {
               key={i}
               onClick={() => scrollTo(i)}
               className={`h-3 rounded-full transition-all ${
-                index === i ? "w-6 bg-gray-300" : "w-3 bg-black"
+                index === i ? "w-6 bg-white" : "w-3 bg-black"
               }`}
             />
           ))}

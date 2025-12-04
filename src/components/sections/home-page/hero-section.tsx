@@ -94,13 +94,13 @@ export default function HeroSection({
 
         <div className="absolute inset-0 bg-black/40" />
 
-        <div className="relative ms-14">
+        <div className="relative ms-4 md:ms-14">
           <h1 className="text-white text-5xl md:text-6xl font-bold max-w-2xl leading-none">
             {data.section.title}
           </h1>
 
           {data.section.description && (
-            <p className="mt-6 text-white/90 max-w-xl">
+            <p className="mt-6 text-white/90 max-w-xs md:max-w-xl">
               {data.section.description}
             </p>
           )}
@@ -126,7 +126,7 @@ export default function HeroSection({
 
       <SubHeroSection
         ref={nextSectionRef as React.RefObject<HTMLElement>}
-        data={subHeroData}
+        data={subHeroData}  
       />
     </>
   );

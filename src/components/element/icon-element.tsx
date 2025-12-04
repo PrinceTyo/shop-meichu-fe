@@ -13,7 +13,7 @@ const variants: Record<number, IconItem[]> = {
   1: [
     {
       src: "/assets/element/exclude.png",
-      className: "absolute -bottom-10 -left-4 w-50 h-50 opacity-20",
+      className: "absolute -bottom-70 -left-4 w-50 h-50 opacity-20",
     },
     {
       src: "/assets/element/vector.png",
@@ -65,7 +65,7 @@ const variants: Record<number, IconItem[]> = {
   3: [
     {
       src: "/assets/element/exclude.png",
-      className: "absolute -bottom-12 right-1/4 w-70 h-70 opacity-20",
+      className: "absolute -bottom-30 right-1/4 w-70 h-70 opacity-20",
     },
     {
       src: "/assets/element/star1.png",
@@ -108,10 +108,13 @@ export default function IconElement({ variant = 1 }: IconElementProps) {
   const items = useMemo(() => variants[variant] || [], [variant]);
 
   return (
-    <div className="hidden md:block absolute inset-0 z-0">
-      {items.map((item, i) => (
-        <img key={i} src={item.src} className={item.className} />
-      ))}
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {" "}
+      <div className="hidden md:block relative w-full h-full">
+        {items.map((item, i) => (
+          <img key={i} src={item.src} className={item.className} alt="" />
+        ))}
+      </div>
     </div>
   );
 }
