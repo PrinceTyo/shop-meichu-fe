@@ -4,7 +4,6 @@ import ScrollSmootherWrapper from "@/components/ScrollSmootherWrapper";
 import type { Category } from "@/types/strapi/models/category";
 import type { Navbar as NavbarType } from "@/types/strapi/components/shared/navbar";
 import type { StrapiResponse } from "@/types/strapi/response";
-import PagePadding from "./_components/PagePadding";
 
 async function getNavbarData(): Promise<StrapiResponse<NavbarType>> {
   const response = await fetch(
@@ -31,9 +30,7 @@ export default async function UserPageLayout({
   return (
     <>
       <Navbar data={navbarData} categories={categoryData} />
-      <ScrollSmootherWrapper>
-        <PagePadding>{children}</PagePadding>
-      </ScrollSmootherWrapper>
+      <ScrollSmootherWrapper>{children}</ScrollSmootherWrapper>
     </>
   );
 }

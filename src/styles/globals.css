@@ -60,7 +60,7 @@
   --font-inter: "__Inter_generated_name__";
   --font-outfit: var(--font-outfit);
   --font-arial: Arial, sans-serif;
-  --font-albert-sans: "__albertSans_generated_name__";
+  --font-albert-sans: var(--font-albert-sans);
   --radius: 0.625rem;
   --background: #111113;
   --foreground: oklch(0.13 0.028 261.692);

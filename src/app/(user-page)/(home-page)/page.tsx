@@ -18,7 +18,12 @@ import type { HomePage } from "@/types/strapi/single-type/home-page";
 
 async function getHomePageData(): Promise<StrapiResponse<HomePage>> {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/home-page`
+    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/home-page`,
+    {
+      next: {
+        revalidate: 60 * 15,
+      },
+    }
   );
   return await response.json();
 }

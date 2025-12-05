@@ -1,11 +1,13 @@
 import type { BaseSection } from "@/types/strapi/components/shared/base-section";
 import type { CTAButton } from "@/types/strapi/components/shared/cta-button";
 import type { BenefitItem } from "@/types/strapi/components/home-page-item/benefit-item";
+import type { StrapiImage } from "@/types/strapi/media/image";
 
 export interface BenefitSection {
   background: any;
   id: number;
   section: BaseSection;
   ctaButton: CTAButton;
+  backgroundImage: StrapiImage;
   items: BenefitItem[];
 }

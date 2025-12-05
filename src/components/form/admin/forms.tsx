@@ -3,7 +3,12 @@
 import * as z from "zod";
 
 import { toast } from "react-hot-toast";
-import { createImage, createItem, updateItem } from "@/actions/admin";
+import {
+  createImage,
+  createItem,
+  getSpecificItem,
+  updateItem,
+} from "@/actions/admin";
 import { Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { displayValidationError } from "@/lib/validation-handler";
@@ -304,16 +309,21 @@ export function UpsertCategoryForm(props: UpsertFormProps<Category>) {
                 heading: heading as any,
               });
 
+        const category = await getSpecificItem(
+          "categories",
+          (result as any).data!.data.slug
+        );
+
         if (result.type === "success" && isImageChanged) {
           await createImage({
-            morphId: result.data.data.id,
+            morphId: (category as any).data.id,
             file: thumbnail as any,
             apiName: "api::category.category",
             fieldName: "thumbnail",
           });
 
           await createImage({
-            morphId: result.data.data.heading!.id,
+            morphId: (category as any).data.heading!.id,
             file: headingImage as any,
             apiName: "shared.heading",
             fieldName: "thumbnail",
