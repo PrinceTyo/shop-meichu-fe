@@ -81,8 +81,8 @@ export default function RecommendationSection({
               {data.section.description}
             </p>
           </div>
-          <div className="flex items-center md:justify-start lg:justify-start flex-nowrap md:flex-wrap lg:flex-nowrap gap-2 md:gap-5.5 lg:gap-4.5 mb-6 overflow-x-scroll overflow-hidden lg:overflow-x-visible scrollbar-hide z-10">
-            {data.products?.map((product) => (
+          <div className="flex items-center md:justify-start lg:justify-center flex-nowrap md:flex-wrap lg:flex-nowrap gap-2 md:gap-5.5 lg:gap-4.5 mb-6 overflow-x-scroll overflow-hidden lg:overflow-x-visible scrollbar-hide z-10">
+            {data.products?.slice(0, 6).map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}

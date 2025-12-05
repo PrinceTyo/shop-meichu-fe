@@ -90,7 +90,7 @@ export default function TrendingProductSection({
       </div>
 
       <div className="trendCard lg:absolute bg-transparent flex items-center justify-start lg:justify-center gap-2 md:gap-6 lg:gap-4.5 p-4 md:p-6 mb-6 overflow-x-scroll lg:overflow-x-hidden">
-        {data.products?.map((product) => (
+        {data.products?.slice(0, 8).map((product) => (
           <TrendingProduct
             key={product.id}
             product={product}
