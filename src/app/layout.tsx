@@ -9,10 +9,12 @@ import type { Metadata } from "next";
 
 const rubik = Rubik({
   variable: "--font-rubik",
+  fallback: ["sans-serif"],
 });
 
 const inter = Inter({
   variable: "--font-inter",
+  fallback: ["sans-serif"],
 });
 
 const outfit = Outfit({
@@ -25,11 +27,13 @@ const outfit = Outfit({
 const albertSans = Albert_Sans({
   variable: "--font-albert-sans",
   subsets: ["latin"],
+  fallback: ["sans-serif"],
 });
 
 const jogging = localFont({
   src: "../../public/assets/fonts/Jogging.otf",
   variable: "--font-jogging",
+  fallback: ["sans-serif"],
 });
 
 export const metadata: Metadata = {

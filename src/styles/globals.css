@@ -6,10 +6,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-rubik: "Rubik", sans-serif;
-  --font-inter: "Inter", sans-serif;
-  --font-albert-sans: "albertSans", sans-serif;
-  --font-arial: var(--font-arial);
+  --font-rubik: var(--font-rubik);
+  --font-inter: var(--font-inter);
+  --font-outfit: var(--font-outfit);
+  --font-albert-sans: var(--font-albert-sans);
   --font-jogging: var(--font-jogging);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -56,11 +56,12 @@
 }
 
 :root {
-  --font-rubik: "__Rubik_generated_name__";
-  --font-inter: "__Inter_generated_name__";
+  --font-rubik: var(--font-rubik);
+  --font-inter: var(--font-inter);
   --font-outfit: var(--font-outfit);
-  --font-arial: Arial, sans-serif;
   --font-albert-sans: var(--font-albert-sans);
+  --font-jogging: var(--font-jogging);
+  --font-arial: Arial, sans-serif;
   --radius: 0.625rem;
   --background: #111113;
   --foreground: oklch(0.13 0.028 261.692);

@@ -159,7 +159,7 @@ export default function ProductCard({
         </div>
       </Link>
 
-      <div className="text-center px-1.5 space-y-1.5 transition-all duration-300 ease-out relative font-albert-sans">
+      <div className="font-albert-sans text-center px-1.5 space-y-1.5 transition-all duration-300 ease-out relative mt-2">
         <h1 className="text-xs font-semibold">{product.name}</h1>
         <p className="text-xs">{formatCurrency(product.price)}</p>
       </div>

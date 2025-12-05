@@ -11,14 +11,15 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import Image from "@/components/global/image";
+import Link from "next/link";
 
 import type { PhilosophySection } from "@/types/strapi/components/home-page/philosophy-section";
 import type { Category } from "@/types/strapi/models/category";
 
 const sizeClassTemplate = [
-  "size-36 md: 20",
-  "size-28 md: 16",
-  "size-24 md: 12",
+  "md:size-36 size-20",
+  "md:size-28 size-16",
+  "md:size-24 size-12",
 ];
 
 const cardClassPosition = {
@@ -42,16 +43,18 @@ function Card({
       <TooltipTrigger
         asChild
         className={`${position}-card ${cardClassPosition[position]} md:absolute left-1/2`}
+        style={style}
       >
-        <Image
-          src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${category.thumbnail?.url}`}
-          alt={category.name}
-          className={cn(
-            "bg-white object-cover max-w-20 max-h-20 md:max-h-none md:max-w-none rounded-full border-white border-6 shadow-lg",
-            className
-          )}
-          style={style}
-        />
+        <Link href={`/collections/${category.slug}`}>
+          <Image
+            src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${category.thumbnail?.url}`}
+            alt={category.name}
+            className={cn(
+              "bg-white object-cover max-w-20 max-h-20 md:max-h-none md:max-w-none rounded-full border-white border-6 shadow-lg",
+              className
+            )}
+          />
+        </Link>
       </TooltipTrigger>
       <TooltipContent className="font-albert-sans text-white">
         {category.name}
