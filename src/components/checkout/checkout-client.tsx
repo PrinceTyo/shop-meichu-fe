@@ -59,11 +59,11 @@ export default function CheckoutClient() {
   return (
     <form
       id="checkout-form"
-      className="flex gap-6"
+      className="flex flex-col lg:flex-row gap-4 md:gap-6 px-4 md:px-6 lg:px-0"
       onSubmit={form.handleSubmit(onSubmit)}
     >
-      <CheckoutForm form={form} className="flex-1" />
-      <OrderSummary form={form} className="flex-1" />
+      <CheckoutForm form={form} className="flex-1 order-2 lg:order-1" />
+      <OrderSummary form={form} className="flex-1 order-1 lg:order-2" />
     </form>
   );
 }

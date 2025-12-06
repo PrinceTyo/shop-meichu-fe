@@ -2,7 +2,6 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
 import ProductCard from "@/components/card/product-card";
@@ -16,34 +15,17 @@ export default function RecommendationSection({
   data: RecommendationSection;
 }) {
   const sectionWardrobe = useRef<HTMLDivElement | null>(null);
-  const isMobile = useIsMobile();
 
   useGSAP(() => {
     if (!sectionWardrobe.current) return;
 
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) return;
+
     const productCards = gsap.utils.selector(sectionWardrobe.current)(
       ".recommendation-card"
     );
-
-    if (isMobile) {
-      gsap.fromTo(
-        productCards,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          stagger: 0.15,
-          ease: "power1.out",
-          scrollTrigger: {
-            trigger: sectionWardrobe.current,
-            start: "top 90%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-      return;
-    }
 
     gsap.set(productCards, { opacity: 0, y: 150, scale: 0.8 });
 
@@ -63,7 +45,7 @@ export default function RecommendationSection({
         ease: "sine.out",
       }),
     });
-  }, [isMobile]);
+  }, []);
 
   return (
     <>

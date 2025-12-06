@@ -28,6 +28,7 @@ export default function MobileGalleryGrid({
         slideAnimationClassName={slideAnimationClassName}
         exitAnimationClassName={exitAnimationClassName}
         className="min-h-[280px]"
+        showOverlay={true}
       />
 
       <div className="grid grid-cols-2 gap-4">
@@ -49,6 +50,7 @@ export default function MobileGalleryGrid({
           slideAnimationClassName={slideAnimationClassName}
           exitAnimationClassName={exitAnimationClassName}
           className="min-h-[200px]"
+          showOverlay={false}
         />
       </div>
 
@@ -59,6 +61,7 @@ export default function MobileGalleryGrid({
         slideAnimationClassName={slideAnimationClassName}
         exitAnimationClassName={exitAnimationClassName}
         className="min-h-[220px]"
+        showOverlay={false}
       />
 
       <div className="grid grid-cols-2 gap-4">
@@ -71,6 +74,7 @@ export default function MobileGalleryGrid({
           className="min-h-[220px]"
           index={getIndex(4)}
           nextIndex={getNextIndexFor(4)}
+          showButton={true}
         />
 
         <CategoryImageCard
@@ -80,6 +84,7 @@ export default function MobileGalleryGrid({
           slideAnimationClassName={slideAnimationClassName}
           exitAnimationClassName={exitAnimationClassName}
           className="min-h-[220px]"
+          showOverlay={false}
         />
       </div>
 

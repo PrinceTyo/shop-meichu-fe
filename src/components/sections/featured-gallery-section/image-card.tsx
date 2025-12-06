@@ -8,6 +8,7 @@ interface CategoryImageCardProps {
   slideAnimationClassName?: string;
   exitAnimationClassName?: string;
   className?: string;
+  showOverlay?: boolean;
 }
 
 function getImageUrl(url?: string): string {
@@ -32,20 +33,21 @@ export default function CategoryImageCard({
   slideAnimationClassName,
   exitAnimationClassName,
   className = "",
+  showOverlay = false,
 }: CategoryImageCardProps) {
   const currentImageUrl = getImageUrl(item?.category?.thumbnail?.url);
   const nextImageUrl = getImageUrl(nextItem?.category?.thumbnail?.url);
 
   const CardOverlay = ({ data }: { data: FeaturedCategoryItem }) => {
-    if (!data) return null;
+    if (!data || !showOverlay) return null;
 
     return (
       <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent">
         <div className="absolute bottom-6 left-6 right-6">
-          <h3 className="text-xl md:text-2xl font-semibold font-albert-sans text-white mb-2">
+          <h3 className="text-xl lg:text-2xl font-semibold font-albert-sans text-white mb-2">
             {data.title || "Untitled"}
           </h3>
-          <p className="text-xs md:text-sm text-white/90 font-albert-sans mb-3">
+          <p className="text-xs lg:text-sm text-white/90 font-albert-sans mb-3">
             {data.description || ""}
           </p>
         </div>
@@ -86,7 +88,7 @@ export default function CategoryImageCard({
           alt={
             isAnimating && nextItem
               ? nextItem.category?.thumbnail?.alternativeText ||
-                nextItem.title || 
+                nextItem.title ||
                 "Category image"
               : item.category?.thumbnail?.alternativeText ||
                 item.title ||
@@ -98,5 +100,4 @@ export default function CategoryImageCard({
       </div>
     </div>
   );
-
 }

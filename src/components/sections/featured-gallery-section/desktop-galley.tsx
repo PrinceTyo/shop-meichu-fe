@@ -28,6 +28,7 @@ export default function DesktopGalleryGrid({
         slideAnimationClassName={slideAnimationClassName}
         exitAnimationClassName={exitAnimationClassName}
         className="col-span-2 row-span-2"
+        showOverlay={true}
       />
 
       <CategoryCard
@@ -48,6 +49,7 @@ export default function DesktopGalleryGrid({
         slideAnimationClassName={slideAnimationClassName}
         exitAnimationClassName={exitAnimationClassName}
         className="row-span-2 col-start-3 row-start-2"
+        showOverlay={false}
       />
 
       <CategoryImageCard
@@ -57,6 +59,7 @@ export default function DesktopGalleryGrid({
         slideAnimationClassName={slideAnimationClassName}
         exitAnimationClassName={exitAnimationClassName}
         className="row-span-2 col-start-2 row-start-3"
+        showOverlay={false}
       />
 
       <CategoryCard
@@ -68,6 +71,7 @@ export default function DesktopGalleryGrid({
         className="row-span-2 col-start-1 row-start-3"
         index={getIndex(4)}
         nextIndex={getNextIndexFor(4)}
+        showButton={true}
       />
 
       <CategoryCard
@@ -88,6 +92,7 @@ export default function DesktopGalleryGrid({
         slideAnimationClassName={slideAnimationClassName}
         exitAnimationClassName={exitAnimationClassName}
         className="row-span-2 col-start-4 row-start-3"
+        showOverlay={false}
       />
 
       <CategoryCard

@@ -8,6 +8,7 @@ import { SplitText } from "gsap/SplitText";
 import { useMemo, useRef, useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import StrapiImage from "@/components/global/strapi-image";
+import { splitDescriptionIntoParagraphs } from "@/lib/paragraph";
 
 import type { CollectionSection } from "@/types/strapi/components/home-page/collection-section";
 import Link from "next/link";
@@ -22,9 +23,18 @@ export default function CollectionSection({
   const [activeCollectionId, setActiveCollectionId] = useState<number>(
     data.collections?.[1]?.id || data.collections[0].id
   );
+
   const activeCollection = useMemo(
     () => data.collections?.find((col) => col.id === activeCollectionId),
-    [activeCollectionId]
+    [activeCollectionId, data.collections]
+  );
+
+  const [firstParagraph, secondParagraph] = useMemo(
+    () =>
+      splitDescriptionIntoParagraphs(
+        activeCollection?.section.description || ""
+      ),
+    [activeCollection?.section.description]
   );
 
   useGSAP(
@@ -251,25 +261,17 @@ export default function CollectionSection({
                     <div
                       key={collection.id}
                       onClick={() => setActiveCollectionId(collection.id)}
-                      className={`rounded-full h-20 flex items-center cursor-pointer transition-all duration-300
-                      ${
-                        isActive
-                          ? "bg-white text-black shadow-md border-2 border-black justify-start w-[40%] gap-4 px-3"
-                          : "bg-white/20 backdrop-blur-lg w-24 border border-white justify-center"
-                      }
-                    `}
+                      className={`rounded-full h-20 flex items-center cursor-pointer transition-all duration-300 relative overflow-hidden ${isActive ? "bg-white text-black shadow-md border-2 border-black justify-center w-[40%] px-3" : "bg-white/20 backdrop-blur-lg w-24 border border-white justify-center"}`}
                     >
                       <StrapiImage
                         src={collection.category.thumbnail}
                         alt={collection.category?.name}
                         size="thumbnail"
-                        className={`rounded-full object-cover transition-all duration-300
-                        ${isActive ? "w-16 h-16 absolute" : "w-17 h-17"}
-                      `}
+                        className={`rounded-full object-cover transition-all duration-300 shrink-0 ${isActive ? "w-16 h-16 absolute left-3" : "w-17 h-17"}`}
                       />
 
                       {isActive && (
-                        <h1 className="text-[26px] font-albert-sans font-normal flex-1 text-center truncate">
+                        <h1 className="text-xl md:text-2xl font-albert-sans font-medium text-center truncate px-20">
                           {collection.category?.name}
                         </h1>
                       )}
@@ -286,9 +288,16 @@ export default function CollectionSection({
                     {activeCollection?.category.name}
                   </h1>
 
-                  <p className="text-xs lg:text-sm leading-relaxed opacity-80 font-albert-sans">
-                    {activeCollection?.section.description}
-                  </p>
+                  <div className="space-y-4">
+                    <p className="text-xs lg:text-sm leading-relaxed opacity-80 font-albert-sans">
+                      {firstParagraph}
+                    </p>
+                    {secondParagraph && (
+                      <p className="text-xs lg:text-sm leading-relaxed opacity-80 font-albert-sans">
+                        {secondParagraph}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="image-transform-trigger relative w-full">
@@ -414,9 +423,16 @@ export default function CollectionSection({
             <h1 className="text-2xl font-bold text-gray-900 leading-tight font-albert-sans">
               {activeCollection?.section.title}
             </h1>
-            <p className="mt-4 text-xs leading-relaxed text-gray-800 font-albert-sans">
-              {activeCollection?.section.description}
-            </p>
+            <div className="mt-4 space-y-3">
+              <p className="text-xs leading-relaxed text-gray-800 font-albert-sans">
+                {firstParagraph}
+              </p>
+              {secondParagraph && (
+                <p className="text-xs leading-relaxed text-gray-800 font-albert-sans">
+                  {secondParagraph}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="w-full mb-6">

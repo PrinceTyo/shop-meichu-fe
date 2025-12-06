@@ -113,7 +113,7 @@ export default function BenefitSection({ data }: { data: BenefitSection }) {
           className="w-full sm:min-w-max sm:flex-1 overflow-x-auto sm:overflow-visible me-4"
         >
           <div className="flex gap-8 sm:gap-12 px-5 sm:px-0 sm:pr-16 mb-6 pe-4">
-            {data.items.map((item) => (
+            {data.items.slice(0,5).map((item) => (
               <div key={item.id} className="relative overflow-x-visible">
                 <div className="w-fit p-1 sm:p-2.5 rounded-2xl sm:rounded-4xl flex items-center justify-center shadow-md bg-white">
                   <div className="rounded-xl sm:rounded-3xl group overflow-hidden">

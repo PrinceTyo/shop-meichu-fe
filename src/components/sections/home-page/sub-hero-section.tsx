@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { Button } from "@/components/ui/button";
 import gsap from "gsap";
 
 import type { SubHeroSection } from "@/types/strapi/components/home-page/sub-hero-section";
+import Link from "next/link";
 
 export default function SubHeroSection({
   ref,
@@ -19,29 +19,9 @@ export default function SubHeroSection({
   useGSAP(() => {
     const isMobile = window.innerWidth < 768;
 
-    const buttons = gsap.utils.selector(collectionsRef.current!)("button");
+    if (!isMobile) {
+      const links = gsap.utils.selector(collectionsRef.current!)("a");
 
-    if (isMobile) {
-      gsap.fromTo(
-        buttons,
-        {
-          opacity: 0,
-          y: 30,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          stagger: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: collectionsRef.current!,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    } else {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: collectionsRef.current!,
@@ -50,15 +30,15 @@ export default function SubHeroSection({
         },
       });
 
-      buttons.forEach((button, i) =>
+      links.forEach((link, i) =>
         tl.fromTo(
-          button,
+          link,
           {
-            y: 80 * (i % 2 ? 1 : -1),
+            y: 40 * (i % 2 ? 1 : -1),
           },
           {
             y: 0,
-            duration: 1,
+            duration: 0.5,
             ease: "power3.out",
           },
           i && "<"
@@ -66,6 +46,9 @@ export default function SubHeroSection({
       );
     }
   }, []);
+
+  const firstTwo = data.items.slice(0, 2);
+  const remaining = data.items.slice(2);
 
   return (
     <section
@@ -85,14 +68,55 @@ export default function SubHeroSection({
         {data.description}
       </h2>
 
+      <div className="flex md:hidden flex-col gap-4 mt-12 px-4 w-full max-w-md">
+        <div className="flex gap-3 justify-center">
+          {firstTwo.map((item, icon) => (
+            <Link
+              href={`/collections/${item.category?.slug || ""}`}
+              key={icon}
+              className="relative button-collections flex-1 h-auto bg-white border border-white/20 rounded-full backdrop-blur-md hover:bg-white/80 transition-all duration-300 hover:scale-95 active:scale-90 px-4 py-2 flex items-center justify-center gap-2"
+            >
+              <img
+                src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${item.icon?.url}`}
+                className="size-6 rounded-full object-cover"
+                alt={item.category?.name || "Category icon"}
+              />
+              <span className="text-black text-sm font-bold whitespace-nowrap">
+                {item.category?.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-3 justify-center">
+          {remaining.map((item, i) => (
+            <Link
+              href={`/collections/${item.category?.slug || ""}`}
+              key={i + 2}
+              className="relative button-collections h-auto bg-white border border-white/20 rounded-full backdrop-blur-md hover:bg-white/80 transition-all duration-300 hover:scale-95 active:scale-90 px-4 py-2 flex items-center justify-center gap-2"
+            >
+              <img
+                src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${item.icon?.url}`}
+                className="size-6 rounded-full object-cover"
+                alt={item.category?.name || "Category icon"}
+              />
+              <span className="text-black text-sm font-bold whitespace-nowrap">
+                {item.category?.name}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <div
         ref={collectionsRef}
-        className="flex flex-wrap justify-center gap-6 mt-20 px-4"
+        className="hidden md:flex flex-wrap justify-center gap-6 mt-20 px-4"
       >
-        {data.items.map((item, i) => (
-          <Button
-            key={i}
-            className="relative button-collections h-auto! bg-white border border-white/20 rounded-full backdrop-blur-md hover:bg-white/80 transition-all"
+        {data.items.map((item, icon) => (
+          <Link
+            href={`/collections/${item.category?.slug || ""}`}
+            key={icon}
+            className="relative button-collections h-auto bg-white border border-white/20 rounded-full backdrop-blur-md hover:bg-white/80 transition-all duration-300 hover:scale-95 active:scale-90 px-6 py-3 flex items-center justify-center gap-3"
           >
             <img
               src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${item.icon?.url}`}
@@ -102,7 +126,7 @@ export default function SubHeroSection({
             <span className="text-black text-lg font-bold">
               {item.category?.name}
             </span>
-          </Button>
+          </Link>
         ))}
       </div>
     </section>
