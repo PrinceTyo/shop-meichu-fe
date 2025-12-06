@@ -85,9 +85,10 @@ export default function OverviewSection({
 
       ScrollTrigger.create({
         trigger: section,
-        start: "top top",
+        start: "top top+=68", 
         end: `+=${totalScrollDistance}`,
         pin: true,
+        pinSpacing: true,
         scrub: 4,
         invalidateOnRefresh: true,
 

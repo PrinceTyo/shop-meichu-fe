@@ -103,7 +103,7 @@ export default function ProductDetailSection({
       onUpdate: (self) => {
         const progress = self.progress;
         const fromBottom = 2;
-        const toTop = 8;
+        const toTop = 5;
         const viewportHeight = window.innerHeight / 16;
 
         const currentBottom =
@@ -188,7 +188,7 @@ export default function ProductDetailSection({
         <Footer />
       </ScrollSmootherWrapper>
 
-      <nav
+     <nav
         ref={navRef}
         className="fixed h-fit left-1/2 -translate-x-1/2 md:left-8 md:translate-x-0 backdrop-blur-md bg-white/60 rounded-full shadow-lg px-1 py-1 z-50"
       >
@@ -212,7 +212,7 @@ export default function ProductDetailSection({
             </button>
           ))}
         </div>
-      </nav>
+      </nav> 
     </>
   );
 }
