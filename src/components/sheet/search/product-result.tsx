@@ -2,21 +2,19 @@
 
 import { useRef, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import ProductCard from "@/components/card/product-card";
-import { Product } from "@/types/search";
 import { useIsMobile } from "@/hooks/use-mobile";
-import Link from "next/link";
+import { useSearch } from "@/context/search-provider";
+import ProductCard from "@/components/card/product-card";
+
+import type { Product } from "@/types/strapi/models/product";
 
 interface ProductResultsProps {
   products: Product[];
-  searchQuery: string;
 }
 
-export default function ProductResults({
-  products,
-  searchQuery,
-}: ProductResultsProps) {
+export default function ProductResults({ products }: ProductResultsProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { searchQuery } = useSearch();
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -105,21 +103,18 @@ export default function ProductResults({
           className="flex gap-6 pb-4 overflow-x-auto scrollbar-hide no-scrollbar cursor-grab select-none"
         >
           {products.map((product) => (
-            <div key={product.id} className="inline-block shrink-0">
-              <Link href={product.href} className="cursor-pointer">
-                <ProductCard
-                  product={product}
-                  size={isMobile ? "lg" : "sm"}
-                  className="pointer-events-none"
-                />
-              </Link>
-            </div>
+            <ProductCard
+              key={product.id}
+              product={product}
+              size={isMobile ? "lg" : "sm"}
+              className="pointer-events-none"
+            />
           ))}
         </div>
       ) : (
         <div className="text-center py-10">
           <p className="text-gray-500 text-lg">
-            No products found for "{searchQuery}"
+            {searchQuery ? "No products found" : "Type something to search"}
           </p>
         </div>
       )}

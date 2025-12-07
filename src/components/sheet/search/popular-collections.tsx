@@ -5,15 +5,14 @@ import Link from "next/link";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Collection } from "@/types/search";
 
-interface PopularCollectionsProps {
-  collections: Collection[];
-}
+import type { Category } from "@/types/strapi/models/category";
 
 export default function PopularCollections({
-  collections,
-}: PopularCollectionsProps) {
+  categories,
+}: {
+  categories: Category[];
+}) {
   const [hoveredCollectionId, setHoveredCollectionId] = useState<number | null>(
     null
   );
@@ -27,14 +26,11 @@ export default function PopularCollections({
           </h1>
         </div>
         <ScrollArea className="lg:h-125 mt-4 lg:mt-10 text-left">
-          {collections.map((collection) => (
-            <div
-              key={collection.id}
-              className="flex flex-col gap-2 mt-1 lg:mt-3"
-            >
+          {categories.map((category) => (
+            <div key={category.id} className="flex flex-col gap-2 mt-1 lg:mt-3">
               <Link
-                href={collection.href}
-                onMouseEnter={() => setHoveredCollectionId(collection.id)}
+                href={`/collections/${category.slug}`}
+                onMouseEnter={() => setHoveredCollectionId(category.id)}
                 onMouseLeave={() => setHoveredCollectionId(null)}
                 className="flex gap-3 items-center group hover:translate-x-1 transition-transform"
               >
@@ -44,19 +40,19 @@ export default function PopularCollections({
                 <div className="relative overflow-hidden h-9">
                   <div
                     className={`transition-transform duration-300 ${
-                      hoveredCollectionId === collection.id
+                      hoveredCollectionId === category.id
                         ? "-translate-y-9"
                         : "translate-y-0"
                     }`}
                   >
                     <div className="h-9 flex items-center">
                       <h1 className="text-base lg:text-2xl font-rubik font-medium text-left">
-                        {collection.name}
+                        {category.name}
                       </h1>
                     </div>
                     <div className="h-9 flex items-center">
                       <h1 className="text-base lg:text-2xl font-rubik font-medium text-left">
-                        {collection.name}
+                        {category.name}
                       </h1>
                     </div>
                   </div>

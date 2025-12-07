@@ -1,14 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import SearchLink from "./search-navbar/search-link";
 import ShoppingCart from "@/components/sheet/shopping-cart";
+import { useSearch } from "@/context/search-provider";
+import { SearchIcon } from "lucide-react";
 import { FaRegUserCircle } from "react-icons/fa";
 
 export default function NavbarActions() {
+  const { setIsSearchOpen } = useSearch();
+
   return (
     <>
-      <SearchLink />
+      <button
+        onClick={() => setIsSearchOpen(true)}
+        className="text-white border-none hover:bg-gray-900 p-2 rounded-full flex items-center justify-center"
+      >
+        <SearchIcon className="h-5 w-5" />
+      </button>
 
       <Link
         href="/auth/login"
