@@ -1,5 +1,5 @@
-import CheckoutClient from "@/components/checkout/checkout-client";
-import CheckoutHeader from "@/components/checkout/checkout-header";
+import CheckoutClient from "./_components/sections/checkout-client";
+import CheckoutHeader from "./_components/sections/checkout-header";
 
 import type { Metadata } from "next";
 

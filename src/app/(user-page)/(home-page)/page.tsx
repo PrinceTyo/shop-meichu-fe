@@ -1,32 +1,17 @@
-import Footer from "@/components/footer/footer";
-import HeroSection from "@/components/sections/home-page/hero-section";
-import TrendingProductSection from "@/components/sections/home-page/trending-product-section";
-import BenefitSection from "@/components/sections/home-page/benefit-section";
-import PhilosophySection from "@/components/sections/home-page/philosophy-section";
-import CollectionSection from "@/components/sections/home-page/collection-section";
-import BundleSection from "@/components/sections/home-page/bundle-section";
-import RecommendationSection from "@/components/sections/home-page/recommendation-section";
-import TrendingStyleSection from "@/components/sections/home-page/trending-style-section";
-import ReviewSection from "@/components/sections/home-page/review-section";
-import BestSellerSection from "@/components/sections/home-page/best-seller-section";
-import FeaturedCategorySection from "@/components/sections/home-page/featured-category-section";
-import LatestTrendSection from "@/components/sections/home-page/latest-trend-section";
-import FAQSection from "@/components/sections/home-page/faq-section";
-
-import type { StrapiResponse } from "@/types/strapi/response";
-import type { HomePage } from "@/types/strapi/single-type/home-page";
-
-async function getHomePageData(): Promise<StrapiResponse<HomePage>> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/home-page`,
-    {
-      next: {
-        revalidate: 60 * 15,
-      },
-    }
-  );
-  return await response.json();
-}
+import HeroSection from "./_components/sections/hero-section";
+import TrendingProductSection from "./_components/sections/trending-product-section";
+import BenefitSection from "./_components/sections/benefit-section";
+import PhilosophySection from "./_components/sections/philosophy-section";
+import CollectionSection from "./_components/sections/collection-section";
+import BundleSection from "./_components/sections/bundle-section";
+import RecommendationSection from "./_components/sections/recommendation-section";
+import TrendingStyleSection from "./_components/sections/trending-style-section";
+import ReviewSection from "@/components/sections/review-section";
+import BestSellerSection from "./_components/sections/best-seller-section";
+import FeaturedCategorySection from "./_components/sections/featured-category-section";
+import LatestTrendSection from "./_components/sections/latest-trend-section";
+import FAQSection from "./_components/sections/faq-section";
+import { getHomePageData } from "@/lib/api/homepage";
 
 export default async function Home() {
   const homePageData = await getHomePageData();
@@ -69,7 +54,6 @@ export default async function Home() {
       {homePageData.data.faqSection && (
         <FAQSection data={homePageData.data.faqSection} />
       )}
-      <Footer />
     </>
   );
 }

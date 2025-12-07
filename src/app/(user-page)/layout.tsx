@@ -1,15 +1,9 @@
-import NavbarServer from "@/components/navbar/navbar-server";
-import ScrollSmootherWrapper from "@/components/ScrollSmootherWrapper";
+import MainLayout from "@/components/layout/main-layout";
 
 export default async function UserPageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      <NavbarServer />
-      <ScrollSmootherWrapper>{children}</ScrollSmootherWrapper>
-    </>
-  );
+  return <MainLayout>{children}</MainLayout>;
 }

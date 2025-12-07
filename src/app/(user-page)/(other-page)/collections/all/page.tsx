@@ -1,20 +1,11 @@
 import { getCollectionData } from "@/lib/api/collection";
-import IconElement from "@/components/element/icon-element";
-import Footer from "@/components/footer/footer";
+import { getAllProducts } from "@/lib/api/products";
+import IconElement from "@/components/ui/icon-element";
 import ProductCard from "@/components/card/product-card";
 import HeaderPage from "@/components/header/header-page";
 import Link from "next/link";
 
 import type { Metadata } from "next";
-import type { StrapiResponse } from "@/types/strapi/response";
-import type { Product } from "@/types/strapi/models/product";
-
-async function getAllProducts(): Promise<StrapiResponse<Product[]>> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/products?populate=*`
-  );
-  return await res.json();
-}
 
 export const metadata: Metadata = {
   title: "Collections – Shop Meichu",
@@ -22,7 +13,11 @@ export const metadata: Metadata = {
 
 export default async function CollectionsAllProductsPage() {
   const { data: collection } = await getCollectionData();
-  const { data: products } = await getAllProducts();
+  const { data: products } = await getAllProducts({
+    populate: {
+      images: true,
+    },
+  });
 
   return (
     <div className="bg-[#D9E4E8]">
@@ -49,8 +44,6 @@ export default async function CollectionsAllProductsPage() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

@@ -1,11 +1,5 @@
-import VerifyForm from "@/components/auth/VerifyForm";
-import Footer from "@/components/footer/footer";
+import VerifyForm from "./_components/form/verify-form";
 
 export default function VerifyPage() {
-  return (
-    <>
-      <VerifyForm />
-      <Footer />
-    </>
-  );
+  return <VerifyForm />;
 }

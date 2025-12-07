@@ -10,10 +10,24 @@ export async function getAllCategories(
   const response = await extendedFetch("/categories", {
     init: {
       next: {
-        revalidate: 60,
+        revalidate: 60 * 10,
       },
     },
     ...params,
+  });
+
+  return response.json();
+}
+
+export async function getCategoryData(
+  slug: string
+): Promise<StrapiResponse<Category>> {
+  const response = await extendedFetch(`/categories/${slug}`, {
+    init: {
+      next: {
+        revalidate: 60,
+      },
+    },
   });
 
   return response.json();

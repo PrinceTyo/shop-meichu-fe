@@ -1,17 +1,17 @@
 "use server";
 
-import { StrapiResponse } from "@/types/strapi/response";
-import { Collection } from "@/types/strapi/single-type/collection";
+import { extendedFetch } from "./base";
+import type { StrapiResponse } from "@/types/strapi/response";
+import type { Collection } from "@/types/strapi/single-type/collection";
 
 export async function getCollectionData(): Promise<StrapiResponse<Collection>> {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/collection`,
-    {
+  const response = await extendedFetch("/collection", {
+    init: {
       next: {
-        revalidate: 1,
+        revalidate: 60 * 15,
       },
-    }
-  );
+    },
+  });
 
   return response.json();
 }

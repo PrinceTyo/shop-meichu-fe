@@ -1,9 +1,10 @@
 import "../styles/globals.css";
 import { Inter, Rubik, Outfit, Albert_Sans } from "next/font/google";
-import localFont from "next/font/local";
 import { Toaster } from "react-hot-toast";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { CartProvider } from "@/context/cart-provider";
+import { FooterProvider } from "@/context/footer-provider";
+import localFont from "next/font/local";
 
 import type { Metadata } from "next";
 
@@ -53,7 +54,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <NuqsAdapter>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            <FooterProvider>{children}</FooterProvider>
+          </CartProvider>
         </NuqsAdapter>
         <Toaster
           position="top-center"

@@ -1,7 +1,6 @@
 import { getCollectionData } from "@/lib/api/collection";
 import { getAllCategories } from "@/lib/api/categories";
 import CollectionsCard from "@/components/card/collections-card";
-import Footer from "@/components/footer/footer";
 import HeaderPage from "@/components/header/header-page";
 
 import type { Metadata } from "next";
@@ -47,7 +46,6 @@ export default async function CollectionsAllPage() {
           />
         ))}
       </div>
-      <Footer />
     </div>
   );
 }

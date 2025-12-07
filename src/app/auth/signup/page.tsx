@@ -1,11 +1,5 @@
-import RegisterForm from "@/components/auth/SignUpForm";
-import Footer from "@/components/footer/footer";
+import SignUpForm from "./_components/form/sign-up-form";
 
 export default function SignUpPage() {
-  return (
-    <>
-    <RegisterForm/>
-    <Footer/>
-    </>
-  );
+  return <SignUpForm />;
 }

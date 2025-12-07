@@ -1,18 +1,8 @@
-import Footer from "@/components/footer/footer";
 import HeaderPage from "@/components/header/header-page";
-import AboutSection from "@/components/sections/about-us/about-section";
-import VideoSection from "@/components/sections/about-us/video-section";
-import ReviewSection from "@/components/sections/home-page/review-section";
-
-import type { StrapiResponse } from "@/types/strapi/response";
-import type { AboutUs } from "@/types/strapi/single-type/about-us";
-
-async function getAboutUsData(): Promise<StrapiResponse<AboutUs>> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/about-us`
-  );
-  return await res.json();
-}
+import AboutSection from "./_components/sections/about-section";
+import VideoSection from "./_components/sections/video-section";
+import ReviewSection from "@/components/sections/review-section";
+import { getAboutUsData } from "@/lib/api/about-us";
 
 export default async function AboutUsPage() {
   const { data } = await getAboutUsData();
@@ -40,7 +30,6 @@ export default async function AboutUsPage() {
       />
 
       <ReviewSection data={data.reviewSection} />
-      <Footer />
     </>
   );
 }

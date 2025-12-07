@@ -10,10 +10,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { logout } from "@/actions/admin";
-
-import type { User } from "@/types/strapi/user";
 import { getAvatarInitials } from "@/lib/utils";
 import { useMemo } from "react";
+
+import type { User } from "@/types/strapi/user";
 
 export function ProfileDropdown({ user }: { user: User }) {
   const initial = useMemo(

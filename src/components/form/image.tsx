@@ -6,7 +6,7 @@ import {
   ImageCrop,
   ImageCropApply,
   ImageCropContent,
-} from "@/components/ui/shadcn-io/image-crop";
+} from "@/components/ui/image-crop";
 import {
   Dialog,
   DialogContent,

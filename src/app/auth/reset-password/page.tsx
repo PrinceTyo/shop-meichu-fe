@@ -1,11 +1,5 @@
-import ForgotPasswordForm from "@/components/auth/ResetPasswordForm";
-import Footer from "@/components/footer/footer";
+import ResetPasswordForm from "./_components/form/reset-password-form";
 
 export default function ForgotPasswordPage() {
-  return (
-    <>
-      <ForgotPasswordForm />
-      <Footer/>
-    </>
-  );
+  return <ResetPasswordForm />;
 }

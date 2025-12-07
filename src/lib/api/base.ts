@@ -1,8 +1,9 @@
+import { notFound } from "next/navigation";
 import qs from "qs";
 
 export interface ExtendedParams {
   init?: RequestInit;
-  populate?: object;
+  populate?: object | string;
   sort?: string[];
   filters?: object;
 }
@@ -31,5 +32,12 @@ export async function extendedFetch(
     `${process.env.NEXT_PUBLIC_BACKEND_API_URL}${input}?${query}`,
     params?.init
   );
+
+  if (!response.ok) {
+    throw new Error("An error occured!");
+  }
+
+  if (response.status === 404) return notFound();
+
   return response;
 }
