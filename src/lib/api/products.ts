@@ -29,7 +29,7 @@ export async function getAllProducts(
   const res = await extendedFetch("/products", {
     init: {
       next: {
-        revalidate: 60 * 15,
+        revalidate: 0,
       },
     },
     ...params,

@@ -31,6 +31,7 @@ import { redirect } from "next/navigation";
 import { MarkRequired } from "@/components/form/mark-required";
 import { upsertCategorySchema } from "@/schema/categories";
 import { upsertProductSchema } from "@/schema/products";
+import InputColor from "@/components/form/input-color";
 import UpsertForm from "@/components/form/admin/base/upsert-form";
 
 import type { Category } from "@/types/strapi/models/category";
@@ -118,15 +119,7 @@ export function UpsertCategoryForm(props: UpsertFormProps<Category>) {
                       Background Color
                       <MarkRequired />
                     </FieldLabel>
-                    <Input
-                      {...field}
-                      type="color"
-                      minLength={7}
-                      maxLength={7}
-                      required
-                      id={`form-${formId}-input-background-color`}
-                      aria-invalid={fieldState.invalid}
-                    />
+                    <InputColor {...field} />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -468,13 +461,14 @@ export function UpsertProductForm(
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor={`form-${formId}-input-image`}>
-                    Image
+                    Images
                     <MarkRequired />
                   </FieldLabel>
                   <MultipleImageField
                     defaultValue={defaultImages}
                     field={field}
                     setIsImageChanged={setIsImageChanged}
+                    maximumImage={5}
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />

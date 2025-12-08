@@ -175,17 +175,25 @@ export function MultipleImageField<
             <>
               <Button
                 variant="outline"
-                onClick={() => changeActiveImage(currentActiveImage - 1)}
+                disabled={currentActiveImage - 1 < 0}
+                onClick={() => {
+                  if (currentActiveImage - 1 < 0) return;
+                  changeActiveImage(currentActiveImage - 1);
+                }}
                 type="button"
-                className="absolute left-1 top-1/2 -translate-1/2"
+                className="absolute left-5 top-1/2 -translate-x-1/2 -translate-y-1/2"
               >
                 <ChevronLeft />
               </Button>
               <Button
                 variant="outline"
-                onClick={() => changeActiveImage(currentActiveImage + 1)}
+                disabled={currentActiveImage + 1 >= selectedFiles.length}
+                onClick={() => {
+                  if (currentActiveImage + 1 >= selectedFiles.length) return;
+                  changeActiveImage(currentActiveImage + 1);
+                }}
                 type="button"
-                className="absolute right-1 top-1/2 -translate-1/2"
+                className="absolute right-5 top-1/2 translate-x-1/2 -translate-y-1/2"
               >
                 <ChevronRight />
               </Button>
@@ -194,7 +202,7 @@ export function MultipleImageField<
         </section>
 
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogContent className="sm:max-w-[425px] font-outfit!">
+          <DialogContent className="dark sm:max-w-[425px] font-outfit!">
             <DialogHeader>
               <DialogTitle className="text-white">Edit image</DialogTitle>
             </DialogHeader>
@@ -240,6 +248,7 @@ export function MultipleImageField<
       <Input
         accept="image/*"
         onChange={handleFileChange}
+        multiple
         maxLength={maximumImage}
         type="file"
       />

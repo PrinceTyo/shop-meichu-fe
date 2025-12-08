@@ -1,8 +1,13 @@
 "use server";
 
-import { StrapiResponse } from "@/types/strapi/response";
-import { Category } from "@/types/strapi/models/category";
-import { extendedFetch, type ExtendedParams } from "./base";
+import {
+  extendedFetch,
+  extendedFetchWithAuth,
+  type ExtendedParams,
+} from "./base";
+import type { StrapiResponse } from "@/types/strapi/response";
+import type { Category } from "@/types/strapi/models/category";
+import type { ResultContract } from "@/types/api-return";
 
 export async function getAllCategories(
   params?: ExtendedParams
@@ -31,4 +36,27 @@ export async function getCategoryData(
   });
 
   return response.json();
+}
+
+export async function deleteProduct(
+  slug: string,
+  params?: ExtendedParams
+): Promise<ResultContract<null>> {
+  const response = await extendedFetchWithAuth(`/categories/${slug}`, {
+    init: {
+      method: "DELETE",
+    },
+    ...params,
+  });
+
+  if (!response.ok) {
+    if (response.status === 400) {
+      const { error } = await response.json();
+      return { type: "validation", validation: error };
+    }
+
+    return { type: "error", message: "An error occurred" };
+  }
+
+  return { type: "success", data: null };
 }

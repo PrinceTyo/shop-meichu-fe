@@ -386,6 +386,7 @@ export const orderColumn: ColumnDef<Order>[] = [
 
             {row.getValue("orderStatus") === "pending" && (
               <DropdownMenuItem
+                className="text-red-500"
                 onClick={async () => {
                   const result = await cancelOrder(row.original.documentId);
 
