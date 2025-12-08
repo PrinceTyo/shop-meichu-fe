@@ -162,16 +162,18 @@ export default function ProductDetailSection({
 
   return (
     <>
-      <OverviewSection ref={sections.overview.ref} product={product} />
-      <DescriptionSection
-        ref={sections.description.ref}
-        description={product.description}
-        image={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${product.images?.[0]?.url || ""}`}
-      />
-      <SpecificationsSection
-        ref={sections.specification.ref}
-        product={product}
-      />
+      <div className="bg-black">
+        <OverviewSection ref={sections.overview.ref} product={product} />
+        <DescriptionSection
+          ref={sections.description.ref}
+          description={product.description}
+          image={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${product.images?.[0]?.url || ""}`}
+        />
+        <SpecificationsSection
+          ref={sections.specification.ref}
+          product={product}
+        />
+      </div>
 
       <div className="bg-white px-6 py-20">
         <h1 className="font-rubik text-5xl font-semibold mb-12">
