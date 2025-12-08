@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -11,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
 import Link from "next/link";
+import { useCart } from "@/context/cart-provider";
 
 interface CartSummaryProps {
   subtotal: number;
@@ -21,7 +21,7 @@ export default function CartSummary({
   subtotal,
   grandTotal,
 }: CartSummaryProps) {
-  const [note, setNote] = useState("");
+  const { note, setNote } = useCart();
 
   return (
     <div className="sticky bottom-0 inset-x-0 lg:inset-x-auto bg-white border-t px-6 py-5 z-20 shrink-0 space-y-4 rounded-t-4xl">
