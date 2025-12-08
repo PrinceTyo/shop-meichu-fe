@@ -1,6 +1,12 @@
 import { orderColumn } from "@/config/table-column";
-import { DataTableFetcher } from "@/components/sections/admin-table-section";
+import { getAllOrders } from "@/lib/api/orders";
+import { TableActionProvider } from "@/context/table-action-provider";
+import { AdminTable } from "@/components/table/admin-table";
 
 export default async function Page() {
-  return <DataTableFetcher columns={orderColumn as any} model="orders" />;
+  return (
+    <TableActionProvider getAction={getAllOrders}>
+      <AdminTable columns={orderColumn} />
+    </TableActionProvider>
+  );
 }

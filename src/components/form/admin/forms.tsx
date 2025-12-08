@@ -1,7 +1,6 @@
 "use client";
 
-import * as z from "zod";
-
+import { useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
   createImage,
@@ -25,18 +24,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { bytesToMB } from "@/lib/utils";
+import { Textarea } from "@/components/ui/textarea";
+import { MultipleImageField } from "@/components/form/multiple-image";
+import { ImageField } from "@/components/form/image";
 import { redirect } from "next/navigation";
-import { maxFileSize } from "@/config/form";
 import { MarkRequired } from "@/components/form/mark-required";
+import { upsertCategorySchema } from "@/schema/categories";
+import { upsertProductSchema } from "@/schema/products";
 import UpsertForm from "@/components/form/admin/base/upsert-form";
 
 import type { Category } from "@/types/strapi/models/category";
 import type { Product } from "@/types/strapi/models/product";
-import { useMemo, useState } from "react";
-import { MultipleImageField } from "../multiple-image";
-import { ImageField } from "../image";
-import { Textarea } from "@/components/ui/textarea";
 
 interface CreateFormProps {
   type: "create";
@@ -74,68 +72,13 @@ export function UpsertCategoryForm(props: UpsertFormProps<Category>) {
     [props]
   );
 
-  console.log(props.data);
-
   return (
     <UpsertForm
       id={`${props.type}-category`}
       type={props.type}
       model={{ singular: "Category", plural: "Categories" }}
-      formSchema={z.object({
-        name: z
-          .string()
-          .regex(/^[a-zA-Z0-9 ]+$/, "Only alphanumeric and spaces allowed")
-          .min(1, "The name field is required."),
-        backgroundColor: z.string().min(7).max(7),
-        thumbnail: z
-          .instanceof(File, { message: "Please select an image file." })
-          .refine((file) => file.size > 0, {
-            message: "Image file is required.",
-          })
-          .refine((file) => file.size <= maxFileSize, {
-            message: `Image file size must be less than ${bytesToMB(maxFileSize)} MB.`,
-          })
-          .refine(
-            (file) => {
-              const validTypes = [
-                "image/jpeg",
-                "image/jpg",
-                "image/png",
-                "image/webp",
-              ];
-              return validTypes.includes(file.type);
-            },
-            {
-              message: "Only JPEG, PNG, WebP images are allowed.",
-            }
-          ),
-        heading: z.object({
-          title: z.string().min(1, "The title field is required."),
-          description: z.string().min(1, "The description field is required."),
-          thumbnail: z
-            .instanceof(File, { message: "Please select an image file." })
-            .refine((file) => file.size > 0, {
-              message: "Image file is required.",
-            })
-            .refine((file) => file.size <= maxFileSize, {
-              message: `Image file size must be less than ${bytesToMB(maxFileSize)} MB.`,
-            })
-            .refine(
-              (file) => {
-                const validTypes = [
-                  "image/jpeg",
-                  "image/jpg",
-                  "image/png",
-                  "image/webp",
-                ];
-                return validTypes.includes(file.type);
-              },
-              {
-                message: "Only JPEG, PNG, WebP images are allowed.",
-              }
-            ),
-        }),
-      })}
+      title={props.data?.name}
+      formSchema={upsertCategorySchema}
       defaultValues={defaultValues}
       formFields={(formId, form) => {
         return (
@@ -387,40 +330,8 @@ export function UpsertProductForm(
       id={`${props.type}-product`}
       type={props.type}
       model={{ singular: "Product", plural: "Products" }}
-      formSchema={z.object({
-        name: z
-          .string()
-          .regex(/^[a-zA-Z0-9 ]+$/, "Only alphanumeric and spaces allowed")
-          .min(1, "The name field is required."),
-        description: z.string().min(1, "The description field is required."),
-        price: z.coerce.number().min(0, "The price field is required."),
-        stock: z.coerce.number().min(0, "The stock field is required."),
-        category: z.coerce.number("The category field is required."),
-        images: z.array(
-          z
-            .instanceof(File, { message: "Please select an image file." })
-            .refine((file) => file.size > 0, {
-              message: "Image file is required.",
-            })
-            .refine((file) => file.size <= maxFileSize, {
-              message: `Image file size must be less than ${bytesToMB(maxFileSize)} MB.`,
-            })
-            .refine(
-              (file) => {
-                const validTypes = [
-                  "image/jpeg",
-                  "image/jpg",
-                  "image/png",
-                  "image/webp",
-                ];
-                return validTypes.includes(file.type);
-              },
-              {
-                message: "Only JPEG, PNG, WebP images are allowed.",
-              }
-            )
-        ),
-      })}
+      title={props.data?.name}
+      formSchema={upsertProductSchema}
       defaultValues={defaultValues}
       formFields={(formId, form) => {
         return (

@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { MarkRequired } from "@/components/form/mark-required";
 import * as z from "zod";
 
-import type { checkoutSchema } from "@/schema/form/checkout";
+import type { checkoutSchema } from "@/schema/checkout";
 
 export default function CheckoutForm({
   form,

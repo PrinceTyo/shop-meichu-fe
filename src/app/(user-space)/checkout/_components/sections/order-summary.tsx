@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { cn, formatCurrency } from "@/lib/utils";
 import CheckoutItemCard from "./checkout-item-card";
 
-import type { checkoutSchema } from "@/schema/form/checkout";
+import type { checkoutSchema } from "@/schema/checkout";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { FieldError } from "@/components/ui/field";
 import z from "zod";

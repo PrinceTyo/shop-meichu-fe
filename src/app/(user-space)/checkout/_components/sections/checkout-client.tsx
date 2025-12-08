@@ -3,7 +3,7 @@
 import { useCallback, useEffect } from "react";
 import { useCart } from "@/context/cart-provider";
 import { useForm } from "react-hook-form";
-import { checkoutSchema } from "@/schema/form/checkout";
+import { checkoutSchema } from "@/schema/checkout";
 import { redirect } from "next/navigation";
 import { checkout } from "@/lib/api/checkout";
 import { zodResolver } from "@hookform/resolvers/zod";

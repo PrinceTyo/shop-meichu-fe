@@ -10,7 +10,7 @@ export async function getAllCategories(
   const response = await extendedFetch("/categories", {
     init: {
       next: {
-        revalidate: 60 * 10,
+        revalidate: 1,
       },
     },
     ...params,

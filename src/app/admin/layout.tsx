@@ -1,3 +1,5 @@
+import "@/styles/admin.css";
+
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,5 +13,5 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="font-outfit">{children}</div>;
+  return <div className="font-outfit dark">{children}</div>;
 }

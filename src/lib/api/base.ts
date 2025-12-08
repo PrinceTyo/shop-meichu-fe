@@ -1,11 +1,20 @@
-import { notFound } from "next/navigation";
+import { getSession } from "../session";
+import { logout } from "./admin/auth";
 import qs from "qs";
+
+interface StrapiPaginationOptions {
+  page?: number;
+  pageSize?: number;
+  withCount?: boolean;
+}
 
 export interface ExtendedParams {
   init?: RequestInit;
   populate?: object | string;
   sort?: string[];
   filters?: object;
+  pagination?: StrapiPaginationOptions;
+  auth?: boolean;
 }
 
 export async function extendedFetch(
@@ -26,18 +35,32 @@ export async function extendedFetch(
     queryParams["filters"] = params.filters;
   }
 
+  if (params?.pagination) {
+    queryParams["pagination"] = params.pagination;
+  }
+
+  if (params?.auth) {
+    const session = await getSession();
+
+    const mergedInit = params?.init ?? {};
+    mergedInit.headers = {
+      ...mergedInit.headers,
+      Authorization: `Bearer ${session.jwt}`,
+    };
+
+    params.init = mergedInit;
+  }
+
   const query = qs.stringify(queryParams);
 
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}${input}?${query}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}${input}${query ? `?${query}` : ""}`,
     params?.init
   );
 
-  if (!response.ok) {
-    throw new Error("An error occured!");
+  if (!response.ok && params?.auth && response.status === 401) {
+    await logout();
   }
-
-  if (response.status === 404) return notFound();
 
   return response;
 }

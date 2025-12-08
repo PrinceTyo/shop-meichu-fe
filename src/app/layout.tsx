@@ -1,10 +1,6 @@
-import "../styles/globals.css";
 import { Inter, Rubik, Outfit, Albert_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { CartProvider } from "@/context/cart-provider";
-import { FooterProvider } from "@/context/footer-provider";
-import { SearchProvider } from "@/context/search-provider";
 import localFont from "next/font/local";
 
 import type { Metadata } from "next";
@@ -54,13 +50,7 @@ export default function RootLayout({
         className={`${rubik.variable} ${inter.variable} ${outfit.variable} ${albertSans.variable} ${jogging.variable} antialiased`}
         suppressHydrationWarning
       >
-        <NuqsAdapter>
-          <SearchProvider>
-            <CartProvider>
-              <FooterProvider>{children}</FooterProvider>
-            </CartProvider>
-          </SearchProvider>
-        </NuqsAdapter>
+        <NuqsAdapter>{children}</NuqsAdapter>
         <Toaster
           position="top-center"
           reverseOrder={false}
