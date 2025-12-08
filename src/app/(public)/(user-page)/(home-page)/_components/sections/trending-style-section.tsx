@@ -118,7 +118,7 @@ export default function TrendingStyleSection({
               </div>
 
               <Link
-                href="/collections"
+                href={data.ctaButton.url}
                 className="hidden lg:flex items-center space-x-0.5 cursor-pointer group w-fit rounded-3xl "
               >
                 <HiOutlineArrowUpRight
@@ -131,7 +131,7 @@ export default function TrendingStyleSection({
               </Link>
 
               <Link
-                href="/collections"
+                href={data.ctaButton.url}
                 className="lg:hidden flex cursor-pointer p-2 w-1/2 bg-white text-black rounded-full justify-start items-center font-albert-sans"
               >
                 <div className="flex items-center gap-2 bg-white">

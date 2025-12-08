@@ -226,9 +226,14 @@ export default function PhilosophySection({
               stroke="#e5e5e5"
               strokeWidth="1"
             />
-            <text fill="#000" fontSize="17" letterSpacing="5" fontWeight="500">
+            <text
+              fill="#000000"
+              fontSize="20"
+              letterSpacing="10"
+              fontWeight="800"
+            >
               <textPath xlinkHref="#circlePath" startOffset="0%">
-                {data.ctxText}
+                {data.ctaText}
               </textPath>
             </text>
           </svg>

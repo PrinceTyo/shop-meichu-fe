@@ -98,7 +98,7 @@ export default function ReviewSection({ data }: { data: ReviewSection }) {
           {data.reviews?.map((review) => (
             <Card
               key={review.id}
-              className="w-96 md:w-98 lg:w-115 shrink-0 rounded-3xl lg:px-4 lg:py-12 bg-white text-black transition-all duration-300 hover:-translate-y-2 hover:border-black hover:border-2"
+              className="w-96 md:w-98 lg:w-115 shrink-0 rounded-3xl lg:px-4 lg:py-12 border-white bg-white text-black transition-all duration-300 hover:-translate-y-2 hover:border-black hover:border-2"
             >
               <CardContent>
                 <div className="z-30">

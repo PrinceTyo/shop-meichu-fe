@@ -52,7 +52,6 @@ export default function BenefitSection({ data }: { data: BenefitSection }) {
       onUpdate: (self) => {
         targetProgress = self.progress * 100;
       },
-      markers: true,
     });
 
     const timeline = gsap.timeline({

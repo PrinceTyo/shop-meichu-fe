@@ -12,7 +12,7 @@ interface CategoryCardProps {
   className?: string;
   index: number;
   nextIndex?: number;
-  showButton?: boolean; 
+  showButton?: boolean;
 }
 
 export default function CategoryCard({
@@ -24,7 +24,7 @@ export default function CategoryCard({
   className = "",
   index,
   nextIndex,
-  showButton = false, 
+  showButton = false,
 }: CategoryCardProps) {
   const currentItem = item;
   const animatedItem = nextItem || item;
@@ -43,23 +43,24 @@ export default function CategoryCard({
     colors: (typeof featuredColors)[0];
   }) => (
     <div className="space-y-3 text-black pr-4">
-      <h3 className="text-md md:text-md lg:text-3xl font-bold font-albert-sans">
-        {data.title}
-      </h3>
-      <ScrollArea className="h-16 lg:h-22 w-full">
-        <p className="text-xs lg:text-sm font-medium font-albert-sans leading-relaxed">
-          {data.description}
-        </p>
+      <ScrollArea className="h-36 md:38 lg:h-40 w-full">
+        <div className="flex flex-col md:gap-4">
+          <h3 className="text-md md:text-md lg:text-3xl font-bold font-albert-sans">
+            {data.title}
+          </h3>
+          <p className="text-xs lg:text-sm font-medium font-albert-sans leading-relaxed">
+            {data.description}
+          </p>
+        </div>
       </ScrollArea>
-      {showButton &&
-        data.category && ( 
-          <Link
-            href="/collections"
-            className="inline-block mt-2 bg-black text-white px-6 py-3 lg:px-8 md:py-4 rounded-full text-sm md:text-xs lg:text-sm font-medium hover:bg-white hover:text-black border border-black transition-colors font-albert-sans"
-          >
-            SHOP NOW
-          </Link>
-        )}
+      {showButton && data.category && (
+        <Link
+          href="/collections"
+          className="inline-block mt-2 bg-black text-white px-6 py-3 lg:px-8 md:py-4 rounded-full text-sm md:text-xs lg:text-sm font-medium hover:bg-white hover:text-black border border-black transition-colors font-albert-sans"
+        >
+          SHOP NOW
+        </Link>
+      )}
     </div>
   );
 

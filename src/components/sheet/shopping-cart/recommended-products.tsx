@@ -135,7 +135,7 @@ export default function RecommendedProducts({
                   <img
                     src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${product.images?.[0]?.url}`}
                     alt={product.name}
-                    className="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-40 h-40 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <div className="px-1.5">

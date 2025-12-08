@@ -109,7 +109,7 @@ export default function LatestTrendSection({
           </h1>
           <p className="px-6 text-xs lg:text-sm">{data.section.description}</p>
           <Link
-            href="/collections"
+            href={data.ctaButton?.url || "/collections"}
             className="flex items-center gap-0.5 cursor-pointer group"
           >
             <HiOutlineArrowUpRight className="w-10 h-10 z-1 lg:z-0 lg:w-14 lg:h-14 text-black lg:text-white bg-white lg:bg-black border border-black rounded-full p-3 lg:p-4 lg:transition-all lg:duration-300 -mr-11.5 lg:mr-0 lg:group-hover:-mr-14.5 lg:group-hover:bg-white lg:group-hover:text-black lg:group-hover:scale-90" />
