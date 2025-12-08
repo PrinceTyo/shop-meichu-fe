@@ -20,7 +20,7 @@ export default function DesktopGalleryGrid({
   };
 
   return (
-    <div className="hidden md:grid grid-cols-4 grid-rows-4 gap-5 w-full">
+    <div className="hidden md:grid grid-cols-4 grid-rows-4 gap-5 w-full h-240">
       <CategoryImageCard
         item={categories[getIndex(0)]}
         nextItem={categories[getNextIndexFor(0)]}

@@ -98,7 +98,7 @@ export default function BundleSection({ data }: { data: BundleSection }) {
         >
           <div className="max-w-8xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
             {data.products?.map((product) => (
-              <div key={product.id} className="product-card-item w-full">
+              <div key={product.id} className=" w-full">
                 <BundleProductCard product={product} />
               </div>
             ))}
