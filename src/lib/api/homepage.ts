@@ -8,7 +8,7 @@ export async function getHomePageData(): Promise<StrapiResponse<HomePage>> {
   const response = await extendedFetch("/home-page", {
     init: {
       next: {
-        revalidate: 60 * 15,
+        revalidate: 1,
       },
     },
   });

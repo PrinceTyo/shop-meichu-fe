@@ -48,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${rubik.variable} ${inter.variable} ${outfit.variable} ${albertSans.variable} ${jogging.variable} antialiased`}
         suppressHydrationWarning
