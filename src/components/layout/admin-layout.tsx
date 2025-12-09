@@ -8,6 +8,7 @@ import {
 import { LayoutProvider } from "@/context/layout-provider";
 import { ProfileDropdown } from "@/components/dropdown/profile-dropdown";
 import AdminSidebar from "@/components/sidebar/admin-sidebar";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 import type { ReactNode } from "react";
 import type { User } from "@/types/strapi/user";
@@ -22,12 +23,22 @@ export default function AdminLayout({
   return (
     <LayoutProvider>
       <SidebarProvider>
-        <div className="relative flex min-h-screen w-full dark font-outfit bg-background-admin text-white">
+        <div
+          className="relative flex min-h-screen w-full font-outfit bg-background-admin text-foreground-admin"
+          suppressHydrationWarning
+        >
           <AdminSidebar user={user} />
-          <SidebarInset className="bg-background-admin! flex flex-col p-8">
-            <div className="flex items-center justify-between mb-5">
-              <SidebarTrigger />
-              <ProfileDropdown user={user} />
+          <SidebarInset className="bg-background-admin text-foreground-admin flex flex-col px-4 py-2">
+            <div className="mb-6 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger />
+                <h1 className="text-2xl font-bold">Dashboard</h1>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <ThemeToggle />
+                <ProfileDropdown user={user} />
+              </div>
             </div>
             {children}
           </SidebarInset>
