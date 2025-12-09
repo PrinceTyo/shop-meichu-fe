@@ -1,4 +1,6 @@
 import { getPrivacyPolicyData } from "@/lib/api/privacy-policy";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { BlocksRenderer } from "@strapi/blocks-react-renderer";
 
 export default async function Page() {
@@ -12,7 +14,9 @@ export default async function Page() {
         </h1>
 
         <div className="prose prose-lg max-w-none px-4">
-          <BlocksRenderer content={privacyPolicy.data.content} />
+          <Suspense fallback={<Skeleton className="w-full h-96" />}>
+            <BlocksRenderer content={privacyPolicy.data.content} />
+          </Suspense>
         </div>
       </section>
     </main>

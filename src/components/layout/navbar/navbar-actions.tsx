@@ -1,30 +1,17 @@
 "use client";
 
-// import Link from "next/link";
+import Search from "@/components/sheet/search";
 import ShoppingCart from "@/components/sheet/shopping-cart";
-import { useSearch } from "@/context/search-provider";
-import { SearchIcon } from "lucide-react";
-// import { FaRegUserCircle } from "react-icons/fa";
+import type { Category } from "@/types/strapi/models/category";
 
-export default function NavbarActions() {
-  const { setIsSearchOpen } = useSearch();
-
+export default function NavbarActions({
+  categories,
+}: {
+  categories: Category[];
+}) {
   return (
     <>
-      <button
-        onClick={() => setIsSearchOpen(true)}
-        className="text-white border-none hover:bg-gray-900 p-2 rounded-full flex items-center justify-center"
-      >
-        <SearchIcon className="h-5 w-5" />
-      </button>
-
-      {/* <Link
-        href="/auth/login"
-        className="text-white hover:bg-gray-900 p-2 rounded-full hidden lg:flex items-center justify-center"
-      >
-        <FaRegUserCircle className="h-5 w-5" />
-      </Link> */}
-
+      <Search categories={categories} />
       <ShoppingCart />
     </>
   );

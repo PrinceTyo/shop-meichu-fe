@@ -111,7 +111,7 @@ export default function Navbar({
             </div>
 
             <div className="flex items-center">
-              <NavbarActions />
+              <NavbarActions categories={categories} />
             </div>
           </div>
         </div>

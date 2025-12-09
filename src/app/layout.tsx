@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { CartProvider } from "@/context/cart-provider";
 import { FooterProvider } from "@/context/footer-provider";
-import { SearchProvider } from "@/context/search-provider";
+// import { SearchProvider } from "@/context/search-provider";
 import localFont from "next/font/local";
 
 import type { Metadata } from "next";
@@ -54,11 +54,11 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <NuqsAdapter>
-          <SearchProvider>
-            <CartProvider>
-              <FooterProvider>{children}</FooterProvider>
-            </CartProvider>
-          </SearchProvider>
+          {/* <SearchProvider> */}
+          <CartProvider>
+            <FooterProvider>{children}</FooterProvider>
+          </CartProvider>
+          {/* </SearchProvider> */}
         </NuqsAdapter>
         <Toaster
           position="top-center"
