@@ -1,5 +1,7 @@
-import ProductDetailSection from "./_components/product-detail-section";
 import { getProductData, getRecommendedProducts } from "@/lib/api/products";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import ProductDetailSection from "./_components/product-detail-section";
 
 export default async function ProductDetailPage({
   params,
@@ -14,9 +16,11 @@ export default async function ProductDetailPage({
   ]);
 
   return (
-    <ProductDetailSection
-      product={productData.data}
-      relatedProducts={otherProductsData.data || []}
-    />
+    <Suspense fallback={<Skeleton className="w-full h-96" />}>
+      <ProductDetailSection
+        product={productData.data}
+        relatedProducts={otherProductsData.data || []}
+      />
+    </Suspense>
   );
 }

@@ -1,23 +1,52 @@
 "use client";
 
+import { useState } from "react";
+import { useQueryState } from "nuqs";
+import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { IoClose } from "react-icons/io5";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { useSearch } from "@/context/search-provider";
+import { SearchIcon } from "lucide-react";
+import useSWRMutation from "swr/mutation";
 import SearchInput from "./search-input";
 import ProductResults from "./product-result";
 import PopularCollections from "./popular-collections";
 
 import type { Category } from "@/types/strapi/models/category";
+import type { Product } from "@/types/strapi/models/product";
+import type { StrapiResponse } from "@/types/strapi/response";
+
+async function searchProducts(
+  url: string,
+  { arg }: { arg: { query: string } }
+): Promise<Product[]> {
+  const response = await fetch(
+    `${url}?populate=*&filters[name][$contains]=${arg.query}`
+  );
+  if (!response.ok) return [];
+
+  const result = (await response.json()) as StrapiResponse<Product[]>;
+  return result.data;
+}
 
 export default function Search({ categories }: { categories: Category[] }) {
-  const {
-    isSearchOpen,
-    setIsSearchOpen,
-    searchQuery,
-    setSearchQuery,
-    productsResult,
-    triggerSearch,
-  } = useSearch();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [productsResult, setProductsResult] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useQueryState("search", {
+    defaultValue: "",
+  });
+  const { trigger } = useSWRMutation(
+    `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/products`,
+    searchProducts
+  );
+  const debouncedSearch = useDebouncedCallback(async (query?: string) => {
+    const result = await trigger({ query: query || searchQuery });
+    setProductsResult(result);
+  }, 500);
 
   const handleClearSearch = () => {
     setSearchQuery("");
@@ -29,7 +58,7 @@ export default function Search({ categories }: { categories: Category[] }) {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
-    triggerSearch(e.target.value);
+    debouncedSearch(e.target.value);
   };
 
   const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -40,6 +69,14 @@ export default function Search({ categories }: { categories: Category[] }) {
 
   return (
     <Sheet open={isSearchOpen} onOpenChange={setIsSearchOpen}>
+      <SheetTrigger asChild>
+        <button
+          onClick={() => setIsSearchOpen(true)}
+          className="text-white border-none hover:bg-gray-900 p-2 rounded-full flex items-center justify-center"
+        >
+          <SearchIcon className="h-5 w-5" />
+        </button>
+      </SheetTrigger>
       <SheetContent
         side="top"
         className="border-none data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top transition-all duration-300 ease-in-out inset-y-0 h-full w-full bg-[#f2f2f2] p-0"
@@ -82,7 +119,10 @@ export default function Search({ categories }: { categories: Category[] }) {
               onTouchMove={(e) => e.stopPropagation()}
             >
               <div className="lg:pr-4">
-                <ProductResults products={productsResult} />
+                <ProductResults
+                  products={productsResult}
+                  searchQuery={searchQuery}
+                />
               </div>
             </div>
           </div>

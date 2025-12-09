@@ -1,7 +1,9 @@
+import { Suspense } from "react";
 import LoginForm from "@/components/form/admin/login-form";
 import Image from "@/components/global/image";
 import GuestOnly from "@/components/middleware/guest-only";
 import type { Metadata } from "next";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata: Metadata = {
   title: "Admin - Shop Meichu",
@@ -14,7 +16,9 @@ export default function Page() {
       <main className="bg-gray-900 min-h-screen pt-24 dark">
         <div className="bg-gray-800 flex w-fit mx-auto rounded-lg">
           <Image src="/assets/illustration/Login.png" className="w-96" />
-          <LoginForm className="mx-auto w-96 bg-transparent text-white border-none" />
+          <Suspense fallback={<Skeleton className="w-96 h-96" />}>
+            <LoginForm className="mx-auto w-96 bg-transparent text-white border-none" />
+          </Suspense>
         </div>
       </main>
     </GuestOnly>

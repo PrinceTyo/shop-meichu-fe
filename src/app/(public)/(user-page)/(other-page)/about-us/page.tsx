@@ -1,17 +1,19 @@
+import { getAboutUsData } from "@/lib/api/about-us";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import HeaderPage from "@/components/header/header-page";
 import AboutSection from "./_components/sections/about-section";
 import VideoSection from "./_components/sections/video-section";
 import ReviewSection from "@/components/sections/review-section";
-import { getAboutUsData } from "@/lib/api/about-us";
 
 export default async function AboutUsPage() {
   const { data } = await getAboutUsData();
 
   return (
-    <>
+    <Suspense fallback={<Skeleton className="w-full h-96" />}>
       <HeaderPage
         type="about"
-        img={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${data.heading.thumbnail?.url}`}
+        image={data.heading.thumbnail}
         title={data.heading.title}
         desc={data.heading.description}
       />
@@ -30,6 +32,6 @@ export default async function AboutUsPage() {
       />
 
       <ReviewSection data={data.reviewSection} />
-    </>
+    </Suspense>
   );
 }

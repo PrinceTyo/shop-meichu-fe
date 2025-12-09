@@ -1,5 +1,7 @@
 import { getCollectionData } from "@/lib/api/collection";
 import { getAllCategories } from "@/lib/api/categories";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 import CollectionsCard from "@/components/card/collections-card";
 import HeaderPage from "@/components/header/header-page";
 
@@ -24,27 +26,31 @@ export default async function CollectionsAllPage() {
 
   return (
     <div className="bg-white">
-      <HeaderPage
-        type="collections"
-        img={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${collection.heading.thumbnail?.url}`}
-        title={collection.heading.title}
-        desc={collection.heading.description}
-      />
+      <Suspense fallback={<Skeleton className="w-full h-62 md:h-74" />}>
+        <HeaderPage
+          type="collections"
+          image={collection.heading.thumbnail}
+          title={collection.heading.title}
+          desc={collection.heading.description}
+        />
+      </Suspense>
 
       <div className="flex flex-wrap">
-        {categories.map((category, index) => (
-          <CollectionsCard
-            key={category.id}
-            index={index}
-            title={category.name}
-            image={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${category.thumbnail?.url}`}
-            productsCount={
-              (category.products as StrapiRelationCount)?.count || 0
-            }
-            bgColor="bg-gray-200"
-            link={`/collections/${category.slug}`}
-          />
-        ))}
+        <Suspense fallback={<Skeleton className="w-full h-64" />}>
+          {categories.map((category, index) => (
+            <CollectionsCard
+              key={category.id}
+              index={index}
+              title={category.name}
+              image={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${category.thumbnail?.url}`}
+              productsCount={
+                (category.products as StrapiRelationCount)?.count || 0
+              }
+              bgColor="bg-gray-200"
+              link={`/collections/${category.slug}`}
+            />
+          ))}
+        </Suspense>
       </div>
     </div>
   );

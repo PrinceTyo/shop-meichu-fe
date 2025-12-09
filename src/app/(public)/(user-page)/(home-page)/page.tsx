@@ -1,3 +1,6 @@
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getHomePageData } from "@/lib/api/homepage";
 import HeroSection from "./_components/sections/hero-section";
 import TrendingProductSection from "./_components/sections/trending-product-section";
 import BenefitSection from "./_components/sections/benefit-section";
@@ -11,13 +14,12 @@ import BestSellerSection from "./_components/sections/best-seller-section";
 import FeaturedCategorySection from "./_components/sections/featured-category-section";
 import LatestTrendSection from "./_components/sections/latest-trend-section";
 import FAQSection from "./_components/sections/faq-section";
-import { getHomePageData } from "@/lib/api/homepage";
 
 export default async function Home() {
   const homePageData = await getHomePageData();
 
   return (
-    <>
+    <Suspense fallback={<Skeleton className="w-full h-96" />}>
       <HeroSection
         data={homePageData.data.heroSection}
         subHeroData={homePageData.data.subHeroSection}
@@ -54,6 +56,6 @@ export default async function Home() {
       {homePageData.data.faqSection && (
         <FAQSection data={homePageData.data.faqSection} />
       )}
-    </>
+    </Suspense>
   );
 }

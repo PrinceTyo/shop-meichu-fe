@@ -3,18 +3,20 @@
 import { useRef, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useSearch } from "@/context/search-provider";
 import ProductCard from "@/components/card/product-card";
 
 import type { Product } from "@/types/strapi/models/product";
 
 interface ProductResultsProps {
   products: Product[];
+  searchQuery: string;
 }
 
-export default function ProductResults({ products }: ProductResultsProps) {
+export default function ProductResults({
+  products,
+  searchQuery,
+}: ProductResultsProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { searchQuery } = useSearch();
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
