@@ -9,25 +9,9 @@ import { LayoutProvider } from "@/context/layout-provider";
 import { ProfileDropdown } from "@/components/dropdown/profile-dropdown";
 import AdminSidebar from "@/components/sidebar/admin-sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { usePathname } from "next/navigation";
 
 import type { ReactNode } from "react";
 import type { User } from "@/types/strapi/user";
-
-function getPageTitle(pathname: string): string {
-  const path = pathname.replace(/^\/admin\/?/, "");
-
-  if (!path || path === "dashboard") {
-    return "Dashboard";
-  }
-
-  const segment = path.split("/")[0];
-
-  return segment
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
 
 export default function AdminLayout({
   user,
@@ -36,9 +20,6 @@ export default function AdminLayout({
   user: User;
   children?: ReactNode;
 }) {
-  const pathname = usePathname();
-  const pageTitle = getPageTitle(pathname);
-
   return (
     <LayoutProvider>
       <SidebarProvider>
@@ -51,7 +32,7 @@ export default function AdminLayout({
             <div className="mb-6 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <SidebarTrigger />
-                <h1 className="text-2xl font-bold">{pageTitle}</h1>
+                <h1 className="text-2xl font-bold">Dashboard</h1>
               </div>
 
               <div className="flex items-center gap-3">
