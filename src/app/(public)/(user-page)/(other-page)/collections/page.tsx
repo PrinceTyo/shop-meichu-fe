@@ -35,7 +35,7 @@ export default async function CollectionsAllPage() {
         />
       </Suspense>
 
-      <div className="flex flex-wrap">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <Suspense fallback={<Skeleton className="w-full h-64" />}>
           {categories.map((category, index) => (
             <CollectionsCard
@@ -46,7 +46,7 @@ export default async function CollectionsAllPage() {
               productsCount={
                 (category.products as StrapiRelationCount)?.count || 0
               }
-              bgColor="bg-gray-200"
+              bgColor={category.backgroundColor}
               link={`/collections/${category.slug}`}
             />
           ))}

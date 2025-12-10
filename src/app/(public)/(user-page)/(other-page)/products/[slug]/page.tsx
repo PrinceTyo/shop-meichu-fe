@@ -2,6 +2,7 @@ import { getProductData, getRecommendedProducts } from "@/lib/api/products";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ProductDetailSection from "./_components/product-detail-section";
+import SetFooter from "./_components/set-footer";
 
 export default async function ProductDetailPage({
   params,
@@ -21,6 +22,7 @@ export default async function ProductDetailPage({
         product={productData.data}
         relatedProducts={otherProductsData.data || []}
       />
+      <SetFooter backgroundColor={productData.data.backgroundColor} />
     </Suspense>
   );
 }

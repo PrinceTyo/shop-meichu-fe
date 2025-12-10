@@ -111,7 +111,7 @@ export default function BenefitSection({ data }: { data: BenefitSection }) {
             {data.section.description}
           </p>
           <Link
-            href="/collections"
+            href={data.ctaButton.url}
             className="flex items-center gap-0.5 cursor-pointer group w-fit"
           >
             <HiOutlineArrowUpRight className="w-10 h-10 z-1 sm:z-0 sm:w-14 sm:h-14 text-white sm:text-black bg-black sm:bg-white border border-black rounded-full p-3 sm:p-4 sm:transition-all sm:duration-300 -mr-11.5 sm:mr-0 sm:group-hover:-mr-14.5 sm:group-hover:bg-black sm:group-hover:text-white sm:group-hover:scale-90" />

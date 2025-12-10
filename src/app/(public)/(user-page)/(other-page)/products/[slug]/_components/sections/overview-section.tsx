@@ -206,7 +206,7 @@ export default function OverviewSection({
   return (
     <>
       <div ref={ref} className="bg-white">
-        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] lg:grid-cols-3 gap-1">
+        <div className=" grid grid-cols-1 md:grid-cols-[2fr_1fr] lg:grid-cols-3 gap-1">
           <ProductImage
             images={allImages}
             activeIndex={activeVariantIndex}

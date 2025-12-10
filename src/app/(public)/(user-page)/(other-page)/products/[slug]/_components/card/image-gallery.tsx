@@ -17,13 +17,13 @@ const ImageGallery = forwardRef<HTMLDivElement, ImageGalleryProps>(
       <div className="md:relative lg:row-span-1">
         <div
           ref={ref}
-          className="h-fit md:h-screen lg:h-screen flex flex-row md:flex-col gap-1 overflow-x-scroll md:overflow-y-scroll lg:overflow-y-scroll scrollbar-hide"
+          className="h-fit md:h-[91vh] lg:h-[91vh] flex flex-row md:flex-col gap-1 overflow-x-scroll md:overflow-y-scroll lg:overflow-y-scroll scrollbar-hide"
         >
           {images.map((image, index) => (
             <img
               key={index}
               src={image.fullUrl}
-              className={`h-40 w-32 md:h-84 md:w-full lg:h-160 lg:w-full object-cover bg-gray-300 shrink-0 cursor-pointer transition-all ${
+              className={`h-40 w-32 md:h-84 md:w-full lg:h-150 lg:w-full object-cover bg-gray-300 shrink-0 cursor-pointer transition-all ${
                 activeIndex === index ? "" : "hover:ring-2 hover:ring-gray-400"
               }`}
               alt={image.name || productName}
