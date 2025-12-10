@@ -14,8 +14,9 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
-interface DataTableActionBarProps<TData>
-  extends React.ComponentProps<typeof motion.div> {
+interface DataTableActionBarProps<TData> extends React.ComponentProps<
+  typeof motion.div
+> {
   table: Table<TData>;
   visible?: boolean;
   portalContainer?: Element | DocumentFragment | null;
@@ -29,6 +30,7 @@ function DataTableActionBar<TData>({
   className,
   ...props
 }: DataTableActionBarProps<TData>) {
+  "use no memo";
   const [mounted, setMounted] = React.useState(false);
 
   React.useLayoutEffect(() => {
@@ -66,7 +68,7 @@ function DataTableActionBar<TData>({
           transition={{ duration: 0.2, ease: "easeInOut" }}
           className={cn(
             "fixed inset-x-0 bottom-6 z-50 mx-auto flex w-fit flex-wrap items-center justify-center gap-2 rounded-md border bg-background p-2 text-foreground shadow-sm",
-            className,
+            className
           )}
           {...props}
         >
@@ -74,12 +76,13 @@ function DataTableActionBar<TData>({
         </motion.div>
       )}
     </AnimatePresence>,
-    portalContainer,
+    portalContainer
   );
 }
 
-interface DataTableActionBarActionProps
-  extends React.ComponentProps<typeof Button> {
+interface DataTableActionBarActionProps extends React.ComponentProps<
+  typeof Button
+> {
   tooltip?: string;
   isPending?: boolean;
 }
@@ -93,6 +96,7 @@ function DataTableActionBarAction({
   children,
   ...props
 }: DataTableActionBarActionProps) {
+  "use no memo";
   const trigger = (
     <Button
       variant="secondary"
@@ -100,7 +104,7 @@ function DataTableActionBarAction({
       className={cn(
         "gap-1.5 border border-secondary bg-secondary/50 hover:bg-secondary/70 [&>svg]:size-3.5",
         size === "icon" ? "size-7" : "h-7",
-        className,
+        className
       )}
       disabled={disabled || isPending}
       {...props}
@@ -131,6 +135,7 @@ interface DataTableActionBarSelectionProps<TData> {
 function DataTableActionBarSelection<TData>({
   table,
 }: DataTableActionBarSelectionProps<TData>) {
+  "use no memo";
   const onClearSelection = React.useCallback(() => {
     table.toggleAllRowsSelected(false);
   }, [table]);

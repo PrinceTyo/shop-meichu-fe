@@ -7,7 +7,6 @@ import { LayoutProvider } from "@/context/layout-provider";
 import { ProfileDropdown } from "@/components/dropdown/profile-dropdown";
 import { ThemeToggle } from "@/components/theme-toggle";
 import AdminSidebar from "@/components/sidebar/admin-sidebar";
-import { Suspense } from "react";
 
 export default function AdminLayout({
   children,
@@ -18,23 +17,17 @@ export default function AdminLayout({
     <LayoutProvider>
       <SidebarProvider>
         <div className="relative flex min-h-screen w-full font-outfit">
-          <Suspense>
-            <AdminSidebar />
-          </Suspense>
+          <AdminSidebar />
           <SidebarInset className="flex flex-col px-4 py-2">
             <div className="mb-6 flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Suspense>
-                  <SidebarTrigger />
-                </Suspense>
+                <SidebarTrigger />
                 <h1 className="text-2xl font-bold">Dashboard</h1>
               </div>
 
               <div className="flex items-center gap-3">
                 <ThemeToggle />
-                <Suspense>
-                  <ProfileDropdown />
-                </Suspense>
+                <ProfileDropdown />
               </div>
             </div>
             {children}

@@ -85,8 +85,8 @@ export default function TrendingProductSection({
       className="trending-wrapper bg-white lg:relative lg:flex lg:items-center lg:justify-center min-h-96 lg:min-h-86 overflow-x-hidden"
     >
       <div className="lg:absolute font-semibold text-center text-[3rem] md:text-[4rem] lg:text-[7rem] block md:flex items-center justify-center mt-12 lg:-mt-12 font-jogging">
-        <h1 className="trending leading-10 md:pe-6">TRENDING</h1>
-        <h1 className="products">PRODUCTS</h1>
+        <h1 className="trending leading-10 md:pe-6">{data.sideText?.left}</h1>
+        <h1 className="products">{data.sideText?.right}</h1>
       </div>
 
       <div className="trendCard lg:absolute bg-transparent flex items-center justify-start lg:justify-center gap-2 md:gap-6 lg:gap-4.5 p-4 md:p-6 mb-6 overflow-x-scroll lg:overflow-x-hidden">

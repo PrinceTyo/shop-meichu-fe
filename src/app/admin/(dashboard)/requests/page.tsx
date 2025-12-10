@@ -5,7 +5,14 @@ import { AdminTable } from "@/components/table/admin-table";
 
 export default async function Page() {
   return (
-    <TableActionProvider getAction={getAllRequests}>
+    <TableActionProvider
+      getAction={getAllRequests}
+      filters={{
+        buyerName: "$contains",
+        contact: "$contains",
+        requestStatus: "$eq",
+      }}
+    >
       <AdminTable columns={requestsColumn} />
     </TableActionProvider>
   );

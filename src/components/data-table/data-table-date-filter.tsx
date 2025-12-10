@@ -61,6 +61,7 @@ export function DataTableDateFilter<TData>({
   title,
   multiple,
 }: DataTableDateFilterProps<TData>) {
+  "use no memo";
   const columnFilterValue = column.getFilterValue();
 
   const selectedDates = React.useMemo<DateSelection>(() => {
@@ -96,7 +97,7 @@ export function DataTableDateFilter<TData>({
         column.setFilterValue(date.getTime());
       }
     },
-    [column, multiple],
+    [column, multiple]
   );
 
   const onReset = React.useCallback(
@@ -104,7 +105,7 @@ export function DataTableDateFilter<TData>({
       event.stopPropagation();
       column.setFilterValue(undefined);
     },
-    [column],
+    [column]
   );
 
   const hasValue = React.useMemo(() => {

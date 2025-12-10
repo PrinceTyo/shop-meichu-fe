@@ -9,6 +9,7 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
+import { Spinner } from "@/components/ui/spinner";
 import { ImageField } from "@/components/form/image";
 import { Input } from "@/components/ui/input";
 import { MarkRequired } from "@/components/form/mark-required";
@@ -226,7 +227,10 @@ export function UpdateCategoryForm({ data }: { data: Category }) {
             >
               Reset
             </Button>
-            <Button type="submit">Edit</Button>
+            <Button disabled={form.formState.isSubmitting} type="submit">
+              {form.formState.isSubmitting && <Spinner />}
+              Edit
+            </Button>
           </Field>
         </CardFooter>
       </Card>
