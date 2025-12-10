@@ -17,20 +17,21 @@ export default function CollectionsCard({
   link,
 }: CollectionsCardProps) {
   return (
-    <Link href={link} className="group relative block w-1/2 overflow-hidden">
+    <Link href={link} className="group relative block w-full overflow-hidden">
       <div className="relative py-8 border-r border-b border-gray-200 text-center font-rubik font-medium text-xl md:text-2xl lg:text-3xl space-y-4 lg:space-y-10 cursor-pointer">
         <div
-          className={`absolute inset-0 ${bgColor} origin-top scale-y-0 transition-transform duration-500 ease-out pointer-events-none lg:group-hover:scale-y-110`}
+          className="absolute inset-0 opacity-50 origin-top scale-y-0 transition-transform duration-500 ease-out pointer-events-none lg:group-hover:scale-y-110"
+          style={{ backgroundColor: bgColor || "#D3D3D3" }}
         />
 
-        <h1 className="relative z-10 transition-all duration-300 ease-out lg:group-hover:-translate-y-6 lg:group-hover:opacity-0">
+        <h1 className="px-10 md:px-0 relative z-10 transition-all duration-300 ease-out lg:group-hover:-translate-y-6 lg:group-hover:opacity-0">
           {title}
         </h1>
 
         <div className="relative z-10 flex items-center justify-center">
           <img
             src={image}
-            className="w-full h-46 md:h-110 lg:w-106 lg:h-116 px-3 lg:px-0 object-cover rounded-3xl lg:rounded-2xl transition-transform duration-500 ease-out lg:group-hover:scale-115"
+            className="w-full h-46 md:h-86 lg:w-68 lg:h-78 px-3 lg:px-0 object-cover rounded-3xl lg:rounded-2xl transition-transform duration-500 ease-out lg:group-hover:scale-105"
             alt={title}
           />
 

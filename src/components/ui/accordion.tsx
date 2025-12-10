@@ -28,10 +28,12 @@ function AccordionItem({
 function AccordionTrigger({
   className,
   children,
-  iconBg = "bg-transparent",
+  iconBg = "bg-black",
+  iconColor = "text-white",
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
   iconBg?: string;
+  iconColor?: string;
 }) {
   return (
     <AccordionPrimitive.Header className="flex w-full">
@@ -48,11 +50,10 @@ function AccordionTrigger({
 
         <FaPlus
           className={cn(
-            "plus-icon transition-transform duration-300 p-1.5 lg:p-2.5 border rounded-full w-7 h-7 md:w-7 lg:w-10 md:h-7 lg:h-10",
+            "plus-icon transition-transform duration-300 p-1.5 lg:p-2.5 border rounded-full w-7 h-7 md:w-7 lg:w-10 md:h-7 lg:h-10 border-white",
             iconBg,
-            "border-white",
-            iconBg.includes("bg-black") && "text-white",
-            "group-hover:text-black"
+            iconColor,
+            "group-hover:bg-white group-hover:text-black"
           )}
         />
       </AccordionPrimitive.Trigger>

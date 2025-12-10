@@ -20,31 +20,36 @@ export default function SpecificationsSection({
 
   const positions = [
     {
-      containerClass: "top-60 left-8 md:top-70 md:left-25 lg:top-55 lg:left-30",
+      containerClass:
+        "top-60 left-8 md:top-105 md:left-25 lg:top-45 lg:left-40",
+      flexDirection: "flex-row",
+      separatorClass: "",
+      separatorOrigin: "right center",
+      imageSize: "w-24 h-24 md:w-26 md:h-26 lg:w-30 lg:w-30",
+    },
+    {
+      containerClass:
+        "top-60 right-8 md:top-110 md:right-25 lg:top-50 lg:right-40",
+      flexDirection: "flex-row-reverse",
+      separatorClass: "",
+      separatorOrigin: "left center",
+      imageSize: "w-24 h-24 md:w-26 md:h-26 lg:w-30 lg:w-30",
+    },
+    {
+      containerClass:
+        "bottom-25 left-8 md:bottom-90 md:left-25 lg:bottom-40 lg:left-30",
       flexDirection: "flex-row",
       separatorClass: "md:w-25 lg:w-60",
       separatorOrigin: "right center",
+      imageSize: "w-30 h-30 lg:w-40 lg:h-40",
     },
     {
       containerClass:
-        "top-60 right-8 md:top-60 md:right-25 lg:top-50 lg:right-30",
+        "bottom-25 right-8 md:bottom-85 md:right-25 lg:bottom-30 lg:right-30",
       flexDirection: "flex-row-reverse",
       separatorClass: "md:w-25 lg:w-60",
       separatorOrigin: "left center",
-    },
-    {
-      containerClass:
-        "bottom-25 left-8 md:bottom-40 md:left-25 lg:bottom-25 lg:left-30",
-      flexDirection: "flex-row",
-      separatorClass: "md:w-25 lg:w-60",
-      separatorOrigin: "right center",
-    },
-    {
-      containerClass:
-        "bottom-25 right-8 md:bottom-50 md:right-25 lg:bottom-30 lg:right-30",
-      flexDirection: "flex-row-reverse",
-      separatorClass: "md:w-25 lg:w-60",
-      separatorOrigin: "left center",
+      imageSize: "w-30 h-30 lg:w-40 lg:h-40",
     },
   ];
 
@@ -58,7 +63,6 @@ export default function SpecificationsSection({
         end: "+=100%",
         pin: true,
         scrub: 1,
-        pinSpacing: "margin",
       },
     });
 
@@ -94,15 +98,15 @@ export default function SpecificationsSection({
   return (
     <div
       ref={ref}
-      className="text-white bg-red-500 min-h-screen flex flex-col items-center justify-center space-y-12 relative px-4 md:px-4"
-      // style={{ backgroundColor: product.backgroundColor || "#000000" }}
+      className="text-white min-h-screen flex flex-col items-center justify-center space-y-8 relative px-4 md:px-4"
+      style={{ backgroundColor: product.backgroundColor || "#000000" }}
     >
       <h1 className="font-rubik text-4xl md:text-5xl lg:text-7xl font-bold text-center z-10">
         Product Highlights
       </h1>
 
-      <div className="absolute inset-0 flex items-center justify-center z-0">
-        <div className="w-9/11 md:w-130 h-96 md:h-70 bg-white/90 blur-3xl rounded-xs md:rounded-full lg:rounded-xs"></div>
+      <div className="absolute inset-0 flex items-center justify-center md:-mb-26 z-0">
+        <div className="w-60 h-60 md:w-76 md:h-76 lg:w-124 lg:h-124 bg-white/90 blur-3xl rounded-xs md:rounded-full lg:rounded-xs"></div>
       </div>
 
       {/* Desktop */}
@@ -123,7 +127,7 @@ export default function SpecificationsSection({
                     <img
                       data-feature-img={index}
                       src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${image.url}`}
-                      className="w-30 h-30 lg:w-40 lg:h-40 object-cover bg-gray-400 rounded-lg border border-black"
+                      className={`${position.imageSize} object-cover bg-gray-400 rounded-lg border border-black`}
                       alt=""
                     />
                   </div>
@@ -138,11 +142,11 @@ export default function SpecificationsSection({
 
               {position.flexDirection === "flex-row-reverse" && (
                 <>
-                  <div data-feature={index} className="max-w-full md:max-w-70">
+                  <div data-feature={index} className="max-w-full">
                     <img
                       data-feature-img={index}
                       src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${image.url}`}
-                      className="w-30 h-30 lg:w-40 lg:h-40 object-cover bg-gray-400 rounded-lg border border-black"
+                      className={`${position.imageSize} object-cover bg-gray-400 rounded-lg border border-black`}
                       alt=""
                     />
                   </div>
@@ -162,7 +166,7 @@ export default function SpecificationsSection({
       <div className="z-10">
         <img
           src={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${product.images?.[0]?.url}`}
-          className="bg-gray-400 w-60 h-60 md:w-76 md:h-76 lg:w-124 lg:h-124 object-cover rounded-3xl"
+          className="bg-gray-400 w-screen h-90 md:w-76 md:h-76 lg:w-124 lg:h-124 object-cover rounded-3xl"
           alt=""
         />
       </div>

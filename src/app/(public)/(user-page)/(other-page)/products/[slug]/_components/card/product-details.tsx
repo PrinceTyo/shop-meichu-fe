@@ -1,13 +1,10 @@
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef } from "react";
 import { Separator } from "@/components/ui/separator";
-import { FaCheck } from "react-icons/fa6";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import type { Product } from "@/types/strapi/models/product";
 import VariantSelector from "./variant-selector";
-import QuantitySelector from "./quantity-selector";
 import SocialMediaLinks from "./social-media-links";
 import { formatCurrency } from "@/lib/utils";
+import Link from "next/link";
 
 interface ProductDetailsProps {
   product: Product;
@@ -21,30 +18,12 @@ interface ProductDetailsProps {
 
 const ProductDetails = forwardRef<HTMLDivElement, ProductDetailsProps>(
   (
-    {
-      product,
-      allImages,
-      activeVariantIndex,
-      quantity,
-      socialMedia,
-      onVariantChange,
-      onQuantityChange,
-    },
+    { product, allImages, activeVariantIndex, socialMedia, onVariantChange },
     ref
   ) => {
-    const [isTermsAccepted, setIsTermsAccepted] = useState(false);
-
-    useEffect(() => {
-      if (product.stock === 0 && quantity !== 0) {
-        onQuantityChange(0);
-      } else if (product.stock > 0 && quantity === 0) {
-        onQuantityChange(1);
-      }
-    }, [product.stock]);
-
     return (
       <div className="md:col-span-2 lg:col-span-1 overflow-hidden">
-        <div className="h-full md:h-screen lg:h-screen flex flex-col">
+        <div className="h-fit lg:h-[91vh] flex flex-col">
           <div
             ref={ref}
             className="flex-1 overflow-y-auto scrollbar-hide py-8 px-4 md:px-10"
@@ -74,57 +53,21 @@ const ProductDetails = forwardRef<HTMLDivElement, ProductDetailsProps>(
               activeIndex={activeVariantIndex}
               onVariantChange={onVariantChange}
             />
-
-            {/* <QuantitySelector
-              quantity={quantity}
-              stock={product.stock}
-              onQuantityChange={onQuantityChange}
-            /> */}
-
-            {/* <div className="flex items-center space-x-1.5">
-              <FaCheck
-                className={`p-1 text-white rounded-full ${
-                  isOutOfStock ? "bg-gray-400" : "bg-green-600"
-                }`}
-              />
-              <p className="text-xs">
-                {isOutOfStock ? "Out of stock" : `${product.stock} in stock`}
-              </p>
-            </div> */}
-
-            {/* <div className="flex items-center gap-3 px-4 py-3 border border-gray-300 bg-gray-100 rounded-md my-4">
-              <Checkbox
-                checked={isTermsAccepted}
-                onCheckedChange={(checked) =>
-                  setIsTermsAccepted(checked === true)
-                }
-                className="border-gray-300"
-              />
-              <div className="space-y-2 max-w-1/2">
-                <Label className="font-semibold leading-tight">
-                  Accept terms and conditions
-                </Label>
-                <p className="text-sm">Lorem ipsum dolor sit amet</p>
-              </div>
-            </div>
-
-            <div className="mt-4 mb-4">
-              <p className="text-orange-500 text-sm font-semibold">
-                Please double check before buying!
-              </p>
-            </div> */}
           </div>
 
           <div className="border-t border-gray-200 bg-white px-4 md:px-10 py-4">
             <SocialMediaLinks socialMedia={socialMedia} />
 
-            <div className="mt-4">
-              <button
-                // onClick={handleAddToCart}
-                className="w-full py-4 border border-black bg-black text-white hover:bg-gray-200 hover:text-black rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white"
+            <div className="mt-4 pb-3 md:pb-2 text-center">
+              <Link
+                href={product.origin}
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Go to imvu
-              </button>
+                <p className="w-full py-4 border border-black bg-black text-white hover:bg-gray-200 hover:text-black rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-black disabled:hover:text-white">
+                  Go to imvu
+                </p>
+              </Link>
             </div>
           </div>
         </div>

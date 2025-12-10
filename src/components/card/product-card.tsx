@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { FaPlus } from "react-icons/fa6";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { cn, formatCurrency } from "@/lib/utils";
@@ -9,6 +8,7 @@ import Link from "next/link";
 import Image from "@/components/global/image";
 
 import type { Product } from "@/types/strapi/models/product";
+import { IoMdArrowDropright } from "react-icons/io";
 
 const sizeClassTemplate = {
   sm: {
@@ -76,6 +76,14 @@ export default function ProductCard({
     [images]
   );
 
+  const handleOriginClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      window.open(product.origin, "_blank", "noopener, noreferrer");
+    },
+    [product.origin]
+  );
 
   return (
     <div
@@ -103,12 +111,19 @@ export default function ProductCard({
             <div
               className={`${sizeClass.quickView} group/quickview transition-all duration-300 ease-out lg:group-hover/quickview:-translate-y-16`}
             >
+              <div
+                className="flex items-center justify-between gap-2 py-2 px-2 rounded-t-md rounded-b-md lg:rounded-b-none lg:rounded-t-xl bg-gray-100 cursor-pointer mb-1.5 lg:mb-0"
+                onClick={handleOriginClick}
+              >
+                <h1 className="text-xs lg:-mb-2">Go to imvu</h1>
+                <IoMdArrowDropright size={22} className="lg:-mb-2" />
+              </div>
 
               <div className="hidden lg:block bg-gray-100 rounded-b-xl px-3 pb-2 max-h-0 transition-all duration-800 ease-out group-hover/quickview:max-h-20 group-hover/quickview:mb-2">
                 <div className="pt-2">
                   <Separator className="mb-3" />
                   <div className="flex gap-1.5 flex-nowrap overflow-x-auto scrollbar-hide">
-                    {images.map((image, index) => (
+                    {images.slice(0, 4).map((image, index) => (
                       <Button
                         key={image.id}
                         variant="outline"

@@ -70,63 +70,129 @@ export default function ProductDetailSection({
     )
       return;
 
-    gsap.set(navRef.current, {
-      bottom: "2rem",
-      top: "auto",
-    });
+    const mm = gsap.matchMedia();
 
-    const isMobile = window.innerWidth < 768;
-    const startPosition = isMobile ? "top 30%" : "top 60%";
+    // Mobile
+    mm.add("(max-width: 767px)", () => {
+      gsap.set(navRef.current, {
+        bottom: "2rem",
+        top: "auto",
+      });
 
-    (Object.values(sections) as SectionInfo[]).forEach((el, i) => {
-      if (!el.ref.current) return;
+      const startPosition = "top 60%";
+
+      (Object.values(sections) as SectionInfo[]).forEach((el, i) => {
+        if (!el.ref.current) return;
+
+        ScrollTrigger.create({
+          trigger: el.ref.current,
+          start: i === 0 ? "top top" : startPosition,
+          end: "bottom 40%",
+          onEnter: () => {
+            setActive(i);
+          },
+          onEnterBack: () => {
+            setActive(i);
+          },
+        });
+      });
 
       ScrollTrigger.create({
-        trigger: el.ref.current,
-        start: i === 0 ? "top top" : startPosition,
-        end: isMobile ? "bottom 90%" : "bottom 40%",
-        onEnter: () => {
-          setActive(i);
+        trigger: sections.description.ref.current,
+        start: "top bottom-=100",
+        end: "top top",
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const fromBottom = 6;
+          const toTop = 5;
+          const viewportHeight = window.innerHeight / 16;
+
+          const currentBottom =
+            fromBottom + progress * (viewportHeight - fromBottom - toTop);
+
+          if (progress < 1) {
+            gsap.set(navRef.current, {
+              bottom: `${currentBottom}rem`,
+              top: "auto",
+            });
+          } else {
+            gsap.set(navRef.current, {
+              top: `${toTop}rem`,
+              bottom: "auto",
+            });
+          }
         },
-        onEnterBack: () => {
-          setActive(i);
+        onLeaveBack: () => {
+          gsap.set(navRef.current, {
+            bottom: "6rem",
+            top: "auto",
+          });
         },
       });
     });
 
-    ScrollTrigger.create({
-      trigger: sections.description.ref.current,
-      start: "top bottom-=100",
-      end: "top top",
-      scrub: 0.5,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const fromBottom = 2;
-        const toTop = 5;
-        const viewportHeight = window.innerHeight / 16;
+    // Desktop & Tablet
+    mm.add("(min-width: 768px)", () => {
+      gsap.set(navRef.current, {
+        bottom: "2rem",
+        top: "auto",
+      });
 
-        const currentBottom =
-          fromBottom + progress * (viewportHeight - fromBottom - toTop);
+      const startPosition = "top 60%";
 
-        if (progress < 1) {
+      (Object.values(sections) as SectionInfo[]).forEach((el, i) => {
+        if (!el.ref.current) return;
+
+        ScrollTrigger.create({
+          trigger: el.ref.current,
+          start: i === 0 ? "top top" : startPosition,
+          end: "bottom 40%",
+          onEnter: () => {
+            setActive(i);
+          },
+          onEnterBack: () => {
+            setActive(i);
+          },
+        });
+      });
+
+      ScrollTrigger.create({
+        trigger: sections.description.ref.current,
+        start: "top bottom-=100",
+        end: "top top",
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const fromBottom = 2;
+          const toTop = 5;
+          const viewportHeight = window.innerHeight / 16;
+
+          const currentBottom =
+            fromBottom + progress * (viewportHeight - fromBottom - toTop);
+
+          if (progress < 1) {
+            gsap.set(navRef.current, {
+              bottom: `${currentBottom}rem`,
+              top: "auto",
+            });
+          } else {
+            gsap.set(navRef.current, {
+              top: `${toTop}rem`,
+              bottom: "auto",
+            });
+          }
+        },
+        onLeaveBack: () => {
           gsap.set(navRef.current, {
-            bottom: `${currentBottom}rem`,
+            bottom: "2rem",
             top: "auto",
           });
-        } else {
-          gsap.set(navRef.current, {
-            top: `${toTop}rem`,
-            bottom: "auto",
-          });
-        }
-      },
-      onLeaveBack: () => {
-        gsap.set(navRef.current, {
-          bottom: "2rem",
-          top: "auto",
-        });
-      },
+        },
+      });
     });
+
+    return () => mm.revert();
   }, []);
 
   const updateIndicator = contextSafe(() => {
@@ -160,13 +226,20 @@ export default function ProductDetailSection({
     updateIndicator();
   }, [active]);
 
+  const background = useMemo(
+    () => ({
+      backgroundColor: product.backgroundColor || "#000000",
+    }),
+    [product.backgroundColor]
+  );
+
   return (
     <>
-      <div className="bg-black">
+      <div style={background}>
         <OverviewSection ref={sections.overview.ref} product={product} />
         <DescriptionSection
           ref={sections.description.ref}
-          description={product.description}
+          product={product}
           image={`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}${product.images?.[0]?.url || ""}`}
         />
         <SpecificationsSection
@@ -176,7 +249,7 @@ export default function ProductDetailSection({
       </div>
 
       <div className="bg-white px-6 py-20">
-        <h1 className="font-rubik text-5xl font-semibold mb-12">
+        <h1 className="font-rubik text-2xl md:text-4xl lg:text-5xl font-semibold mb-12">
           More to Explore
         </h1>
         <div className="flex items-center justify-start gap-3 overflow-x-scroll scrollbar-hide overflow-y-hidden">

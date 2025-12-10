@@ -45,7 +45,7 @@ export default function SocialMediaLinks({
   if (!socialMedia || socialMedia.length === 0) return null;
 
   return (
-    <div className="mb-6 flex flex-col md:flex-row items-start md:items-center gap-3">
+    <div className="mb-4 md:mb-6 flex items-center gap-3">
       <p className="font-rubik font-bold text-xs">Social: </p>
       <div className="flex items-center gap-3">
         {socialMedia.map((social) => (
