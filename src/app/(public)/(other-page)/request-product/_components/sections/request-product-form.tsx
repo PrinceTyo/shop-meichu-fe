@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { MarkRequired } from "@/components/form/mark-required";
 import { Textarea } from "@/components/ui/textarea";
 import { FaRegCheckCircle } from "react-icons/fa";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import {
   Select,
   SelectContent,
@@ -31,13 +30,16 @@ import { cn } from "@/lib/utils";
 import * as z from "zod";
 
 import type { requestProductSchema } from "@/schema/request-product";
+import { FaSpinner } from "react-icons/fa6";
 
 export default function CheckoutForm({
   form,
   className,
+  isSubmitting,
 }: {
   form: UseFormReturn<z.infer<typeof requestProductSchema>>;
   className?: string;
+  isSubmitting?: boolean;
 }) {
   const [selectedPlatform, setSelectedPlatform] = useState("whatsapp");
   const currentPlatform = useMemo(
@@ -178,25 +180,25 @@ export default function CheckoutForm({
           >
             Reference Image
           </FieldLegend>
-            <Controller
-              name="referenceImages"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field>
-                  <FieldLabel className="text-xs md:text-sm">
-                    Upload product reference <MarkRequired />
-                  </FieldLabel>
-                  <MultipleImage
-                    value={field.value}
-                    onChange={field.onChange}
-                    maximumFiles={4}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
+          <Controller
+            name="referenceImages"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field>
+                <FieldLabel className="text-xs md:text-sm">
+                  Upload product reference <MarkRequired />
+                </FieldLabel>
+                <MultipleImage
+                  value={field.value}
+                  onChange={field.onChange}
+                  maximumFiles={4}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
         </FieldSet>
 
         <FieldSet>
@@ -240,10 +242,20 @@ export default function CheckoutForm({
         <Button
           type="submit"
           variant="default"
-          className="w-full md:w-auto h-11 md:h-12 bg-[#E91E63] hover:bg-[#C2185B] cursor-pointer text-sm md:text-base text-white shadow-md hover:shadow-lg transition-all duration-300"
+          disabled={isSubmitting}
+          className="w-full md:w-auto h-11 md:h-12 bg-[#E91E63] hover:bg-[#C2185B] cursor-pointer text-sm md:text-base text-white shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          <FaRegCheckCircle className="text-white group-hover:-translate-x-1 transition-transform w-4 h-4 md:w-5 md:h-5 mr-2" />
-          Complete Order
+          {isSubmitting ? (
+            <>
+              <FaSpinner className="animate-spin w-4 h-4 md:w-5 md:h-5 mr-2" />
+              Processing...
+            </>
+          ) : (
+            <>
+              <FaRegCheckCircle className="text-white group-hover:-translate-x-1 transition-transform w-4 h-4 md:w-5 md:h-5 mr-2" />
+              Complete Order
+            </>
+          )}
         </Button>
       </div>
     </div>
