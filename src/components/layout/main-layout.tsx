@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Footer from "@/components/layout/footer";
 import Navbar from "@/components/layout/navbar";
 import ScrollSmootherLayout from "@/components/layout/scroll-smoother-layout";
+import ScrollToTopButton from "@/components/layout/scroll-to-top/scroll-to-top-button";
 import { getFooterData } from "@/lib/api/footer";
 import { getAllCategories } from "@/lib/api/categories";
 import { getNavbarData } from "@/lib/api/navbar";
@@ -26,6 +27,7 @@ export default async function MainLayout({
           <Footer data={footerData} />
         </Suspense>
       </ScrollSmootherLayout>
+      <ScrollToTopButton />
     </>
   );
 }

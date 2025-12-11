@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
@@ -29,10 +29,15 @@ export default function Navbar({
   const hasScrollEffect = isHomePage || isAboutPage;
 
   const navigations: Navigation[] = useMemo(() => {
-    return [
-      ...(data.navigations as Navigation[]).slice(0, 1),
-      {
-        title: "Catalog",
+    const apiNavigations = data.navigations as Navigation[];
+
+    const targetIndex = 1; 
+
+    const newNavigations = [...apiNavigations];
+
+    if (categories && categories.length > 0) {
+      newNavigations[targetIndex] = {
+        ...newNavigations[targetIndex], 
         subNavigation: {
           type: "single",
           items: categories.map((category) => ({
@@ -40,9 +45,10 @@ export default function Navbar({
             url: `/collections/${category.slug}`,
           })),
         },
-      },
-      ...(data.navigations as Navigation[]).slice(1),
-    ];
+      };
+    }
+
+    return newNavigations;
   }, [data.navigations, categories]);
 
   const lastScrollY = useRef(0);

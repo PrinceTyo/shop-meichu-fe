@@ -73,7 +73,7 @@ export default function BundleSection({ data }: { data: BundleSection }) {
   return (
     <div
       ref={bundleRef}
-      className="relative w-full min-h-screen bg-black text-white px-4 sm:px-6 md:px-8 py-8 sm:py-14"
+      className="relative w-full min-h-screen bg-black text-white px-4 sm:px-6 md:px-8 py-8 sm:py-14 -mt-1"
     >
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="lg:h-96 md:h-9/12 h-9/11 lg:w-1/2 w-9/11 rounded-full bg-[#018DC2]/50 blur-3xl"></div>
@@ -97,7 +97,7 @@ export default function BundleSection({ data }: { data: BundleSection }) {
           className="w-full mx-auto px-1 sm:px-2 mt-10 sm:mt-20"
         >
           <div className="max-w-8xl mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
-            {data.products?.slice(0,10).map((product) => (
+            {data.products?.slice(0, 10).map((product) => (
               <div key={product.id} className=" w-full">
                 <BundleProductCard product={product} />
               </div>

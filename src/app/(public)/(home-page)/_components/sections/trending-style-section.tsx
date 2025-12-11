@@ -42,12 +42,12 @@ export default function TrendingStyleSection({
         y: (i) => i * -130,
         z: (i) => -i * 50,
       });
-      gsap.set(cardTexts, { fontSize: "60px" });
+      gsap.set(cardTexts, { fontSize: "60px", textAlign: "center" });
 
       const getTextX = () => {
-        if (window.innerWidth >= 1300) return -200;
-        if (window.innerWidth >= 1020) return -120;
-        return -20;
+        if (window.innerWidth >= 1300) return 48;
+        if (window.innerWidth >= 1020) return 40;
+        return 80;
       };
 
       const favoriteTimeline = gsap.timeline({
@@ -77,8 +77,23 @@ export default function TrendingStyleSection({
         .to(".border-main", { duration: 1, opacity: 1 })
         .to(cardMainRef, { duration: 1, opacity: 1 })
         .to(cards, { scale: 0.7 })
-        .to(cards, { height: "40px", y: 22 })
-        .to(cardTexts, { fontSize: "24px", x: getTextX() }, "<")
+        .to(cards, {
+          height: "40px",
+          y: 22,
+          duration: 1,
+          ease: "power2.inOut",
+        })
+        .to(
+          cardTexts,
+          {
+            fontSize: "24px",
+            x: getTextX(),
+            textAlign: "left",
+            duration: 0.8,
+            ease: "power2.inOut",
+          },
+          "<"
+        )
         .to(cards, { duration: 0.5, opacity: 0 })
         .to(".card-main", {
           backgroundColor: (i) => bgCardColor[i],
@@ -154,7 +169,7 @@ export default function TrendingStyleSection({
                       key={product.id}
                       className={`card-color ${bgColors[index]} flex items-center justify-center rounded-xl text-center`}
                     >
-                      <h1 className="text-color text-2xl text-gray-900 font-albert-sans font-bold whitespace-nowrap">
+                      <h1 className="text-color text-2xl text-gray-900 font-albert-sans font-bold whitespace-nowrap text-left truncate w-[95%]">
                         {product.name}
                       </h1>
                     </div>
