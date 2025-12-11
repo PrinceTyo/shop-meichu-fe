@@ -178,25 +178,25 @@ export default function CheckoutForm({
           >
             Reference Image
           </FieldLegend>
-            <Controller
-              name="referenceImages"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field>
-                  <FieldLabel className="text-xs md:text-sm">
-                    Upload product reference <MarkRequired />
-                  </FieldLabel>
-                  <MultipleImage
-                    value={field.value}
-                    onChange={field.onChange}
-                    maximumFiles={4}
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
+          <Controller
+            name="referenceImages"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field className="max-w-80! md:max-w-full!">
+                <FieldLabel className="text-xs md:text-sm">
+                  Upload product reference <MarkRequired />
+                </FieldLabel>
+                <MultipleImage
+                  value={field.value}
+                  onChange={field.onChange}
+                  maximumFiles={4}
+                />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
+              </Field>
+            )}
+          />
         </FieldSet>
 
         <FieldSet>
