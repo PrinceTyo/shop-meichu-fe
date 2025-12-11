@@ -1,8 +1,8 @@
 import type { Product } from "@/types/strapi/models/product";
-import type { BaseSection } from "@/types/strapi/components/shared/base-section";
+import type { SideText } from "@/types/strapi/components/shared/side-text";
 
 export interface TrendingProductSection {
   id: number;
-  section: BaseSection;
+  sideText?: SideText;
   products?: Product[];
 }

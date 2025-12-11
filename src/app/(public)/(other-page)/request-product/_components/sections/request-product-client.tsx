@@ -11,6 +11,7 @@ import RequestProductProgress from "./request-product-progress";
 import { useStepProgress } from "@/hooks/use-step-progress";
 import { createRequest } from "@/lib/api/requests";
 import { createImage } from "@/lib/api/strapi-image";
+import { displayValidationError } from "@/lib/validation-handler";
 
 export default function RequestProductClient() {
   const form = useForm<z.infer<typeof requestProductSchema>>({
@@ -97,9 +98,7 @@ export default function RequestProductClient() {
           markAllCompleted();
           break;
         case "validation":
-          const errors = result.validation.details
-            .errors as unknown as Array<string>;
-          toast.error(errors[0]);
+          displayValidationError(form, result.validation);
           resetConfirmation();
           break;
         case "error":

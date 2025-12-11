@@ -134,7 +134,7 @@ export function TableActionProvider<T>(props: TableActionProviderProps<T>) {
 
     setData(result.data);
     setPagination({
-      pageCount: result.meta?.pagination?.pageCount || -1,
+      pageCount: result.meta?.pagination?.pageCount || 1,
       page: result.meta?.pagination?.page || 1,
       pageSize: result.meta?.pagination?.pageSize || 1,
     });

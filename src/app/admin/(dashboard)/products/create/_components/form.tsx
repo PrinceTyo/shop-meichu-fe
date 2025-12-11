@@ -29,9 +29,21 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerContent,
+  ColorPickerEyeDropper,
+  ColorPickerFormatSelect,
+  ColorPickerHueSlider,
+  ColorPickerInput,
+  ColorPickerSwatch,
+  ColorPickerTrigger,
+} from "@/components/ui/color-picker";
+import { RichTextEditor } from "@/components/form/rich-text-editor";
+import { Spinner } from "@/components/ui/spinner";
 import { Input } from "@/components/ui/input";
 import { MarkRequired } from "@/components/form/mark-required";
-import { MultipleImageField } from "@/components/form/multiple-image";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { ChevronUp, Trash2Icon } from "lucide-react";
 import { displayValidationError } from "@/lib/validation-handler";
@@ -39,15 +51,14 @@ import { upsertProductSchema } from "@/schema/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useCallback } from "react";
+import { MultipleImage } from "@/components/form/multiple-image";
 import toast from "react-hot-toast";
-import InputColor from "@/components/form/input-color";
 
 import { createProduct } from "@/lib/api/products";
 import { createImage } from "@/lib/api/strapi-image";
 import { redirect } from "next/navigation";
 
 import type { Category } from "@/types/strapi/models/category";
-import { RichTextEditor } from "@/components/form/rich-text-editor";
 
 export default function CreateProductForm({
   categories,
@@ -76,17 +87,24 @@ export default function CreateProductForm({
     async (formData: z.infer<typeof upsertProductSchema>) => {
       const { images, ...productData } = formData;
 
-      const imagesResult = await createImage(images);
-      switch (imagesResult.type) {
-        case "validation":
-        case "error":
-          toast.error("An error occured when uploading the product image!");
-          return;
+      const imageIds = [];
+      const imagesResult = await Promise.all(
+        images.map((image) => createImage(image))
+      );
+      for (const result of imagesResult) {
+        switch (result.type) {
+          case "validation":
+          case "error":
+            toast.error("An error occured when uploading the product image!");
+            return;
+          case "success":
+            imageIds.push(result.data[0].id);
+            break;
+        }
       }
-
       const result = await createProduct({
         ...productData,
-        images: imagesResult.data.map((image) => image.id),
+        images: imageIds,
       });
 
       switch (result.type) {
@@ -143,7 +161,38 @@ export default function CreateProductForm({
                         Background Color
                         <MarkRequired />
                       </FieldLabel>
-                      <InputColor {...field} />
+                      <ColorPicker
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        defaultFormat="hex"
+                        format="hex"
+                        required
+                      >
+                        <div className="flex items-center gap-3">
+                          <ColorPickerTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="flex items-center gap-2 px-3"
+                            >
+                              <ColorPickerSwatch className="size-4" />
+                              {field.value}
+                            </Button>
+                          </ColorPickerTrigger>
+                        </div>
+                        <ColorPickerContent>
+                          <ColorPickerArea />
+                          <div className="flex items-center gap-2">
+                            <ColorPickerEyeDropper />
+                            <div className="flex flex-1 flex-col gap-2">
+                              <ColorPickerHueSlider />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <ColorPickerFormatSelect />
+                            <ColorPickerInput />
+                          </div>
+                        </ColorPickerContent>
+                      </ColorPicker>
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
@@ -237,7 +286,11 @@ export default function CreateProductForm({
                       Images
                       <MarkRequired />
                     </FieldLabel>
-                    <MultipleImageField field={field} />
+                    <MultipleImage
+                      value={field.value}
+                      onChange={field.onChange}
+                      maximumFiles={5}
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -353,7 +406,10 @@ export default function CreateProductForm({
             >
               Reset
             </Button>
-            <Button type="submit">Create</Button>
+            <Button disabled={form.formState.isSubmitting} type="submit">
+              {form.formState.isSubmitting && <Spinner />}
+              Create
+            </Button>
           </Field>
         </CardFooter>
       </Card>

@@ -1,21 +1,22 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useIsClient } from "@/hooks/use-is-client";
+import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "./ui/skeleton";
 
 export function ThemeToggle() {
+  const isClient = useIsClient();
   const { theme, setTheme } = useTheme();
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
+  if (!isClient) return <Skeleton className="h-8 w-8" />;
 
   return (
     <Button
       variant="ghost"
       size="icon"
-      onClick={toggleTheme}
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className="rounded-lg bg-accent-foreground text-accent"
       aria-label="Toggle theme"
     >

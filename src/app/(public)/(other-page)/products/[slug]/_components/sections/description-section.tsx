@@ -6,7 +6,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Product } from "@/types/strapi/models/product";
+import Markdown from "react-markdown";
+
+import type { Product } from "@/types/strapi/models/product";
 
 interface DescriptionSectionProps {
   ref: React.RefObject<HTMLDivElement | null>;
@@ -38,7 +40,7 @@ export default function DescriptionSection({
                 </AccordionTrigger>
 
                 <AccordionContent className="text-balance">
-                  {field.content}
+                  <Markdown>{field.content}</Markdown>
                 </AccordionContent>
               </AccordionItem>
             ))}

@@ -25,7 +25,8 @@ export async function getAllCategories(
 }
 
 export async function getCategoryData(
-  slug: string
+  slug: string,
+  params?: ExtendedParams
 ): Promise<StrapiResponse<Category>> {
   const response = await extendedFetch(`/categories/${slug}`, {
     init: {
@@ -33,6 +34,7 @@ export async function getCategoryData(
         revalidate: 10,
       },
     },
+    ...params,
   });
 
   return response.json();

@@ -14,7 +14,10 @@ export const upsertCategorySchema = z.object({
       "Must be a valid hex color code (e.g., #FF5733)"
     )
     .min(1, "Background color is required"),
-  thumbnail: imageValidation,
+  thumbnail: z
+    .array(imageValidation)
+    .min(1, "The thumbnail field is required")
+    .max(1, "The thumbnail field must be at most 1 image"),
   heading: z.object({
     title: z
       .string()
@@ -24,6 +27,9 @@ export const upsertCategorySchema = z.object({
       .string()
       .min(1, "The description field is required.")
       .max(2048, "The description field must be at most 2048 characters long."),
-    thumbnail: imageValidation,
+    thumbnail: z
+      .array(imageValidation)
+      .min(1, "The thumbnail field is required")
+      .max(1, "The thumbnail field must be at most 1 image"),
   }),
 });

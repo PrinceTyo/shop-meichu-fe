@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getHomePageData } from "@/lib/api/homepage";
 import HeroSection from "./_components/sections/hero-section";
 import TrendingProductSection from "./_components/sections/trending-product-section";
@@ -19,7 +17,7 @@ export default async function Home() {
   const homePageData = await getHomePageData();
 
   return (
-    <Suspense fallback={<Skeleton className="w-full h-96" />}>
+    <>
       <HeroSection
         data={homePageData.data.heroSection}
         subHeroData={homePageData.data.subHeroSection}
@@ -56,6 +54,6 @@ export default async function Home() {
       {homePageData.data.faqSection && (
         <FAQSection data={homePageData.data.faqSection} />
       )}
-    </Suspense>
+    </>
   );
 }

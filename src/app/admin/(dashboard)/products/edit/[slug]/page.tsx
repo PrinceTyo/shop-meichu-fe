@@ -10,8 +10,20 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { data: productData } = await getProductData(slug);
-  const { data: categoryData } = await getAllCategories();
+  const { data: productData } = await getProductData(slug, {
+    init: {
+      next: {
+        revalidate: 0,
+      },
+    },
+  });
+  const { data: categoryData } = await getAllCategories({
+    init: {
+      next: {
+        revalidate: 0,
+      },
+    },
+  });
 
   return (
     <Suspense>

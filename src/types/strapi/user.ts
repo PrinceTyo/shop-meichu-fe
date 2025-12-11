@@ -6,4 +6,5 @@ export interface User {
   provider: string;
   confirmed: boolean;
   blocked: boolean;
+  role: "admin" | "public";
 }

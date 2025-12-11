@@ -29,19 +29,30 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerContent,
+  ColorPickerEyeDropper,
+  ColorPickerFormatSelect,
+  ColorPickerHueSlider,
+  ColorPickerInput,
+  ColorPickerSwatch,
+  ColorPickerTrigger,
+} from "@/components/ui/color-picker";
 import { RichTextEditor } from "@/components/form/rich-text-editor";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { MarkRequired } from "@/components/form/mark-required";
-import { MultipleImageField } from "@/components/form/multiple-image";
+import { MultipleImage } from "@/components/form/multiple-image";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { ChevronUp, Trash2Icon } from "lucide-react";
 import { displayValidationError } from "@/lib/validation-handler";
 import { upsertProductSchema } from "@/schema/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
-import InputColor from "@/components/form/input-color";
 
 import { updateProduct } from "@/lib/api/products";
 import { createImage } from "@/lib/api/strapi-image";
@@ -49,6 +60,7 @@ import { redirect } from "next/navigation";
 
 import type { Category } from "@/types/strapi/models/category";
 import type { Product } from "@/types/strapi/models/product";
+import { fetchImageAsFile } from "@/lib/utils";
 
 export default function UpdateProductForm({
   data,
@@ -75,20 +87,41 @@ export default function UpdateProductForm({
     name: "fields",
   });
 
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (data.images) {
+        const imagesPromise = await Promise.all(
+          data.images.map((image) => fetchImageAsFile(image))
+        );
+        form.setValue("images", imagesPromise);
+      }
+    };
+
+    fetchImage();
+  }, [data]);
+
   const onSubmit = useCallback(
     async (formData: z.infer<typeof upsertProductSchema>) => {
       const { images, ...productData } = formData;
 
       let imageIds = data.images!.map((image) => image.id);
       if (form.getFieldState("images").isDirty) {
-        const imagesResult = await createImage(images);
-        switch (imagesResult.type) {
-          case "validation":
-          case "error":
-            toast.error("An error occured when uploading the product image!");
-            return;
+        imageIds = [];
+        const imagesResult = await Promise.all(
+          images.map((image) => createImage(image))
+        );
+
+        for (const result of imagesResult) {
+          switch (result.type) {
+            case "validation":
+            case "error":
+              toast.error("An error occured when uploading the product image!");
+              return;
+            case "success":
+              imageIds.push(result.data[0].id);
+              break;
+          }
         }
-        imageIds = imagesResult.data.map((image) => image.id);
       }
 
       const result = await updateProduct(data.documentId, {
@@ -150,7 +183,38 @@ export default function UpdateProductForm({
                         Background Color
                         <MarkRequired />
                       </FieldLabel>
-                      <InputColor {...field} />
+                      <ColorPicker
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        defaultFormat="hex"
+                        format="hex"
+                        required
+                      >
+                        <div className="flex items-center gap-3">
+                          <ColorPickerTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="flex items-center gap-2 px-3"
+                            >
+                              <ColorPickerSwatch className="size-4" />
+                              {field.value}
+                            </Button>
+                          </ColorPickerTrigger>
+                        </div>
+                        <ColorPickerContent>
+                          <ColorPickerArea />
+                          <div className="flex items-center gap-2">
+                            <ColorPickerEyeDropper />
+                            <div className="flex flex-1 flex-col gap-2">
+                              <ColorPickerHueSlider />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <ColorPickerFormatSelect />
+                            <ColorPickerInput />
+                          </div>
+                        </ColorPickerContent>
+                      </ColorPicker>
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
@@ -244,9 +308,10 @@ export default function UpdateProductForm({
                       Images
                       <MarkRequired />
                     </FieldLabel>
-                    <MultipleImageField
-                      field={field}
-                      defaultValue={data.images}
+                    <MultipleImage
+                      value={field.value}
+                      onChange={field.onChange}
+                      maximumFiles={5}
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
@@ -363,7 +428,10 @@ export default function UpdateProductForm({
             >
               Reset
             </Button>
-            <Button type="submit">Edit</Button>
+            <Button disabled={form.formState.isSubmitting} type="submit">
+              {form.formState.isSubmitting && <Spinner />}
+              Edit
+            </Button>
           </Field>
         </CardFooter>
       </Card>

@@ -3,7 +3,16 @@
 import { useTableAction } from "@/context/table-action-provider";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, TextIcon } from "lucide-react";
+import {
+  CheckCheckIcon,
+  CheckIcon,
+  ClockIcon,
+  MoreHorizontal,
+  PencilIcon,
+  PhoneIcon,
+  TextIcon,
+  XIcon,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -239,13 +248,16 @@ export const productsColumn: ColumnDef<Product>[] = [
               <DropdownMenuItem
                 variant="destructive"
                 onClick={async () => {
-                  const result = await deleteAction(row.original.documentId);
+                  const result = await deleteAction(row.original.slug);
+                  console.log(result);
 
                   switch (result.type) {
                     case "success":
                       toast.success("Product deleted successfully");
                       refresh();
                       break;
+                    default:
+                      toast.error("Failed to delete product");
                   }
                 }}
               >
@@ -281,6 +293,9 @@ export const requestsColumn: ColumnDef<Request>[] = [
     enableColumnFilter: true,
     meta: {
       label: "Buyer Name",
+      placeholder: "Search buyer name...",
+      variant: "text",
+      icon: TextIcon,
     },
   },
   {
@@ -305,6 +320,9 @@ export const requestsColumn: ColumnDef<Request>[] = [
     enableColumnFilter: true,
     meta: {
       label: "Contact",
+      placeholder: "Search contact...",
+      variant: "text",
+      icon: PhoneIcon,
     },
   },
   {
@@ -324,7 +342,15 @@ export const requestsColumn: ColumnDef<Request>[] = [
     ),
     enableColumnFilter: true,
     meta: {
-      label: "Request Status",
+      label: "Request State",
+      variant: "multiSelect",
+      options: [
+        { label: "Pending", value: "pending", icon: ClockIcon },
+        { label: "Confirmed", value: "confirmed", icon: CheckIcon },
+        { label: "In Progress", value: "in_progress", icon: PencilIcon },
+        { label: "Completed", value: "completed", icon: CheckCheckIcon },
+        { label: "Cancelled", value: "cancelled", icon: XIcon },
+      ],
     },
   },
   {

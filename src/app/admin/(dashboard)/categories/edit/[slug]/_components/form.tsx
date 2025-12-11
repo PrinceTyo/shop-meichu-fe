@@ -9,7 +9,19 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
-import { ImageField } from "@/components/form/image";
+import {
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerContent,
+  ColorPickerEyeDropper,
+  ColorPickerFormatSelect,
+  ColorPickerHueSlider,
+  ColorPickerInput,
+  ColorPickerSwatch,
+  ColorPickerTrigger,
+} from "@/components/ui/color-picker";
+import { Spinner } from "@/components/ui/spinner";
+import { MultipleImage } from "@/components/form/multiple-image";
 import { Input } from "@/components/ui/input";
 import { MarkRequired } from "@/components/form/mark-required";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,15 +30,15 @@ import { displayValidationError } from "@/lib/validation-handler";
 import { upsertCategorySchema } from "@/schema/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
-import InputColor from "@/components/form/input-color";
 
 import { updateCategory } from "@/lib/api/categories";
 import { createImage } from "@/lib/api/strapi-image";
 import { redirect } from "next/navigation";
 
 import type { Category } from "@/types/strapi/models/category";
+import { fetchImageAsFile } from "@/lib/utils";
 
 export function UpdateCategoryForm({ data }: { data: Category }) {
   const form = useForm<z.infer<typeof upsertCategorySchema>>({
@@ -34,14 +46,29 @@ export function UpdateCategoryForm({ data }: { data: Category }) {
     defaultValues: {
       name: data.name || undefined,
       backgroundColor: data.backgroundColor || "#FFFFFF",
-      thumbnail: undefined,
+      thumbnail: [],
       heading: {
         title: data.heading!.title || undefined,
         description: data.heading!.description || undefined,
-        thumbnail: undefined,
+        thumbnail: [],
       },
     },
   });
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (data.thumbnail) {
+        const file = await fetchImageAsFile(data.thumbnail);
+        form.setValue("thumbnail", [file]);
+      }
+      if (data.heading?.thumbnail) {
+        const file = await fetchImageAsFile(data.heading.thumbnail);
+        form.setValue("heading.thumbnail", [file]);
+      }
+    };
+
+    fetchImage();
+  }, [data]);
 
   const onSubmit = useCallback(
     async (formData: z.infer<typeof upsertCategorySchema>) => {
@@ -129,7 +156,38 @@ export function UpdateCategoryForm({ data }: { data: Category }) {
                         Background Color
                         <MarkRequired />
                       </FieldLabel>
-                      <InputColor {...field} />
+                      <ColorPicker
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        defaultFormat="hex"
+                        format="hex"
+                        required
+                      >
+                        <div className="flex items-center gap-3">
+                          <ColorPickerTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="flex items-center gap-2 px-3"
+                            >
+                              <ColorPickerSwatch className="size-4" />
+                              {field.value}
+                            </Button>
+                          </ColorPickerTrigger>
+                        </div>
+                        <ColorPickerContent>
+                          <ColorPickerArea />
+                          <div className="flex items-center gap-2">
+                            <ColorPickerEyeDropper />
+                            <div className="flex flex-1 flex-col gap-2">
+                              <ColorPickerHueSlider />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <ColorPickerFormatSelect />
+                            <ColorPickerInput />
+                          </div>
+                        </ColorPickerContent>
+                      </ColorPicker>
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
@@ -146,7 +204,11 @@ export function UpdateCategoryForm({ data }: { data: Category }) {
                       Thumbnail
                       <MarkRequired />
                     </FieldLabel>
-                    <ImageField field={field} defaultValue={data.thumbnail} />
+                    <MultipleImage
+                      value={field.value}
+                      onChange={field.onChange}
+                      maximumFiles={1}
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -206,7 +268,11 @@ export function UpdateCategoryForm({ data }: { data: Category }) {
                       Thumbnail
                       <MarkRequired />
                     </FieldLabel>
-                    <ImageField field={field} defaultValue={data.thumbnail} />
+                    <MultipleImage
+                      value={field.value}
+                      onChange={field.onChange}
+                      maximumFiles={1}
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -226,7 +292,10 @@ export function UpdateCategoryForm({ data }: { data: Category }) {
             >
               Reset
             </Button>
-            <Button type="submit">Edit</Button>
+            <Button disabled={form.formState.isSubmitting} type="submit">
+              {form.formState.isSubmitting && <Spinner />}
+              Edit
+            </Button>
           </Field>
         </CardFooter>
       </Card>
