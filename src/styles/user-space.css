@@ -147,4 +147,9 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }

@@ -249,6 +249,7 @@ export const productsColumn: ColumnDef<Product>[] = [
                 variant="destructive"
                 onClick={async () => {
                   const result = await deleteAction(row.original.slug);
+                  console.log(result);
 
                   switch (result.type) {
                     case "success":

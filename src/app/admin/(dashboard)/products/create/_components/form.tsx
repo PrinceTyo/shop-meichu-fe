@@ -44,7 +44,6 @@ import { RichTextEditor } from "@/components/form/rich-text-editor";
 import { Spinner } from "@/components/ui/spinner";
 import { Input } from "@/components/ui/input";
 import { MarkRequired } from "@/components/form/mark-required";
-import { MultipleImageField } from "@/components/form/multiple-image";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { ChevronUp, Trash2Icon } from "lucide-react";
 import { displayValidationError } from "@/lib/validation-handler";
@@ -52,6 +51,7 @@ import { upsertProductSchema } from "@/schema/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useCallback } from "react";
+import { MultipleImage } from "@/components/form/multiple-image";
 import toast from "react-hot-toast";
 
 import { createProduct } from "@/lib/api/products";
@@ -286,7 +286,11 @@ export default function CreateProductForm({
                       Images
                       <MarkRequired />
                     </FieldLabel>
-                    <MultipleImageField field={field} />
+                    <MultipleImage
+                      value={field.value}
+                      onChange={field.onChange}
+                      maximumFiles={5}
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}

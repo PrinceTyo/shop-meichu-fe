@@ -10,7 +10,7 @@ export default function NoScrollSmootherContent({
 }) {
   const isClient = useIsClient();
 
-  if (!isClient) return null;
+  if (!isClient) return children;
 
   return createPortal(children, document.body);
 }

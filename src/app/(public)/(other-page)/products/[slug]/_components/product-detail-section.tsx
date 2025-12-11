@@ -15,12 +15,7 @@ import OverviewSection from "./sections/overview-section";
 import DescriptionSection from "./sections/description-section";
 import SpecificationsSection from "./sections/specifications-section";
 import ProductCard from "@/components/card/product-card";
-import dynamic from "next/dynamic";
-
-const NoScrollSmootherContent = dynamic(
-  () => import("@/components/no-scroll-smoother-content"),
-  { ssr: false }
-);
+import NoScrollSmootherContent from "@/components/no-scroll-smoother-content";
 
 import type { Product } from "@/types/strapi/models/product";
 
@@ -79,11 +74,6 @@ export default function ProductDetailSection({
 
     // Mobile
     mm.add("(max-width: 767px)", () => {
-      gsap.set(navRef.current, {
-        bottom: "2rem",
-        top: "auto",
-      });
-
       const startPosition = "top 60%";
 
       (Object.values(sections) as SectionInfo[]).forEach((el, i) => {
@@ -139,11 +129,6 @@ export default function ProductDetailSection({
 
     // Desktop & Tablet
     mm.add("(min-width: 768px)", () => {
-      gsap.set(navRef.current, {
-        bottom: "2rem",
-        top: "auto",
-      });
-
       const startPosition = "top 60%";
 
       (Object.values(sections) as SectionInfo[]).forEach((el, i) => {
@@ -196,8 +181,6 @@ export default function ProductDetailSection({
         },
       });
     });
-
-    return () => mm.revert();
   }, []);
 
   const updateIndicator = contextSafe(() => {
@@ -268,6 +251,10 @@ export default function ProductDetailSection({
         <nav
           ref={navRef}
           className="fixed h-fit left-1/2 -translate-x-1/2 md:left-8 md:translate-x-0 backdrop-blur-md bg-white/60 rounded-full shadow-lg px-1 py-1 z-50"
+          style={{
+            bottom: "2rem",
+            top: "auto",
+          }}
         >
           <div className="relative flex gap-1">
             <div

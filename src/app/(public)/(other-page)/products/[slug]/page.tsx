@@ -11,7 +11,7 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [productData, otherProductsData] = await Promise.all([
+  const [{ data: productData }, otherProductsData] = await Promise.all([
     getProductData(slug),
     getRecommendedProducts(),
   ]);
@@ -23,10 +23,10 @@ export default async function ProductDetailPage({
   return (
     <Suspense fallback={<Skeleton className="w-full h-96" />}>
       <ProductDetailSection
-        product={productData.data}
+        product={productData}
         relatedProducts={otherProductsData.data || []}
       />
-      <SetFooter backgroundColor={productData.data.backgroundColor} />
+      <SetFooter backgroundColor={productData.backgroundColor} />
     </Suspense>
   );
 }

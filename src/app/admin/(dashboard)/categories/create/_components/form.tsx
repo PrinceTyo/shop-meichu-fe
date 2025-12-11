@@ -9,8 +9,19 @@ import {
   FieldLabel,
   FieldSet,
 } from "@/components/ui/field";
+import {
+  ColorPicker,
+  ColorPickerArea,
+  ColorPickerContent,
+  ColorPickerEyeDropper,
+  ColorPickerFormatSelect,
+  ColorPickerHueSlider,
+  ColorPickerInput,
+  ColorPickerSwatch,
+  ColorPickerTrigger,
+} from "@/components/ui/color-picker";
 import { Spinner } from "@/components/ui/spinner";
-import { ImageField } from "@/components/form/image";
+import { MultipleImage } from "@/components/form/multiple-image";
 import { Input } from "@/components/ui/input";
 import { MarkRequired } from "@/components/form/mark-required";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,7 +32,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useCallback } from "react";
 import toast from "react-hot-toast";
-import InputColor from "@/components/form/input-color";
 
 import { createCategory } from "@/lib/api/categories";
 import { createImage } from "@/lib/api/strapi-image";
@@ -33,14 +43,19 @@ export function CreateCategoryForm() {
     defaultValues: {
       name: "",
       backgroundColor: "#000000",
-      thumbnail: undefined,
+      thumbnail: [],
+      heading: {
+        title: "",
+        description: "",
+        thumbnail: [],
+      },
     },
   });
 
   const onSubmit = useCallback(
     async (formData: z.infer<typeof upsertCategorySchema>) => {
-      const categoryThumbnail = formData.thumbnail;
-      const headingThumbnail = formData.heading.thumbnail;
+      const categoryThumbnail = formData.thumbnail[0];
+      const headingThumbnail = formData.heading.thumbnail[0];
 
       const categoryThumbnailResult = await createImage(categoryThumbnail);
       switch (categoryThumbnailResult.type) {
@@ -121,7 +136,38 @@ export function CreateCategoryForm() {
                         Background Color
                         <MarkRequired />
                       </FieldLabel>
-                      <InputColor {...field} />
+                      <ColorPicker
+                        value={field.value}
+                        onValueChange={field.onChange}
+                        defaultFormat="hex"
+                        format="hex"
+                        required
+                      >
+                        <div className="flex items-center gap-3">
+                          <ColorPickerTrigger asChild>
+                            <Button
+                              variant="outline"
+                              className="flex items-center gap-2 px-3"
+                            >
+                              <ColorPickerSwatch className="size-4" />
+                              {field.value}
+                            </Button>
+                          </ColorPickerTrigger>
+                        </div>
+                        <ColorPickerContent>
+                          <ColorPickerArea />
+                          <div className="flex items-center gap-2">
+                            <ColorPickerEyeDropper />
+                            <div className="flex flex-1 flex-col gap-2">
+                              <ColorPickerHueSlider />
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <ColorPickerFormatSelect />
+                            <ColorPickerInput />
+                          </div>
+                        </ColorPickerContent>
+                      </ColorPicker>
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
@@ -138,7 +184,11 @@ export function CreateCategoryForm() {
                       Thumbnail
                       <MarkRequired />
                     </FieldLabel>
-                    <ImageField field={field} />
+                    <MultipleImage
+                      value={field.value}
+                      onChange={field.onChange}
+                      maximumFiles={1}
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -198,7 +248,11 @@ export function CreateCategoryForm() {
                       Thumbnail
                       <MarkRequired />
                     </FieldLabel>
-                    <ImageField field={field} />
+                    <MultipleImage
+                      value={field.value}
+                      onChange={field.onChange}
+                      maximumFiles={1}
+                    />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}

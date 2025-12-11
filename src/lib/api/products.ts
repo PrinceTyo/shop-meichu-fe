@@ -10,7 +10,8 @@ import type { Product } from "@/types/strapi/models/product";
 import type { ResultContract } from "@/types/api-return";
 
 export async function getProductData(
-  slug: string
+  slug: string,
+  params?: ExtendedParams
 ): Promise<StrapiResponse<Product>> {
   const response = await extendedFetch(`/products/${slug}`, {
     init: {
@@ -18,6 +19,7 @@ export async function getProductData(
         revalidate: 10,
       },
     },
+    ...params,
   });
 
   return await response.json();

@@ -44,14 +44,14 @@ import { RichTextEditor } from "@/components/form/rich-text-editor";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { MarkRequired } from "@/components/form/mark-required";
-import { MultipleImageField } from "@/components/form/multiple-image";
+import { MultipleImage } from "@/components/form/multiple-image";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { ChevronUp, Trash2Icon } from "lucide-react";
 import { displayValidationError } from "@/lib/validation-handler";
 import { upsertProductSchema } from "@/schema/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import toast from "react-hot-toast";
 
 import { updateProduct } from "@/lib/api/products";
@@ -60,6 +60,7 @@ import { redirect } from "next/navigation";
 
 import type { Category } from "@/types/strapi/models/category";
 import type { Product } from "@/types/strapi/models/product";
+import { fetchImageAsFile } from "@/lib/utils";
 
 export default function UpdateProductForm({
   data,
@@ -85,6 +86,19 @@ export default function UpdateProductForm({
     control: form.control,
     name: "fields",
   });
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (data.images) {
+        const imagesPromise = await Promise.all(
+          data.images.map((image) => fetchImageAsFile(image))
+        );
+        form.setValue("images", imagesPromise);
+      }
+    };
+
+    fetchImage();
+  }, [data]);
 
   const onSubmit = useCallback(
     async (formData: z.infer<typeof upsertProductSchema>) => {
@@ -294,9 +308,10 @@ export default function UpdateProductForm({
                       Images
                       <MarkRequired />
                     </FieldLabel>
-                    <MultipleImageField
-                      field={field}
-                      defaultValue={data.images}
+                    <MultipleImage
+                      value={field.value}
+                      onChange={field.onChange}
+                      maximumFiles={5}
                     />
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
