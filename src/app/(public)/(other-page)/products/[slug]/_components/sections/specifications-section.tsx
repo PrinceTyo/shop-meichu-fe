@@ -102,7 +102,7 @@ export default function SpecificationsSection({
   return (
     <div
       ref={ref}
-      className="text-white min-h-screen flex flex-col items-center justify-center space-y-8 relative px-4 md:px-4"
+      className="zzztext-white min-h-screen flex flex-col items-center justify-center space-y-8 relative px-4 md:px-4"
       style={background}
     >
       <h1 className="font-rubik text-4xl md:text-5xl lg:text-7xl font-bold text-center z-10">
