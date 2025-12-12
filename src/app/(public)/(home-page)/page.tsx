@@ -17,7 +17,7 @@ export default async function Home() {
   const homePageData = await getHomePageData();
 
   return (
-    <>
+    <div className="bg-black">
       <HeroSection
         data={homePageData.data.heroSection}
         subHeroData={homePageData.data.subHeroSection}
@@ -54,6 +54,6 @@ export default async function Home() {
       {homePageData.data.faqSection && (
         <FAQSection data={homePageData.data.faqSection} />
       )}
-    </>
+    </div>
   );
 }

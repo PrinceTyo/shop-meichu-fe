@@ -147,10 +147,54 @@ export const requestProductSchema = z
         }
 
         case "instagram": {
+          const instagramPrefix = "https://www.instagram.com/";
+
+          if (!contact.startsWith(instagramPrefix)) {
+            throw new z.ZodError([
+              {
+                code: "custom",
+                message: "Instagram URL must start with https://www.instagram.com/",
+                path: ["contact"],
+              },
+            ]);
+          }
+
+          if (contact === instagramPrefix) {
+            throw new z.ZodError([
+              {
+                code: "custom",
+                message: "Please enter your complete Instagram profile URL",
+                path: ["contact"],
+              },
+            ]);
+          }
+
           return true;
         }
 
         case "facebook": {
+          const facebookPrefix = "https://www.facebook.com/";
+
+          if (!contact.startsWith(facebookPrefix)) {
+            throw new z.ZodError([
+              {
+                code: "custom",
+                message: "Facebook URL must start with https://www.facebook.com/",
+                path: ["contact"],
+              },
+            ]);
+          }
+
+          if (contact === facebookPrefix) {
+            throw new z.ZodError([
+              {
+                code: "custom",
+                message: "Please enter your complete Facebook profile URL",
+                path: ["contact"],
+              },
+            ]);
+          }
+
           return true;
         }
 

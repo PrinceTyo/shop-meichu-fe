@@ -25,9 +25,12 @@ export default function PopularCollections({
             POPULAR COLLECTIONS
           </h1>
         </div>
-        <ScrollArea className="lg:h-125 mt-4 lg:mt-10 text-left">
+        <ScrollArea className="h-70 md:h-110 lg:h-130 mt-4 lg:mt-10 text-left">
           {categories.map((category) => (
-            <div key={category.id} className="flex flex-col gap-2 mt-1 lg:mt-3">
+            <div
+              key={category.id}
+              className="h-max flex flex-col gap-2 mt-1 lg:mt-3"
+            >
               <Link
                 href={`/collections/${category.slug}`}
                 onMouseEnter={() => setHoveredCollectionId(category.id)}

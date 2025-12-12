@@ -50,7 +50,7 @@ export default function CheckoutForm({
   return (
     <div
       className={cn(
-        "bg-gray-50 shadow-lg rounded-b-2xl md:rounded-r-2xl p-4 md:p-6 font-albert-sans",
+        "bg-gray-50 shadow-lg  md:rounded-r-2xl p-4 md:p-6 font-albert-sans min-w-0",
         className
       )}
     >
@@ -96,8 +96,8 @@ export default function CheckoutForm({
                 </FieldLabel>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
-                <div>
+              <div className="flex gap-2">
+                <div className="w-36 md:w-40 shrink-0">
                   <Controller
                     name="contactPlatform"
                     control={form.control}
@@ -145,7 +145,7 @@ export default function CheckoutForm({
                   />
                 </div>
 
-                <div className="col-span-1 md:col-span-2 lg:col-span-4">
+                <div className="flex-1 min-w-0">
                   <Controller
                     name="contact"
                     control={form.control}
@@ -173,7 +173,7 @@ export default function CheckoutForm({
           </FieldGroup>
         </FieldSet>
 
-        <FieldSet>
+        <FieldSet className="min-w-0">
           <FieldLegend
             variant="label"
             className="text-2xl! font-bold! font-albert-sans text-[#191715]"
@@ -184,7 +184,7 @@ export default function CheckoutForm({
             name="referenceImages"
             control={form.control}
             render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
+              <Field data-invalid={fieldState.invalid} className="min-w-0">
                 <FieldLabel className="text-xs md:text-sm">
                   Upload product reference <MarkRequired />
                 </FieldLabel>

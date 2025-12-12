@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { IoClose } from "react-icons/io5";
 import { SearchIcon } from "lucide-react";
+import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import SearchInput from "./search-input";
 import ProductResults from "./product-result";
@@ -21,12 +23,24 @@ import type { Category } from "@/types/strapi/models/category";
 import type { Product } from "@/types/strapi/models/product";
 import type { StrapiResponse } from "@/types/strapi/response";
 
+async function fetchRecommendedProducts(url: string): Promise<Product[]> {
+  const response = await fetch(
+    `${url}?populate=*&pagination[limit]=12&sort=createdAt:desc`
+  );
+  if (!response.ok) return [];
+
+  const result = (await response.json()) as StrapiResponse<Product[]>;
+  return result.data;
+}
+
 async function searchProducts(
   url: string,
   { arg }: { arg: { query: string } }
 ): Promise<Product[]> {
+  if (!arg.query || arg.query.trim() === "") return [];
+
   const response = await fetch(
-    `${url}?populate=*&filters[name][$contains]=${arg.query}`
+    `${url}?populate=*&filters[name][$contains]=${encodeURIComponent(arg.query)}&pagination[limit]=20`
   );
   if (!response.ok) return [];
 
@@ -36,27 +50,59 @@ async function searchProducts(
 
 export default function Search({ categories }: { categories: Category[] }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [productsResult, setProductsResult] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useQueryState("search", {
     defaultValue: "",
   });
   const pathname = usePathname();
 
-  const { trigger } = useSWRMutation(
+  const {
+    data: recommendedProducts = [],
+    isLoading: isLoadingRecommended,
+    mutate: mutateRecommended,
+  } = useSWR(
+    isSearchOpen ? `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/products` : null,
+    fetchRecommendedProducts,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
+
+  const {
+    trigger,
+    data: searchResults = [],
+    isMutating: isSearching,
+    reset: resetSearchResults,
+  } = useSWRMutation(
     `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/products`,
     searchProducts
   );
+
   const debouncedSearch = useDebouncedCallback(async (query?: string) => {
-    const result = await trigger({ query: query || searchQuery });
-    setProductsResult(result);
+    const q = query || searchQuery;
+    if (q.trim()) {
+      await trigger({ query: q });
+    } else {
+      resetSearchResults();
+    }
   }, 500);
 
   useEffect(() => {
     setIsSearchOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (!isSearchOpen) {
+      setSearchQuery("");
+      resetSearchResults();
+    } else {
+      mutateRecommended();
+    }
+  }, [isSearchOpen, setSearchQuery, resetSearchResults, mutateRecommended]);
+
   const handleClearSearch = () => {
     setSearchQuery("");
+    resetSearchResults();
   };
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -64,8 +110,14 @@ export default function Search({ categories }: { categories: Category[] }) {
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    debouncedSearch(e.target.value);
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    if (value.trim()) {
+      debouncedSearch(value);
+    } else {
+      resetSearchResults();
+    }
   };
 
   const handleSearchSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -74,12 +126,19 @@ export default function Search({ categories }: { categories: Category[] }) {
     }
   };
 
+  const productsToShow = searchQuery.trim()
+    ? searchResults
+    : recommendedProducts;
+  const hasProducts = productsToShow.length > 0;
+  const isSearchActive = searchQuery.trim().length > 0;
+
   return (
     <Sheet open={isSearchOpen} onOpenChange={setIsSearchOpen}>
       <SheetTrigger asChild>
         <button
           onClick={() => setIsSearchOpen(true)}
           className="text-white border-none hover:bg-gray-900 cursor-pointer p-2 rounded-full flex items-center justify-center"
+          aria-label="Open search"
         >
           <SearchIcon className="h-5 w-5" />
         </button>
@@ -97,6 +156,7 @@ export default function Search({ categories }: { categories: Category[] }) {
           <SheetTitle
             className="group cursor-pointer p-1 transition-all duration-200 rounded-none hover:bg-[#f2f2f2] hover:rounded-full"
             onClick={() => setIsSearchOpen(false)}
+            aria-label="Close search"
           >
             <IoClose className="w-5 h-5 transition-all duration-200 group-hover:rotate-180" />
           </SheetTitle>
@@ -116,6 +176,7 @@ export default function Search({ categories }: { categories: Category[] }) {
                 onSearchSubmit={handleSearchSubmit}
                 onClearSearch={handleClearSearch}
                 onClose={() => setIsSearchOpen(false)}
+                isLoading={isSearching}
               />
             </div>
 
@@ -127,8 +188,13 @@ export default function Search({ categories }: { categories: Category[] }) {
             >
               <div className="lg:pr-4">
                 <ProductResults
-                  products={productsResult}
+                  products={productsToShow}
                   searchQuery={searchQuery}
+                  isLoading={
+                    isSearchActive ? isSearching : isLoadingRecommended
+                  }
+                  isSearchActive={isSearchActive}
+                  hasRecommendedProducts={recommendedProducts.length > 0}
                 />
               </div>
             </div>

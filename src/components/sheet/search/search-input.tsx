@@ -10,6 +10,7 @@ interface SearchInputProps {
   onSearchSubmit: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onClearSearch: () => void;
   onClose: () => void;
+  isLoading?: boolean;
 }
 
 export default function SearchInput({
@@ -18,35 +19,47 @@ export default function SearchInput({
   onSearchSubmit,
   onClearSearch,
   onClose,
+  isLoading = false,
 }: SearchInputProps) {
   return (
     <div className="flex items-center lg:items-start bg-white lg:bg-transparent lg:border-b lg:border-gray-300 text-left py-3 lg:px-0 px-6 mb-3 lg:mb-0">
-      <Input
-        type="text"
-        value={searchQuery}
-        onChange={onSearchChange}
-        onKeyDown={onSearchSubmit}
-        className="border-none shadow-none rounded-none w-full h-12 text-base lg:text-2xl lg:placeholder:text-2xl placeholder:text-base px-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-left"
-        placeholder="Search"
-      />
-      <div className="gap-4 flex items-center">
-        {searchQuery ? (
-          <button
-            onClick={onClearSearch}
-            className="text-xs font-medium hover:underline cursor-pointer"
-          >
-            Clear
-          </button>
-        ) : (
-          <IoSearchOutline className="w-6 h-6 lg:w-7 lg:h-7" />
-        )}
-        <button
-          onClick={onClose}
-          className="lg:hidden block group cursor-pointer p-1 transition-all duration-200 bg-[#f2f2f2] rounded-full"
-        >
-          <IoClose className="w-5 h-5 transition-all duration-200 group-hover:rotate-180" />
-        </button>
+      <div className="relative w-full">
+        <Input
+          type="text"
+          value={searchQuery}
+          onChange={onSearchChange}
+          onKeyDown={onSearchSubmit}
+          className="border-none shadow-none rounded-none w-full h-12 text-base lg:text-2xl lg:placeholder:text-2xl placeholder:text-base pl-0 pr-12 focus-visible:ring-0 focus-visible:ring-offset-0 text-left"
+          placeholder="Search"
+          autoFocus
+        />
+
+        <div className="absolute right-0 top-1/2 transform -translate-y-1/2">
+          {isLoading ? (
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-600"></div>
+          ) : searchQuery ? (
+            <button
+              onClick={onClearSearch}
+              className="text-gray-500 hover:text-black transition-colors"
+              aria-label="Clear search"
+              type="button"
+            >
+              <span>clear</span>
+            </button>
+          ) : (
+            <IoSearchOutline className="w-6 h-6 lg:w-7 lg:h-7 text-gray-400" />
+          )}
+        </div>
       </div>
+
+      <button
+        onClick={onClose}
+        className="lg:hidden block group cursor-pointer p-1 transition-all duration-200 bg-[#f2f2f2] rounded-full ml-4"
+        aria-label="Close search"
+        type="button"
+      >
+        <IoClose className="w-5 h-5 transition-all duration-200 group-hover:rotate-180" />
+      </button>
     </div>
   );
 }

@@ -129,7 +129,7 @@ export default function RequestProductClient() {
   return (
     <form
       id="checkout-form"
-      className="grid md:grid-cols-3 md:grid-rows-1"
+      className="flex flex-col md:grid md:grid-cols-3 md:grid-rows-1"
       onSubmit={form.handleSubmit(onSubmit)}
     >
       <RequestProductProgress progressSteps={progressSteps} />
