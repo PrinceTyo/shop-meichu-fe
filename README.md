@@ -86,12 +86,12 @@ pnpm install
 Create a `.env.local` file in the root directory and add your environment variables:
 
 ```env
-# Example:
-NEXT_PUBLIC_BACKEND_BASE_URL=
+NEXT_PUBLIC_APP_URL=
 # Strapi Backend URL
+NEXT_PUBLIC_BACKEND_BASE_URL=
 NEXT_PUBLIC_BACKEND_API_URL="${NEXT_PUBLIC_BACKEND_BASE_URL}/api"
-SESSION_SECRET=
 # Generate SESSION_SECRET using `openssl rand -base64 32`
+SESSION_SECRET=
 ```
 
 ### 4. Run Development Server
