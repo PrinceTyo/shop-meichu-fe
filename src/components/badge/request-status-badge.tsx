@@ -1,31 +1,64 @@
 import { Badge } from "@/components/ui/badge";
+import {
+  ClockIcon,
+  XIcon,
+  CheckCheckIcon,
+  PencilIcon,
+  TagIcon,
+} from "lucide-react";
 
-import type { Request } from "@/types/strapi/models/request";
+import type { LucideIcon } from "lucide-react";
+import type { Request as RequestType } from "@/types/strapi/models/request";
 
-const statusClasses = {
-  pending: "bg-orange-600 text-white",
-  confirmed: "bg-green-600 text-white",
-  in_progress: "bg-green-600 text-white",
-  completed: "bg-green-600 text-white",
-  cancelled: "bg-red-600 text-white",
-} as const;
+type Variant = "default" | "border";
 
-const statusStrings = {
+const statusIcons: Record<RequestType["requestStatus"], LucideIcon> = {
+  pending: ClockIcon,
+  confirmed: TagIcon,
+  in_progress: PencilIcon,
+  completed: CheckCheckIcon,
+  cancelled: XIcon,
+};
+
+const statusClasses: Record<
+  Variant,
+  Record<RequestType["requestStatus"], string>
+> = {
+  default: {
+    pending: "bg-orange-600 text-white",
+    confirmed: "bg-teal-600 text-white",
+    in_progress: "bg-yellow-600 text-white",
+    completed: "bg-green-600 text-white",
+    cancelled: "bg-red-600 text-white",
+  },
+  border: {
+    pending: "border-orange-600 bg-orange-600/20 text-orange-100",
+    confirmed: "border-teal-600 bg-teal-600/20 text-teal-100",
+    in_progress: "border-yellow-600 bg-yellow-600/20 text-yellow-100",
+    completed: "border-green-600 bg-green-600/20 text-green-100",
+    cancelled: "border-red-600 bg-red-600/20 text-red-100",
+  },
+};
+
+const statusStrings: Record<RequestType["requestStatus"], string> = {
   pending: "Pending",
   confirmed: "Confirmed",
   in_progress: "In Progress",
   completed: "Completed",
   cancelled: "Cancelled",
-} as const;
+};
 
 export function RequestStatusBadge({
   status,
+  variant = "default",
 }: {
-  status: Request["requestStatus"];
+  status: RequestType["requestStatus"];
+  variant?: Variant;
 }) {
+  const Icon = statusIcons[status];
   return (
-    <div>
-      <Badge className={statusClasses[status]}>{statusStrings[status]}</Badge>
-    </div>
+    <Badge className={statusClasses[variant][status]}>
+      <Icon className="size-4" /> {statusStrings[status]}
+    </Badge>
   );
 }

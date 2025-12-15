@@ -33,6 +33,8 @@ import type { Subscriber } from "@/types/strapi/models/subscriber";
 import type { Request } from "@/types/strapi/models/request";
 import type { StrapiImage as StrapiImageType } from "@/types/strapi/media/image";
 import type { StrapiRelationCount } from "@/types/strapi/count-relation";
+import { ContactPlatformBadge } from "@/components/badge/contact-platform-badge";
+import { formatDateTime } from "@/lib/format";
 
 export const categoriesColumn: ColumnDef<Category>[] = [
   {
@@ -116,6 +118,7 @@ export const categoriesColumn: ColumnDef<Category>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} label="Created At" />
     ),
+    cell: ({ getValue }) => formatDateTime(getValue<string>()),
     enableSorting: true,
     enableColumnFilter: false,
     meta: {
@@ -237,6 +240,19 @@ export const productsColumn: ColumnDef<Product>[] = [
     },
   },
   {
+    id: "createdAt",
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Created At" />
+    ),
+    cell: ({ getValue }) => formatDateTime(getValue<string>()),
+    enableSorting: true,
+    enableColumnFilter: false,
+    meta: {
+      label: "Created At",
+    },
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       const { deleteAction, refresh } = useTableAction();
@@ -315,7 +331,12 @@ export const requestsColumn: ColumnDef<Request>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} label="Contact Platform" />
     ),
-    cell: ({ row }) => <div>{row.getValue("contactPlatform")}</div>,
+    cell: ({ row }) => (
+      <ContactPlatformBadge
+        platform={row.getValue("contactPlatform")}
+        variant="border"
+      />
+    ),
     enableColumnFilter: true,
     meta: {
       label: "Contact Platform",
@@ -344,12 +365,13 @@ export const requestsColumn: ColumnDef<Request>[] = [
     ),
     cell: ({ row }) => (
       <RequestStatusBadge
+        variant="border"
         status={row.getValue("requestStatus") as Request["requestStatus"]}
       />
     ),
     enableColumnFilter: true,
     meta: {
-      label: "Request State",
+      label: "Request Status",
       variant: "multiSelect",
       options: [
         { label: "Pending", value: "pending", icon: ClockIcon },
@@ -358,6 +380,19 @@ export const requestsColumn: ColumnDef<Request>[] = [
         { label: "Completed", value: "completed", icon: CheckCheckIcon },
         { label: "Cancelled", value: "cancelled", icon: XIcon },
       ],
+    },
+  },
+  {
+    id: "createdAt",
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Created At" />
+    ),
+    cell: ({ getValue }) => formatDateTime(getValue<string>()),
+    enableSorting: true,
+    enableColumnFilter: false,
+    meta: {
+      label: "Created At",
     },
   },
   {
@@ -463,6 +498,65 @@ export const subscribersColumn: ColumnDef<Subscriber>[] = [
       placeholder: "Search email...",
       variant: "text",
       icon: TextIcon,
+    },
+  },
+  {
+    id: "createdAt",
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} label="Created At" />
+    ),
+    cell: ({ getValue }) => formatDateTime(getValue<string>()),
+    enableSorting: true,
+    enableColumnFilter: false,
+    meta: {
+      label: "Created At",
+    },
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      const { deleteAction, refresh } = useTableAction();
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MoreHorizontal className="h-4 w-4" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {deleteAction && (
+              <DropdownMenuItem
+                className="text-red-500"
+                onClick={async () => {
+                  const result = await deleteAction(row.original.documentId);
+
+                  switch (result.type) {
+                    case "success":
+                      toast.success("Subscriber sucessfully deleted");
+                      refresh();
+                      break;
+                    case "validation":
+                      toast.error(result.validation.message);
+                      break;
+                    case "error":
+                      toast.error(result.message);
+                      break;
+                  }
+                }}
+              >
+                Delete
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+    size: 32,
+    meta: {
+      label: "Actions",
     },
   },
 ];

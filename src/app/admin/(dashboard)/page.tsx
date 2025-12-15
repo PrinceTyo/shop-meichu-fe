@@ -9,8 +9,9 @@ import {
   ClockIcon,
   XIcon,
   CheckCheckIcon,
-  CheckIcon,
   MailIcon,
+  PencilIcon,
+  TagIcon,
 } from "lucide-react";
 import { getGreeting, getCurrentDateTime } from "@/lib/greets";
 import { Suspense } from "react";
@@ -111,7 +112,7 @@ export default async function Page() {
             title="Pending"
             value={summaryData.requests.requestsPending}
             href="/admin/requests?requestStatus=pending"
-            Icon={Tag}
+            Icon={ClockIcon}
             cardClassName="border-amber-500/20 bg-amber-500/20 dark:bg-amber-700/20"
             textClassName="text-amber-600 dark:text-amber-100"
             iconClassName="border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400"
@@ -121,7 +122,7 @@ export default async function Page() {
             title="Confirmed"
             value={summaryData.requests.requestsConfirmed}
             href="/admin/requests?requestStatus=confirmed"
-            Icon={CheckIcon}
+            Icon={TagIcon}
             cardClassName="border-teal-500/20 bg-teal-500/20 dark:bg-teal-700/20"
             textClassName="text-teal-600 dark:text-teal-100"
             iconClassName="border-teal-500/20 bg-teal-500/10 text-teal-600 dark:text-teal-400"
@@ -131,7 +132,7 @@ export default async function Page() {
             title="In Progress"
             value={summaryData.requests.requestsInProgress}
             href="/admin/requests?requestStatus=in_progress"
-            Icon={ClockIcon}
+            Icon={PencilIcon}
             cardClassName="border-yellow-500/20 bg-yellow-500/20 dark:bg-yellow-700/20"
             textClassName="text-yellow-600 dark:text-yellow-100"
             iconClassName="border-yellow-500/20 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400"

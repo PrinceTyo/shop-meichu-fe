@@ -4,6 +4,7 @@ import { extendedFetch, extendedFetchWithAuth } from "./base";
 import type { StrapiResponse } from "@/types/strapi/response";
 import type { Subscriber } from "@/types/strapi/models/subscriber";
 import type { ResultContract } from "@/types/api-return";
+import { updateTag } from "next/cache";
 
 export async function getAllSubscribers(): Promise<
   StrapiResponse<Subscriber[]>
@@ -12,6 +13,7 @@ export async function getAllSubscribers(): Promise<
     init: {
       next: {
         revalidate: 0,
+        tags: ["subscribers"],
       },
     },
   });
@@ -39,5 +41,28 @@ export async function createSubscriber<T>(
     return { type: "error", message: "An error occurred" };
   }
 
+  updateTag("subscribers");
   return { type: "success", data: await response.json() };
+}
+
+export async function deleteSubscriber(
+  documentId: string
+): Promise<ResultContract<null>> {
+  const response = await extendedFetchWithAuth(`/subscribers/${documentId}`, {
+    init: {
+      method: "DELETE",
+    },
+  });
+
+  if (!response.ok) {
+    if (response.status === 400) {
+      const { error } = await response.json();
+      return { type: "validation", validation: error };
+    }
+
+    return { type: "error", message: "An error occurred" };
+  }
+
+  updateTag("subscribers");
+  return { type: "success", data: null };
 }

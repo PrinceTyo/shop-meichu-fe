@@ -1,6 +1,6 @@
 export function formatDate(
   date: Date | string | number | undefined,
-  opts: Intl.DateTimeFormatOptions = {},
+  opts: Intl.DateTimeFormatOptions = {}
 ) {
   if (!date) return "";
 
@@ -14,4 +14,12 @@ export function formatDate(
   } catch (_err) {
     return "";
   }
+}
+
+export function formatDateTime(date: Date | string | number | undefined) {
+  return formatDate(date, {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });
 }

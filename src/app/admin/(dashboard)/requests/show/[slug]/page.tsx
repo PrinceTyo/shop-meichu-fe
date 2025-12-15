@@ -10,6 +10,7 @@ import AdminBreadcrumb from "@/components/breadcrumb/admin-breadcrumb";
 import type { Request as RequestType } from "@/types/strapi/models/request";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { ContactPlatformBadge } from "@/components/badge/contact-platform-badge";
 
 function generateContactLink(
   platform: RequestType["contactPlatform"],
@@ -58,6 +59,7 @@ export default async function Page({
           <Link
             href={generateContactLink(data.contactPlatform, data.contact)}
             prefetch={false}
+            target="_blank"
           >
             Open Contact
           </Link>
@@ -75,12 +77,16 @@ export default async function Page({
 
                 <Field>
                   <FieldLabel>Status</FieldLabel>
-                  <RequestStatusBadge status={data.requestStatus} />
+                  <div>
+                    <RequestStatusBadge status={data.requestStatus} />
+                  </div>
                 </Field>
 
                 <Field>
                   <FieldLabel>Contact Platform</FieldLabel>
-                  <Input type="text" readOnly value={data.contactPlatform} />
+                  <div>
+                    <ContactPlatformBadge platform={data.contactPlatform} />
+                  </div>
                 </Field>
 
                 <Field>
