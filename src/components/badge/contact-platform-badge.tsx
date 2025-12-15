@@ -23,16 +23,18 @@ const statusClasses: Record<
   Record<RequestType["contactPlatform"], string>
 > = {
   default: {
-    email: "bg-red-600 text-white",
-    instagram: "bg-purple-600 text-white",
-    whatsapp: "bg-green-600 text-white",
-    facebook: "bg-blue-600 text-white",
+    email: "bg-red-600 dark:text-white text-black",
+    instagram: "bg-purple-600 dark:text-white text-black",
+    whatsapp: "bg-green-600 dark:text-white text-black",
+    facebook: "bg-blue-600 dark:text-white text-black",
   },
   border: {
-    email: "border-red-600 bg-red-600/20 text-red-100",
-    instagram: "border-purple-600 bg-purple-600/20 text-purple-100",
-    whatsapp: "border-green-600 bg-green-600/20 text-green-100",
-    facebook: "border-blue-600 bg-blue-600/20 text-blue-100",
+    email: "border-red-600 bg-red-600/20 dark:text-red-100 text-red-600",
+    instagram:
+      "border-purple-600 bg-purple-600/20 dark:text-purple-100 text-purple-600",
+    whatsapp:
+      "border-green-600 bg-green-600/20 dark:text-green-100 text-green-600",
+    facebook: "border-blue-600 bg-blue-600/20 dark:text-blue-100 text-blue-600",
   },
 };
 

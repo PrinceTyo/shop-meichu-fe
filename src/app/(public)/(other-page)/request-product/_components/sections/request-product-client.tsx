@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react"; 
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { requestProductSchema } from "@/schema/request-product";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +11,7 @@ import CheckoutForm from "./request-product-form";
 import RequestProductProgress from "./request-product-progress";
 import { useStepProgress } from "@/hooks/use-step-progress";
 import { createRequest } from "@/lib/api/requests";
-import { createImage } from "@/lib/api/strapi-image";
+import { createImageGuest } from "@/lib/api/strapi-image";
 import { displayValidationError } from "@/lib/validation-handler";
 
 type ReferenceImageType = File | string;
@@ -75,10 +75,10 @@ export default function RequestProductClient() {
 
   const onSubmit = useCallback(
     async (data: z.infer<typeof requestProductSchema>) => {
-      setIsSubmitting(true); 
+      setIsSubmitting(true);
       try {
         const { referenceImages, ...requestProductData } = data;
-        const imagesResult = await createImage(referenceImages);
+        const imagesResult = await createImageGuest(referenceImages);
 
         switch (imagesResult.type) {
           case "validation":

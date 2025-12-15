@@ -327,94 +327,112 @@ export default function UpdateProductForm({
             <FieldDescription>
               Add up to 4 fields for product specification.
             </FieldDescription>
-            <FieldGroup className="gap-4">
-              {fields.fields.map((field, index) => (
-                <Collapsible className="border rounded-md" key={field.id}>
-                  <div className="p-3 w-full flex gap-3 items-center">
-                    <CollapsibleTrigger asChild>
-                      <Button
-                        size="icon"
-                        variant="outline"
-                        className="rounded-full group"
-                      >
-                        <ChevronUp className="group-data-[state=open]:rotate-180 transition-transform" />
-                      </Button>
-                    </CollapsibleTrigger>
-                    {field.title}
-                    <InputGroupButton
+            <Controller
+              name="fields"
+              control={form.control}
+              render={({ fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldGroup className="gap-4">
+                    {fields.fields.map((field, index) => (
+                      <Collapsible className="border rounded-md" key={field.id}>
+                        <div className="p-3 w-full flex gap-3 items-center">
+                          <CollapsibleTrigger asChild>
+                            <Button
+                              size="icon"
+                              variant="outline"
+                              className="rounded-full group"
+                            >
+                              <ChevronUp className="group-data-[state=open]:rotate-180 transition-transform" />
+                            </Button>
+                          </CollapsibleTrigger>
+                          {field.title}
+                          <InputGroupButton
+                            type="button"
+                            variant="ghost"
+                            size="icon-xs"
+                            onClick={() => fields.remove(index)}
+                            aria-label={`Remove field ${index + 1}`}
+                            className="ms-auto"
+                          >
+                            <Trash2Icon />
+                          </InputGroupButton>
+                        </div>
+
+                        <CollapsibleContent className="px-3 pb-3 space-y-3">
+                          <Controller
+                            name={`fields.${index}.title`}
+                            control={form.control}
+                            render={({
+                              field: controllerField,
+                              fieldState,
+                            }) => (
+                              <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel>
+                                  Title
+                                  <MarkRequired />
+                                </FieldLabel>
+                                <FieldContent>
+                                  <InputGroup>
+                                    <InputGroupInput
+                                      {...controllerField}
+                                      aria-invalid={fieldState.invalid}
+                                      type="text"
+                                      required
+                                    />
+                                  </InputGroup>
+
+                                  {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                  )}
+                                </FieldContent>
+                              </Field>
+                            )}
+                          />
+                          <Controller
+                            name={`fields.${index}.content`}
+                            control={form.control}
+                            render={({
+                              field: controllerField,
+                              fieldState,
+                            }) => (
+                              <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel>
+                                  Content
+                                  <MarkRequired />
+                                </FieldLabel>
+                                <FieldContent>
+                                  <RichTextEditor
+                                    value={controllerField.value}
+                                    onChange={controllerField.onChange}
+                                  />
+
+                                  {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                  )}
+                                </FieldContent>
+                              </Field>
+                            )}
+                          />
+                        </CollapsibleContent>
+                      </Collapsible>
+                    ))}
+                    <Button
                       type="button"
-                      variant="ghost"
-                      size="icon-xs"
-                      onClick={() => fields.remove(index)}
-                      aria-label={`Remove field ${index + 1}`}
-                      className="ms-auto"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => fields.append({ title: "", content: "" })}
+                      disabled={fields.fields.length >= 4}
                     >
-                      <Trash2Icon />
-                    </InputGroupButton>
-                  </div>
+                      Add Specification Field
+                    </Button>
+                  </FieldGroup>
 
-                  <CollapsibleContent className="px-3 pb-3 space-y-3">
-                    <Controller
-                      name={`fields.${index}.title`}
-                      control={form.control}
-                      render={({ field: controllerField, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel>
-                            Title
-                            <MarkRequired />
-                          </FieldLabel>
-                          <FieldContent>
-                            <InputGroup>
-                              <InputGroupInput
-                                {...controllerField}
-                                aria-invalid={fieldState.invalid}
-                                type="text"
-                                required
-                              />
-                            </InputGroup>
-
-                            {fieldState.invalid && (
-                              <FieldError errors={[fieldState.error]} />
-                            )}
-                          </FieldContent>
-                        </Field>
-                      )}
-                    />
-                    <Controller
-                      name={`fields.${index}.content`}
-                      control={form.control}
-                      render={({ field: controllerField, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel>
-                            Content
-                            <MarkRequired />
-                          </FieldLabel>
-                          <FieldContent>
-                            <RichTextEditor
-                              value={controllerField.value}
-                              onChange={controllerField.onChange}
-                            />
-
-                            {fieldState.invalid && (
-                              <FieldError errors={[fieldState.error]} />
-                            )}
-                          </FieldContent>
-                        </Field>
-                      )}
-                    />
-                  </CollapsibleContent>
-                </Collapsible>
-              ))}
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => fields.append({ title: "", content: "" })}
-                disabled={fields.fields.length >= 4}
-              >
-                Add Specification Field
-              </Button>
-            </FieldGroup>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
           </FieldSet>
         </CardContent>
 
