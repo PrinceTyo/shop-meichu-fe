@@ -1,7 +1,7 @@
 "use server";
 
 import { logout } from "@/lib/api/auth";
-import { NextResponse, NextRequest }qq from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
   let response: NextResponse;
